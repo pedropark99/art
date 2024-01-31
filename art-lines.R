@@ -1,5 +1,3 @@
-setwd("C:/Users/pedro/Documents/Projetos/Livros/art")
-
 library(tidyverse)
 library(ambient)
 
@@ -42,7 +40,7 @@ df <- tibble(
   n_step = seq_len(n_steps),
   x = ((n_step - 1) * step) + x,
   angle = deg2rad(n_step),
-  y = seq_len(n_steps) * 2 + 50 + (noises * 50)
+  y = seq_len(n_steps) * 2 + 50 + (noises * 100)
 )
 
 ggplot(df) +

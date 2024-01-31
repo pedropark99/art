@@ -1,0 +1,22 @@
+[
+  {
+    "objectID": "Chapters/01-transformations.html#introduction",
+    "href": "Chapters/01-transformations.html#introduction",
+    "title": "2  Introducing graphics transformations",
+    "section": "2.1 Introduction",
+    "text": "2.1 Introduction\nThere are three basic transformations that are essential to world of computer graphichs, which are:\n\nScaling.\nTranslation.\nRotation.\n\n\nlibrary(ggplot2)\ntriangle &lt;- data.frame(\n  x = c(-1, 1, 0),\n  y = c(0, 0, 1)\n)\n\nggplot(triangle) +\n  geom_polygon(\n    aes(x = x, y = y),\n    fill = \"#222222\"\n  )",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introducing graphics transformations</span>"
+    ]
+  },
+  {
+    "objectID": "Chapters/01-transformations.html",
+    "href": "Chapters/01-transformations.html",
+    "title": "2  Introducing graphics transformations",
+    "section": "",
+    "text": "In computer graphics, our main objective is (usually) to display multiple shapes (or objects) in the computer screen. But, in order to do that, we might need to change some attributes of these shapes (or objects).\nFor example, we might need to move these shapes to different locations in the screen, or to scale these shapes to a different size, or maybe, to rotate them into a different angle. To do this, we apply a transformation to each shape (or object) that we want to display in the screen.\nThere are three basic transformations that are essential to world of computer graphics, which are:\n\nScaling.\nTranslation.\nRotation.\n\nEach of these three basic transformations use simple math operations over the coordinates of each vertice that compose your shape/object to achieve a specific visual effect/transformation. In essence:\n\nScaling is used to scale your object into a different size (i.e. to raise/shrink the size of your object).\nTranslation is used to move your object to a different position in the coordinate system.\nRotation is used to rotate your object to a different angle.\n\n\nlibrary(ggplot2)\ntriangle &lt;- data.frame(\n  x = c(-1, 1, 0),\n  y = c(0, 0, 2)\n)\n\ncanvas &lt;- ggplot() +\n  theme_minimal() +\n  lims(y = c(-5, 5), x = c(-5, 5)) +\n  geom_vline(aes(xintercept = 0), color = \"#222222\") +\n  geom_hline(aes(yintercept = 0), color = \"#222222\")\n\ncanvas +\n  geom_polygon(\n    aes(x = x, y = y),\n    fill = \"#5384d4\",\n    data= triangle\n  )",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introducing graphics transformations</span>"
+    ]
+  }
+]

@@ -2,4 +2,60 @@
 title: "Introducing graphics transformations"
 ---
 
-## Introduction
+When we are displaying some object (or shape)
+in the computer screen, we might want to transform this object (or shape)
+in some way.
+
+For example, we might need to move this object to a different location in the screen,
+or we might need to scale this object to a different size, or maybe,
+to rotate it into a different angle.
+
+In computer graphics, this is called as a **transformation**.
+We apply a *transformation* to the object we have, and this
+object gets moved in some way in the visual space of our screen.
+
+There are three basic transformations that are
+essential to the world of computer graphics, which are:
+
+- Scaling.
+- Translation.
+- Rotation.
+
+Each of these three basic transformations uses simple math operations over the
+coordinates of each vertice that compose your shape/object to achieve a specific
+visual effect/transformation.
+
+We could resume each transformation as:
+
+- Scaling is used to scale your object into a different size (i.e. to raise/shrink the size of your object).
+- 
+- Rotation is used to rotate your object to a different angle.
+
+
+## Translation
+
+Lets begin with the easiest and simplest of all transformations, which is translation.
+A translation is used to move your object to a different position in the coordinate system.
+
+
+```{r}
+library(ggplot2)
+triangle <- data.frame(
+  x = c(-1, 1, 0),
+  y = c(0, 0, 2)
+)
+
+canvas <- ggplot() +
+  theme_minimal() +
+  lims(y = c(-5, 5), x = c(-5, 5)) +
+  geom_vline(aes(xintercept = 0), color = "#222222") +
+  geom_hline(aes(yintercept = 0), color = "#222222")
+
+canvas +
+  geom_polygon(
+    aes(x = x, y = y),
+    fill = "#5384d4",
+    data= triangle
+  )
+```
+

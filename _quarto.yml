@@ -5,6 +5,10 @@ book:
   title: "Practical Generative Art with R and ggplot2: drawing with data"
   author: "Pedro Duarte Faria"
   date: "today"
+  edition: "First edition"
+  chapters:
+    - index.qmd
+    - Chapters/01-transformations.qmd
 
 
 bibliography: references.bib
@@ -13,4 +17,3 @@ format:
   html:
     theme: 
       - cosmo
-      - theme.scss
