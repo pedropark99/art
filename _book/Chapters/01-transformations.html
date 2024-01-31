@@ -157,7 +157,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#translation" id="toc-translation" class="nav-link active" data-scroll-target="#translation"><span class="header-section-number">2.1</span> Translation</a></li>
+  <li><a href="#scaling" id="toc-scaling" class="nav-link" data-scroll-target="#scaling"><span class="header-section-number">2.2</span> Scaling</a></li>
+  <li><a href="#rotation" id="toc-rotation" class="nav-link" data-scroll-target="#rotation"><span class="header-section-number">2.3</span> Rotation</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -181,20 +189,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>In computer graphics, our main objective is (usually) to display multiple shapes (or objects) in the computer screen. But, in order to do that, we might need to change some attributes of these shapes (or objects).</p>
-<p>For example, we might need to move these shapes to different locations in the screen, or to scale these shapes to a different size, or maybe, to rotate them into a different angle. To do this, we apply a <em>transformation</em> to each shape (or object) that we want to display in the screen.</p>
-<p>There are three basic transformations that are essential to world of computer graphics, which are:</p>
+<p>When we are displaying some object (or shape) in the computer screen, we might want to transform this object (or shape) in some way. For example, we might need to move this object to a different location in the screen, or we might need to scale this object to a different size, or maybe, to rotate it into a different angle.</p>
+<p>In computer graphics, this is called as a <strong>transformation</strong>. We apply a <em>transformation</em> to the object we have, and this object gets moved in some way in the visual space of our screen. There are three basic transformations that are essential to the world of computer graphics, which are:</p>
 <ul>
 <li>Scaling.</li>
 <li>Translation.</li>
 <li>Rotation.</li>
 </ul>
-<p>Each of these three basic transformations use simple math operations over the coordinates of each vertice that compose your shape/object to achieve a specific visual effect/transformation. In essence:</p>
-<ul>
-<li>Scaling is used to scale your object into a different size (i.e.&nbsp;to raise/shrink the size of your object).</li>
-<li>Translation is used to move your object to a different position in the coordinate system.</li>
-<li>Rotation is used to rotate your object to a different angle.</li>
-</ul>
+<p>Each of these three basic transformations uses simple math operations over the coordinates of each vertice that compose your shape/object to achieve a specific visual effect/transformation.</p>
+<section id="translation" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="translation"><span class="header-section-number">2.1</span> Translation</h2>
+<p>Lets begin with the easiest and simplest of all transformations, which is translation. A translation is used to move your object to a different position in the coordinate system.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>triangle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -222,8 +227,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section>
+<section id="scaling" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="scaling"><span class="header-section-number">2.2</span> Scaling</h2>
+<p>Scaling is used to scale your object into a different size (i.e.&nbsp;to raise/shrink the size of your object).</p>
+</section>
+<section id="rotation" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="rotation"><span class="header-section-number">2.3</span> Rotation</h2>
+<p>Rotation is used to rotate your object to a different angle.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

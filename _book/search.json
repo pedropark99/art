@@ -18,5 +18,35 @@
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introducing graphics transformations</span>"
     ]
+  },
+  {
+    "objectID": "Chapters/01-transformations.html#translation",
+    "href": "Chapters/01-transformations.html#translation",
+    "title": "2  Introducing graphics transformations",
+    "section": "2.1 Translation",
+    "text": "2.1 Translation\nLets begin with the easiest and simplest of all transformations, which is translation. A translation is used to move your object to a different position in the coordinate system.\n\nlibrary(ggplot2)\ntriangle &lt;- data.frame(\n  x = c(-1, 1, 0),\n  y = c(0, 0, 2)\n)\n\ncanvas &lt;- ggplot() +\n  theme_minimal() +\n  lims(y = c(-5, 5), x = c(-5, 5)) +\n  geom_vline(aes(xintercept = 0), color = \"#222222\") +\n  geom_hline(aes(yintercept = 0), color = \"#222222\")\n\ncanvas +\n  geom_polygon(\n    aes(x = x, y = y),\n    fill = \"#5384d4\",\n    data= triangle\n  )",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introducing graphics transformations</span>"
+    ]
+  },
+  {
+    "objectID": "Chapters/01-transformations.html#scaling",
+    "href": "Chapters/01-transformations.html#scaling",
+    "title": "2  Introducing graphics transformations",
+    "section": "2.2 Scaling",
+    "text": "2.2 Scaling\nScaling is used to scale your object into a different size (i.e. to raise/shrink the size of your object).",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introducing graphics transformations</span>"
+    ]
+  },
+  {
+    "objectID": "Chapters/01-transformations.html#rotation",
+    "href": "Chapters/01-transformations.html#rotation",
+    "title": "2  Introducing graphics transformations",
+    "section": "2.3 Rotation",
+    "text": "2.3 Rotation\nRotation is used to rotate your object to a different angle.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introducing graphics transformations</span>"
+    ]
   }
 ]
