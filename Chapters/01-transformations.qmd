@@ -256,15 +256,28 @@ y' = x \times sin(A) + y \times cos(A)
 $$ {#eq-rotation2}
 
 This seems complicated, but, it actually is not. I mean really, you just have to follow
-these formulas above and you will be happy. Lets take a triangle
-with coordinates $(0,0), (1,0), (0,2)$ as an example.
-Lets consider we wanted to perform two different rotations.
-The first, we rotate the triangle 30 degrees clockwise, the second, 90 degrees clockwise.
+these formulas above and you will be happy. But remember one detail about these
+formulas: the trigonometric functions `cos()` and `sin()` take as input angles
+that are in radians.
+
+We usually think or talk about angles using the degrees measure (e.g. 90 degrees, 180 degrees, etc.).
+So you must convert your angle in degrees to radians, before you pass it to `cos()` and `sin()` functions.
+You can do this by using the function `deg2rad()` below, that uses the equation that we introduced at
+Chapter 1 to convert these measures. Notice that this function uses the PI value
+(i.e. the built-in `pi` object) to make this conversion.
 
 ```{r}
+# A function to convert degrees to radians
 deg2rad <- function(deg){
   return(deg * pi / 180)
 }
+```
+
+As a first example, lets take a triangle with coordinates $(0,0), (1,0), (0,2)$.
+Lets consider we wanted to perform two different rotations over this triangle.
+The first, we rotate it to 30 degrees clockwise, and in the second, 90 degrees clockwise.
+
+```{r}
 triangle <- data.frame(
   x = c(0, 1, 0),
   y = c(0, 0, 2)
