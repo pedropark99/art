@@ -1,0 +1,43 @@
+---
+title: "Producing chaos in an ordered manner"
+---
+
+
+Stock prices are an example of chaos that exists in our economic system.
+For example, if tomorrow, Microsoft suffers a huge lost of investments (because
+of a wrong strategy, or some internal scandal, etc.), the stock prices
+of Apple will most likely go up. Apple did not had do to
+a thing! Its concurrent made a mistake, as a result, the price of its
+stock raised "automatically", as a side-effect.
+
+Also, huge and billionaire companies such as Apple have some degree of
+control over their stock price. In other words, these companies can
+inject huge amounts of money into the market, or, influence government decisions
+to slightly influence the price of their stocks.
+So when these big companies influence the market, we introduce
+a new effect on the table.
+
+Sometimes we can predict some of these effects,
+specially if we have good sources of information inside the market.
+But there are so many effects (both in quantity and in quality), that becomes impossible
+to comprehend all of these effects at once, hence the "chaos feeling" that you feel
+when you work with the stock market.
+
+
+This is frustrating for humans. We want to comprehend everything we are seeing!
+We want to know why, when, who and how everything happens.
+But at the same time, we as humans have limited resources: a limit
+amount of attention that we can spend, and limited brain processing power
+that we can spend when learning/understanding about something.
+
+That is why some degree of order, or symmetry, or logic in a image is very
+pleasant to the eyes. Because is easy to understand a symmetric object.
+We can easily understand what we are seeing in the image.
+
+So when you are building your generative art, you want some degree of
+chaos and randomness. But you also want to balance this chaos with some
+degree of order. Hence the current chapter title (producing chaos in an ordered manner).
+
+
+
+

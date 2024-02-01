@@ -23,6 +23,7 @@ coordinates of each vertex that compose your object to achieve a specific
 visual effect/transformation.
 
 
+
 ## Translation
 
 Lets begin with the easiest and simplest of all transformations, which is translation.
