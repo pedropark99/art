@@ -19,7 +19,7 @@ essential to the world of computer graphics, which are:
 - Rotation.
 
 Each of these three basic transformations uses simple math operations over the
-coordinates of each vertice that compose your shape/object to achieve a specific
+coordinates of each vertex that compose your object to achieve a specific
 visual effect/transformation.
 
 
@@ -45,8 +45,8 @@ how much to move the object vertically.
 The direction of the movement is determined by the fact if the offset you are adding
 is a positive or a negative number. For example, if you want to move your
 object to the right, then, you add a positive x offset
-to each x position. But if you want to move your object to the right instead,
-then, you add a negative x offset.
+to each x position. But if you want to move your object to the left instead,
+then, you add a negative x offset. The same logic applies to vertical movements.
 
 For example, a triangle have three vertices. If we want to translate this
 triangle three points to the left, and two points up, then, we need to
@@ -239,6 +239,112 @@ getting the strong blue rectangle as the result.
 
 ![Rotating a rectangle into a different angle](./../Figures/01-rotation.svg){#fig-rotation}
 
+Rotating an object is a little more complicated than the other transformations.
+Only because it involves some magic calculations with a little of trigonometry.
 
+Given a coordinate with $x$ and $y$ positions in a Cartesian plane, and a angle $A$ in radians to rotate this initial coordinate, the new $x'$ and $y'$ positions can be calculated using the formulas below.
+$cos()$ and $sin()$ in these formulas are the cosine and sine trigonometric functions.
+
+$$
+x' = x \times cos(A) + y \times - sin(A)
+$${#eq-rotation1}
+
+
+$$
+y' = x \times sin(A) + y \times cos(A)
+$$ {#eq-rotation2}
+
+This seems complicated, but, it actually is not. I mean really, you just have to follow
+these formulas above and you will be happy. Lets take a triangle
+with coordinates $(0,0), (1,0), (0,2)$ as an example.
+Lets consider we wanted to perform two different rotations.
+The first, we rotate the triangle 30 degrees clockwise, the second, 90 degrees clockwise.
+
+```{r}
+deg2rad <- function(deg){
+  return(deg * pi / 180)
+}
+triangle <- data.frame(
+  x = c(0, 1, 0),
+  y = c(0, 0, 2)
+)
+
+angle <- deg2rad(-30)
+first_rotated_triangle <- data.frame(
+  x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),
+  y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))
+)
+
+angle <- deg2rad(-90)
+second_rotated_triangle <- data.frame(
+  x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),
+  y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))
+)
+
+canvas +
+  geom_polygon(
+    aes(x = x, y = y, fill = "After second rotation"),
+    data = second_rotated_triangle
+  ) +
+  geom_polygon(
+    aes(x = x, y = y, fill = "After first rotation"),
+    data = first_rotated_triangle
+  ) +
+  geom_polygon(
+    aes(x = x, y = y, fill = "Before rotation"),
+    data = triangle
+  ) +
+  scale_fill_manual(values = c("#226ce3", "#0c3a85", "#a6c8ff"))
+```
+
+
+One important aspect about this operation, is that the above formulas
+(@eq-rotation1 and @eq-rotation2) rotate the object around the origin point
+of the Cartesian plane, i.e. coordinate $(0, 0)$.
+
+In other words, the object is rotated around the origin point of the Cartesian plane, instead
+of rotating around the center point of the object, or, rotating around the leftmost vertex of the object,
+or around whatever other point you imagine.
+
+
+You can see more clearly the effects of this fact by increasing the distance of your object from
+the origin point. In the example below, the same triangle and rotations as the previous example are used.
+But this time, the original triangle is further apart from the origin point (code is omitted for brevity reasons):
+
+
+```{r}
+#| echo: false
+triangle <- data.frame(
+  x = c(0, 1, 0),
+  y = c(3, 3, 5)
+)
+
+angle <- deg2rad(-30)
+first_rotated_triangle <- data.frame(
+  x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),
+  y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))
+)
+
+angle <- deg2rad(-90)
+second_rotated_triangle <- data.frame(
+  x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),
+  y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))
+)
+
+canvas +
+  geom_polygon(
+    aes(x = x, y = y, fill = "After second rotation"),
+    data = second_rotated_triangle
+  ) +
+  geom_polygon(
+    aes(x = x, y = y, fill = "After first rotation"),
+    data = first_rotated_triangle
+  ) +
+  geom_polygon(
+    aes(x = x, y = y, fill = "Before rotation"),
+    data = triangle
+  ) +
+  scale_fill_manual(values = c("#226ce3", "#0c3a85", "#a6c8ff"))
+```
 
 

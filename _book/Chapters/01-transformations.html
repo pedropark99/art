@@ -225,7 +225,7 @@ window.Quarto = {
 <li>Translation.</li>
 <li>Rotation.</li>
 </ul>
-<p>Each of these three basic transformations uses simple math operations over the coordinates of each vertice that compose your shape/object to achieve a specific visual effect/transformation.</p>
+<p>Each of these three basic transformations uses simple math operations over the coordinates of each vertex that compose your object to achieve a specific visual effect/transformation.</p>
 <section id="translation" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="translation"><span class="header-section-number">2.1</span> Translation</h2>
 <p>Lets begin with the easiest and simplest of all transformations, which is translation. A translation is used to move your object to a different position in the cartesian field.</p>
@@ -241,7 +241,7 @@ Figure&nbsp;2.1: An example of translating an object in a cartesian field
 </figure>
 </div>
 <p>But how translation works? In summary, to translate an object, all you have to do is to add a “x offset” and a “y offset” to all vertices of your object. The “x offset” represents how much you want to move the object horizontally, while the “y offset” represents how much to move the object vertically.</p>
-<p>The direction of the movement is determined by the fact if the offset you are adding is a positive or a negative number. For example, if you want to move your object to the right, then, you add a positive x offset to each x position. But if you want to move your object to the right instead, then, you add a negative x offset.</p>
+<p>The direction of the movement is determined by the fact if the offset you are adding is a positive or a negative number. For example, if you want to move your object to the right, then, you add a positive x offset to each x position. But if you want to move your object to the left instead, then, you add a negative x offset. The same logic applies to vertical movements.</p>
 <p>For example, a triangle have three vertices. If we want to translate this triangle three points to the left, and two points up, then, we need to add the number 3 to the x position, and the number 2 to the y position of each vertex of this triangle.</p>
 <p>The following code demonstrates this idea. We have a first triangle (object <code>triangle</code>), represented by the vertices <span class="math inline">\((-1,0), (1,0), (0,2)\)</span>. Then, we create a new triangle (object <code>translated_triangle</code>) that is translated by adding the “x offset” and “y offset” to each x and y positions, respectively.</p>
 <div class="cell">
@@ -335,7 +335,7 @@ Figure&nbsp;2.1: An example of translating an object in a cartesian field
 <img src="./../Figures/01-scaling.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.2: Scaling a triangle in to a bigger size
+Figure&nbsp;2.2: Scaling a triangle into a bigger size
 </figcaption>
 </figure>
 </div>
@@ -402,7 +402,81 @@ Figure&nbsp;2.2: Scaling a triangle in to a bigger size
 </section>
 <section id="rotation" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="rotation"><span class="header-section-number">2.3</span> Rotation</h2>
-<p>Rotation is used to rotate your object to a different angle.</p>
+<p>Rotation is used to rotate your object to a different angle. <a href="#fig-rotation" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> presents this transformation visually. We start with the light blue rectangle, which is parallel to the x axis, and then, we rotate this rectangle into a new angle, getting the strong blue rectangle as the result.</p>
+<div id="fig-rotation" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./../Figures/01-rotation.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.3: Rotating a rectangle into a different angle
+</figcaption>
+</figure>
+</div>
+<p>Rotating an object is a little more complicated than the other transformations. Only because it involves some magic calculations with a little of trigonometry.</p>
+<p>Given a coordinate with <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> positions in a Cartesian plane, and a angle <span class="math inline">\(A\)</span> in radians to rotate this initial coordinate, the new <span class="math inline">\(x'\)</span> and <span class="math inline">\(y'\)</span> positions can be calculated using the formulas below. <span class="math inline">\(cos()\)</span> and <span class="math inline">\(sin()\)</span> in these formulas are the cosine and sine trigonometric functions.</p>
+<p><span id="eq-rotation1"><span class="math display">\[
+x' = x \times cos(A) + y \times - sin(A)
+\tag{2.1}\]</span></span></p>
+<p><span id="eq-rotation2"><span class="math display">\[
+y' = x \times sin(A) + y \times cos(A)
+\tag{2.2}\]</span></span></p>
+<p>This seems complicated, but, it actually is not. I mean really, you just have to follow these formulas above and you will be happy. Lets take a triangle with coordinates <span class="math inline">\((0,0), (1,0), (0,2)\)</span> as an example. Lets consider we wanted to perform two different rotations. The first, we rotate the triangle 30 degrees clockwise, the second, 90 degrees clockwise.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg){</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(deg <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>triangle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>angle <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(<span class="sc">-</span><span class="dv">30</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>first_rotated_triangle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> (triangle<span class="sc">$</span>x <span class="sc">*</span> <span class="fu">cos</span>(angle)) <span class="sc">+</span> (triangle<span class="sc">$</span>y <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">*</span> <span class="fu">sin</span>(angle)),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> (triangle<span class="sc">$</span>x <span class="sc">*</span> <span class="fu">sin</span>(angle)) <span class="sc">+</span> (triangle<span class="sc">$</span>y <span class="sc">*</span> <span class="fu">cos</span>(angle))</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>angle <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(<span class="sc">-</span><span class="dv">90</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>second_rotated_triangle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> (triangle<span class="sc">$</span>x <span class="sc">*</span> <span class="fu">cos</span>(angle)) <span class="sc">+</span> (triangle<span class="sc">$</span>y <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">*</span> <span class="fu">sin</span>(angle)),</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> (triangle<span class="sc">$</span>x <span class="sc">*</span> <span class="fu">sin</span>(angle)) <span class="sc">+</span> (triangle<span class="sc">$</span>y <span class="sc">*</span> <span class="fu">cos</span>(angle))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>canvas <span class="sc">+</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> <span class="st">"After second rotation"</span>),</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> second_rotated_triangle</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> <span class="st">"After first rotation"</span>),</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> first_rotated_triangle</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> <span class="st">"Before rotation"</span>),</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> triangle</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#226ce3"</span>, <span class="st">"#0c3a85"</span>, <span class="st">"#a6c8ff"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-transformations_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One important aspect about this operation, is that the above formulas (<a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>) rotate the object around the origin point of the Cartesian plane, i.e.&nbsp;coordinate <span class="math inline">\((0, 0)\)</span>.</p>
+<p>In other words, the object is rotated around the origin point of the Cartesian plane, instead of rotating around the center point of the object, or, rotating around the leftmost vertex of the object, or around whatever other point you imagine.</p>
+<p>You can see more clearly the effects of this fact by increasing the distance of your object from the origin point. In the example below, the same triangle and rotations as the previous example are used. But this time, the original triangle is further apart from the origin point (code is omitted for brevity reasons):</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-transformations_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
