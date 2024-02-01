@@ -157,7 +157,7 @@ with the light blue and smaller triangle, and then, we scale this
 triangle into a bigger size, getting the strong blue triangle
 as a result.
 
-![Scaling a triangle in to a bigger size](./../Figures/01-scaling.svg){#fig-scaling}
+![Scaling a triangle into a bigger size](./../Figures/01-scaling.svg){#fig-scaling}
 
 
 To scale an object, we perform essentially the same thing that we did
@@ -232,3 +232,13 @@ should use the factor is 0.5.
 ## Rotation
 
 Rotation is used to rotate your object to a different angle.
+@fig-rotation presents this transformation visually. We start
+with the light blue rectangle, which is parallel to the x axis,
+and then, we rotate this rectangle into a new angle,
+getting the strong blue rectangle as the result.
+
+![Rotating a rectangle into a different angle](./../Figures/01-rotation.svg){#fig-rotation}
+
+
+
+
