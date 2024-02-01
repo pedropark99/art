@@ -1,12 +1,52 @@
 [
   {
-    "objectID": "Chapters/01-transformations.html#introduction",
-    "href": "Chapters/01-transformations.html#introduction",
-    "title": "2  Introducing graphics transformations",
-    "section": "2.1 Introduction",
-    "text": "2.1 Introduction\nThere are three basic transformations that are essential to world of computer graphichs, which are:\n\nScaling.\nTranslation.\nRotation.\n\n\nlibrary(ggplot2)\ntriangle &lt;- data.frame(\n  x = c(-1, 1, 0),\n  y = c(0, 0, 1)\n)\n\nggplot(triangle) +\n  geom_polygon(\n    aes(x = x, y = y),\n    fill = \"#222222\"\n  )",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Practical Generative Art with R and ggplot2: drawing with data",
+    "section": "",
+    "text": "Welcome\nWelcome! This is the initial page for the “Open Access” HTML version of the book “Practical Generative Art with R and ggplot2: drawing with data”, written by Pedro Duarte Faria.",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introducing graphics transformations</span>"
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#about-the-author",
+    "href": "index.html#about-the-author",
+    "title": "Practical Generative Art with R and ggplot2: drawing with data",
+    "section": "About the author",
+    "text": "About the author\nPedro Duarte Faria have a bachelor degree in Economics from Federal University of Ouro Preto - Brazil. Currently, he is a Data Engineer at Blip1, and an Associate Developer for Apache Spark 3.0 certified by Databricks.\nThe author have more than 3 years of experience in the data analysis market. He developed data pipelines, reports and analysis for research institutions and some of the largest companies in the brazilian financial sector, such as the BMG Bank, Sodexo and Pan Bank, besides dealing with databases that go beyond the billion rows.\nFurthermore, Pedro is specialized on the R programming language, and have given several lectures and courses about it, inside graduate centers (such as PPEA-UFOP2), in addition to federal and state organizations (such as FJP-MG3). As researcher, he have experience in the field of Science, Technology and Innovation Economics.\nPersonal Website: https://pedro-faria.netlify.app/\nTwitter: @PedroPark9\nMastodon: @pedropark99@fosstodon.org",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#books-metadata",
+    "href": "index.html#books-metadata",
+    "title": "Practical Generative Art with R and ggplot2: drawing with data",
+    "section": "Book’s metadata",
+    "text": "Book’s metadata\n\nLicense\nCopyright © 2024 Pedro Duarte Faria. This book is licensed by the CC-BY 4.0 Creative Commons Attribution 4.0 International Public License4.\n\n\n\nCorresponding author and maintainer\nPedro Duarte Faria\nContact: pedropark99@gmail.com\nPersonal website: https://pedro-faria.netlify.app/",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#footnotes",
+    "href": "index.html#footnotes",
+    "title": "Practical Generative Art with R and ggplot2: drawing with data",
+    "section": "",
+    "text": "https://www.blip.ai/en/↩︎\nhttps://ppea.ufop.br/↩︎\nhttp://fjp.mg.gov.br/↩︎\nhttps://creativecommons.org/licenses/by/4.0/↩︎",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "Chapters/01-angles.html",
+    "href": "Chapters/01-angles.html",
+    "title": "1  Coordinates, Angles and Objects",
+    "section": "",
+    "text": "1.1 Coordinate systems\nThe coordinate system is the system that determines how an object will be positioned in the image given a x and y positions. In other words, this system determines how the x and y positions are combined to position your object in the image.\nIn ggplot2 there are essentially 3 different coordinate systems, which are:\nFigure 1.1: The three coordinate systems available in ggplot2\nBy changing the coordinate system of your image, you change the way the objects are drawn and positioned in your image space (Wickham 2016). The Polar coordinate system is a circular coordinate system. Meaning that its coordinates form a circumference around a center point, and as a consequence, if you draw objects in this coordinate system, these objects tend to assume a round or circular shape.\nBy default, ggplot2 always use the Cartesian coordinate system, which is created from the coord_cartesian() function. This is definitely the most familiar, and common type of coordinate system that see all the time in real life.\nThe Cartesian coordinate system is based on a two-dimensional coordinate plane, that is formed by the intersection of two perpendicular lines. The horizontal line is known as the “x axis”, and the vertical line is known as the “y axis”. We usually identify a specific point/position in a Cartesian plane by giving the coordinate in the plane where this point/position is located.\nA coordinate in the cartesian plane is a pair of values. The first value is the position in the “x axis”, and the second value is the position in the “y axis”. As an example, the coordinate \\((2, 8)\\) represents the point located at \\(x = 2\\) and \\(y = 8\\) in the plane. You could also interpret this coordinate as: it is the point located at two steps to the right, plus eight steps up.\nIs worth noting that ggplot2 is a data visualization framework capable of producing 2D graphics only. So even though the Cartesian system supports 3D graphics by introducing a third axis (z), only the x and y axis are used in the Cartesian plane of ggplot2.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Coordinates, Angles and Objects</span>"
     ]
   },
   {
@@ -44,9 +84,29 @@
     "href": "Chapters/01-transformations.html#rotation",
     "title": "2  Introducing graphics transformations",
     "section": "2.3 Rotation",
-    "text": "2.3 Rotation\nRotation is used to rotate your object to a different angle. Figure 2.3 presents this transformation visually. We start with the light blue rectangle, which is parallel to the x axis, and then, we rotate this rectangle into a new angle, getting the strong blue rectangle as the result.\n\n\n\n\n\n\nFigure 2.3: Rotating a rectangle into a different angle\n\n\n\nRotating an object is a little more complicated than the other transformations. Only because it involves some magic calculations with a little of trigonometry.\nGiven a coordinate with \\(x\\) and \\(y\\) positions in a Cartesian plane, and a angle \\(A\\) in radians to rotate this initial coordinate, the new \\(x'\\) and \\(y'\\) positions can be calculated using the formulas below. \\(cos()\\) and \\(sin()\\) in these formulas are the cosine and sine trigonometric functions.\n\\[\nx' = x \\times cos(A) + y \\times - sin(A)\n\\tag{2.1}\\]\n\\[\ny' = x \\times sin(A) + y \\times cos(A)\n\\tag{2.2}\\]\nThis seems complicated, but, it actually is not. I mean really, you just have to follow these formulas above and you will be happy. But remember one detail about these formulas: the trigonometric functions cos() and sin() take as input angles that are in radians.\nWe usually think or talk about angles using degrees (e.g. 90 degrees, 180 degrees, etc.). So you must convert your angle in degrees to radians, before you pass it to cos() and sin(). You can do this by using the function below that uses the equation we introduced at Chapter 1 to convert these measures. Notice that this function uses the PI value (i.e. the built-in pi object) to make this conversion.\n\n# A function to convert degrees to radians\ndeg2rad &lt;- function(deg){\n  return(deg * pi / 180)\n}\n\nAs a first example, lets take a triangle with coordinates \\((0,0), (1,0), (0,2)\\). Lets consider we wanted to perform two different rotations over this triangle. The first, we rotate it to 30 degrees clockwise, and in the second, 90 degrees clockwise.\n\ntriangle &lt;- data.frame(\n  x = c(0, 1, 0),\n  y = c(0, 0, 2)\n)\n\nangle &lt;- deg2rad(-30)\nfirst_rotated_triangle &lt;- data.frame(\n  x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),\n  y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))\n)\n\nangle &lt;- deg2rad(-90)\nsecond_rotated_triangle &lt;- data.frame(\n  x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),\n  y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))\n)\n\ncanvas +\n  geom_polygon(\n    aes(x = x, y = y, fill = \"After second rotation\"),\n    data = second_rotated_triangle\n  ) +\n  geom_polygon(\n    aes(x = x, y = y, fill = \"After first rotation\"),\n    data = first_rotated_triangle\n  ) +\n  geom_polygon(\n    aes(x = x, y = y, fill = \"Before rotation\"),\n    data = triangle\n  ) +\n  scale_fill_manual(values = c(\"#226ce3\", \"#0c3a85\", \"#a6c8ff\"))\n\n\n\n\n\n\n\n\nOne important aspect about this operation, is that the above formulas (Equation 2.1 and Equation 2.2) rotate the object around the origin point of the Cartesian plane, i.e. coordinate \\((0, 0)\\).\nIn other words, the object is rotated around the origin point of the Cartesian plane, instead of rotating around the center point of the object, or, rotating around the leftmost vertex of the object, or around whatever other point you imagine.\nYou can see more clearly the effects of this fact by increasing the distance of your object from the origin point. In the example below, the same triangle and rotations as the previous example are used. But this time, the original triangle is further apart from the origin point (code is omitted for brevity reasons):",
+    "text": "2.3 Rotation\nRotation is used to rotate your object to a different angle. Figure 2.3 presents this transformation visually. We start with the light blue rectangle, which is parallel to the x axis, and then, we rotate this rectangle into a new angle, getting the strong blue rectangle as the result.\n\n\n\n\n\n\nFigure 2.3: Rotating a rectangle into a different angle\n\n\n\nRotating an object is a little more complicated than the other transformations. Only because it involves some magic calculations with a little of trigonometry.\nGiven a coordinate with \\(x\\) and \\(y\\) positions in a Cartesian plane, and a angle \\(A\\) in radians to rotate this initial coordinate, the new \\(x'\\) and \\(y'\\) positions can be calculated using the formulas below. \\(cos()\\) and \\(sin()\\) in these formulas are the cosine and sine trigonometric functions.\n\\[\nx' = x \\times cos(A) + y \\times - sin(A)\n\\tag{2.1}\\]\n\\[\ny' = x \\times sin(A) + y \\times cos(A)\n\\tag{2.2}\\]\nThis seems complicated, but, it actually is not. I mean really, you just have to follow these formulas above and you will be happy. But remember one detail about these formulas: the trigonometric functions cos() and sin() take as input angles that are in radians.\nWe usually think or talk about angles using the degrees measure (e.g. 90 degrees, 180 degrees, etc.). So you must convert your angle in degrees to radians, before you pass it to cos() and sin() functions. You can do this by using the function deg2rad() below, that uses the equation that we introduced at Chapter 1 to convert these measures. Notice that this function uses the PI value (i.e. the built-in pi object) to make this conversion.\n\n# A function to convert degrees to radians\ndeg2rad &lt;- function(deg){\n  return(deg * pi / 180)\n}\n\nAs a first example, lets take a triangle with coordinates \\((0,0), (1,0), (0,2)\\). Lets consider we wanted to perform two different rotations over this triangle. The first, we rotate it to 30 degrees clockwise, and in the second, 90 degrees clockwise.\n\ntriangle &lt;- data.frame(\n  x = c(0, 1, 0),\n  y = c(0, 0, 2)\n)\n\nangle &lt;- deg2rad(-30)\nfirst_rotated_triangle &lt;- data.frame(\n  x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),\n  y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))\n)\n\nangle &lt;- deg2rad(-90)\nsecond_rotated_triangle &lt;- data.frame(\n  x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),\n  y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))\n)\n\ncanvas +\n  geom_polygon(\n    aes(x = x, y = y, fill = \"After second rotation\"),\n    data = second_rotated_triangle\n  ) +\n  geom_polygon(\n    aes(x = x, y = y, fill = \"After first rotation\"),\n    data = first_rotated_triangle\n  ) +\n  geom_polygon(\n    aes(x = x, y = y, fill = \"Before rotation\"),\n    data = triangle\n  ) +\n  scale_fill_manual(values = c(\"#226ce3\", \"#0c3a85\", \"#a6c8ff\"))\n\n\n\n\n\n\n\n\nOne important aspect about this operation, is that the above formulas (Equation 2.1 and Equation 2.2) rotate the object around the origin point of the Cartesian plane, i.e. coordinate \\((0, 0)\\).\nIn other words, the object is rotated around the origin point of the Cartesian plane, instead of rotating around the center point of the object, or, rotating around the leftmost vertex of the object, or around whatever other point you imagine.\nYou can see more clearly the effects of this fact by increasing the distance of your object from the origin point. In the example below, the same triangle and rotations as the previous example are used. But this time, the original triangle is further apart from the origin point (code is omitted for brevity reasons):",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introducing graphics transformations</span>"
+    ]
+  },
+  {
+    "objectID": "Chapters/02-random.html",
+    "href": "Chapters/02-random.html",
+    "title": "3  Producing chaos in an ordered manner",
+    "section": "",
+    "text": "Stock prices are an example of chaos that exists in our economic system. For example, if tomorrow, Microsoft suffers a huge lost of investments (because of a wrong strategy, or some internal scandal, etc.), the stock prices of Apple will most likely go up. Apple did not had do to a thing! Its concurrent made a mistake, as a result, the price of its stock raised “automatically”, as a side-effect.\nAlso, huge and billionaire companies such as Apple have some degree of control over their stock price. In other words, these companies can inject huge amounts of money into the market, or, influence government decisions to slightly influence the price of their stocks. So when these big companies influence the market, we introduce a new effect on the table.\nSometimes we can predict some of these effects, specially if we have good sources of information inside the market. But there are so many effects (both in quantity and in quality), that becomes impossible to comprehend all of these effects at once, hence the “chaos feeling” that you feel when you work with the stock market.\nThis is frustrating for humans. We want to comprehend everything we are seeing! We want to know why, when, who and how everything happens. But at the same time, we as humans have limited resources: a limit amount of attention that we can spend, and limited brain processing power that we can spend when learning/understanding about something.\nThat is why some degree of order, or symmetry, or logic in a image is very pleasant to the eyes. Because is easy to understand a symmetric object. We can easily understand what we are seeing in the image.\nSo when you are building your generative art, you want some degree of chaos and randomness. But you also want to balance this chaos with some degree of order. Hence the current chapter title (producing chaos in an ordered manner).",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Producing chaos in an ordered manner</span>"
+    ]
+  },
+  {
+    "objectID": "Chapters/01-angles.html#coordinate-systems",
+    "href": "Chapters/01-angles.html#coordinate-systems",
+    "title": "1  Coordinates, Angles and Objects",
+    "section": "",
+    "text": "Wickham, Hadley. 2016. Ggplot2: Elegant Graphics for Data Analysis. 2nd ed. Springer-Verlag New York. https://ggplot2-book.org/.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Coordinates, Angles and Objects</span>"
     ]
   }
 ]

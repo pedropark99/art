@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Pedro Duarte Faria">
-<meta name="dcterms.date" content="2024-02-01">
 
-<title>Practical Generative Art with R and ggplot2: drawing with data</title>
+<title>Practical Generative Art with R and ggplot2: drawing with data - 3&nbsp; Producing chaos in an ordered manner</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,23 +23,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./Chapters/01-angles.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../Chapters/01-transformations.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -82,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Welcome</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Chapters/02-random.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos in an ordered manner</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -97,7 +95,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Practical Generative Art with R and ggplot2: drawing with data</a> 
+      <a href="../">Practical Generative Art with R and ggplot2: drawing with data</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -109,25 +107,25 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chapters/01-angles.html" class="sidebar-item-text sidebar-link">
+  <a href="../Chapters/01-angles.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Coordinates, Angles and Objects</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chapters/01-transformations.html" class="sidebar-item-text sidebar-link">
+  <a href="../Chapters/01-transformations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing graphics transformations</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chapters/02-random.html" class="sidebar-item-text sidebar-link">
+  <a href="../Chapters/02-random.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos in an ordered manner</span></span></a>
   </div>
 </li>
@@ -137,47 +135,21 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a>
-  <ul class="collapse">
-  <li><a href="#about-the-author" id="toc-about-the-author" class="nav-link" data-scroll-target="#about-the-author">About the author</a></li>
-  <li><a href="#books-metadata" id="toc-books-metadata" class="nav-link" data-scroll-target="#books-metadata">Book’s metadata</a>
-  <ul class="collapse">
-  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
-  <li><a href="#corresponding-author-and-maintainer" id="toc-corresponding-author-and-maintainer" class="nav-link" data-scroll-target="#corresponding-author-and-maintainer">Corresponding author and maintainer</a></li>
-  </ul></li>
-  </ul></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Practical Generative Art with R and ggplot2: drawing with data</h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos in an ordered manner</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Pedro Duarte Faria </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">February 1, 2024</p>
-    </div>
-  </div>
   
     
   </div>
@@ -187,44 +159,14 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="welcome" class="level1 unnumbered">
-<h1 class="unnumbered">Welcome</h1>
-<p>Welcome! This is the initial page for the “Open Access” HTML version of the book “Practical Generative Art with R and ggplot2: drawing with data”, written by <a href="https://pedro-faria.netlify.app/">Pedro Duarte Faria</a>.</p>
-<section id="about-the-author" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="about-the-author">About the author</h2>
-<p>Pedro Duarte Faria have a bachelor degree in Economics from Federal University of Ouro Preto - Brazil. Currently, he is a Data Engineer at <a href="https://www.blip.ai/en/">Blip</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, and an Associate Developer for Apache Spark 3.0 certified by Databricks.</p>
-<p>The author have more than 3 years of experience in the data analysis market. He developed data pipelines, reports and analysis for research institutions and some of the largest companies in the brazilian financial sector, such as the BMG Bank, Sodexo and Pan Bank, besides dealing with databases that go beyond the billion rows.</p>
-<p>Furthermore, Pedro is specialized on the R programming language, and have given several lectures and courses about it, inside graduate centers (such as PPEA-UFOP<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>), in addition to federal and state organizations (such as FJP-MG<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>). As researcher, he have experience in the field of Science, Technology and Innovation Economics.</p>
-<p>Personal Website: <a href="https://pedro-faria.netlify.app/" class="uri">https://pedro-faria.netlify.app/</a></p>
-<p>Twitter: <a href="https://twitter.com/PedroPark9">@PedroPark9</a></p>
-<p>Mastodon: <a href="https://fosstodon.org/@pedropark99">@pedropark99@fosstodon.org</a></p>
-</section>
-<section id="books-metadata" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="books-metadata">Book’s metadata</h2>
-<section id="license" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="license">License</h3>
-<p>Copyright © 2024 Pedro Duarte Faria. This book is licensed by the <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0 Creative Commons Attribution 4.0 International Public License</a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-<p><img src="Figures/creative-commoms-88x31.png" class="img-fluid" width="88"></p>
-</section>
-<section id="corresponding-author-and-maintainer" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="corresponding-author-and-maintainer">Corresponding author and maintainer</h3>
-<p>Pedro Duarte Faria</p>
-<p>Contact: <a href="mailto:pedropark99@gmail.com">pedropark99@gmail.com</a></p>
-<p>Personal website: <a href="https://pedro-faria.netlify.app/" class="uri">https://pedro-faria.netlify.app/</a></p>
+<p>Stock prices are an example of chaos that exists in our economic system. For example, if tomorrow, Microsoft suffers a huge lost of investments (because of a wrong strategy, or some internal scandal, etc.), the stock prices of Apple will most likely go up. Apple did not had do to a thing! Its concurrent made a mistake, as a result, the price of its stock raised “automatically”, as a side-effect.</p>
+<p>Also, huge and billionaire companies such as Apple have some degree of control over their stock price. In other words, these companies can inject huge amounts of money into the market, or, influence government decisions to slightly influence the price of their stocks. So when these big companies influence the market, we introduce a new effect on the table.</p>
+<p>Sometimes we can predict some of these effects, specially if we have good sources of information inside the market. But there are so many effects (both in quantity and in quality), that becomes impossible to comprehend all of these effects at once, hence the “chaos feeling” that you feel when you work with the stock market.</p>
+<p>This is frustrating for humans. We want to comprehend everything we are seeing! We want to know why, when, who and how everything happens. But at the same time, we as humans have limited resources: a limit amount of attention that we can spend, and limited brain processing power that we can spend when learning/understanding about something.</p>
+<p>That is why some degree of order, or symmetry, or logic in a image is very pleasant to the eyes. Because is easy to understand a symmetric object. We can easily understand what we are seeing in the image.</p>
+<p>So when you are building your generative art, you want some degree of chaos and randomness. But you also want to balance this chaos with some degree of order. Hence the current chapter title (producing chaos in an ordered manner).</p>
 
 
-</section>
-</section>
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn1"><p><a href="https://www.blip.ai/en/" class="uri">https://www.blip.ai/en/</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><a href="https://ppea.ufop.br/" class="uri">https://ppea.ufop.br/</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><a href="http://fjp.mg.gov.br/" class="uri">http://fjp.mg.gov.br/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p><a href="https://creativecommons.org/licenses/by/4.0/" class="uri">https://creativecommons.org/licenses/by/4.0/</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -611,11 +553,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../Chapters/01-transformations.html" class="pagination-link  aria-label=" &lt;span="" graphics="" transformations&lt;="" span&gt;"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing graphics transformations</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Chapters/01-angles.html" class="pagination-link" aria-label="<span class='chapter-number'>1</span>&nbsp; <span class='chapter-title'>Coordinates, Angles and Objects</span>">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Coordinates, Angles and Objects</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

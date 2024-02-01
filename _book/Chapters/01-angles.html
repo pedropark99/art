@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Pedro Duarte Faria">
-<meta name="dcterms.date" content="2024-02-01">
 
-<title>Practical Generative Art with R and ggplot2: drawing with data</title>
+<title>Practical Generative Art with R and ggplot2: drawing with data - 1&nbsp; Coordinates, Angles and Objects</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,26 +20,47 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./Chapters/01-angles.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../Chapters/01-transformations.html" rel="next">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -70,6 +89,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -82,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Welcome</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Chapters/01-angles.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Coordinates, Angles and Objects</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -97,7 +145,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Practical Generative Art with R and ggplot2: drawing with data</a> 
+      <a href="../">Practical Generative Art with R and ggplot2: drawing with data</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -109,25 +157,25 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chapters/01-angles.html" class="sidebar-item-text sidebar-link">
+  <a href="../Chapters/01-angles.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Coordinates, Angles and Objects</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chapters/01-transformations.html" class="sidebar-item-text sidebar-link">
+  <a href="../Chapters/01-transformations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing graphics transformations</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Chapters/02-random.html" class="sidebar-item-text sidebar-link">
+  <a href="../Chapters/02-random.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos in an ordered manner</span></span></a>
   </div>
 </li>
@@ -141,15 +189,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a>
-  <ul class="collapse">
-  <li><a href="#about-the-author" id="toc-about-the-author" class="nav-link" data-scroll-target="#about-the-author">About the author</a></li>
-  <li><a href="#books-metadata" id="toc-books-metadata" class="nav-link" data-scroll-target="#books-metadata">Book’s metadata</a>
-  <ul class="collapse">
-  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
-  <li><a href="#corresponding-author-and-maintainer" id="toc-corresponding-author-and-maintainer" class="nav-link" data-scroll-target="#corresponding-author-and-maintainer">Corresponding author and maintainer</a></li>
-  </ul></li>
-  </ul></li>
+  <li><a href="#coordinate-systems" id="toc-coordinate-systems" class="nav-link active" data-scroll-target="#coordinate-systems"><span class="header-section-number">1.1</span> Coordinate systems</a></li>
   </ul>
 </nav>
     </div>
@@ -158,26 +198,14 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Practical Generative Art with R and ggplot2: drawing with data</h1>
+<h1 class="title"><span id="sec-chapter-angles" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Coordinates, Angles and Objects</span></span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Pedro Duarte Faria </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">February 1, 2024</p>
-    </div>
-  </div>
   
     
   </div>
@@ -187,43 +215,38 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="welcome" class="level1 unnumbered">
-<h1 class="unnumbered">Welcome</h1>
-<p>Welcome! This is the initial page for the “Open Access” HTML version of the book “Practical Generative Art with R and ggplot2: drawing with data”, written by <a href="https://pedro-faria.netlify.app/">Pedro Duarte Faria</a>.</p>
-<section id="about-the-author" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="about-the-author">About the author</h2>
-<p>Pedro Duarte Faria have a bachelor degree in Economics from Federal University of Ouro Preto - Brazil. Currently, he is a Data Engineer at <a href="https://www.blip.ai/en/">Blip</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, and an Associate Developer for Apache Spark 3.0 certified by Databricks.</p>
-<p>The author have more than 3 years of experience in the data analysis market. He developed data pipelines, reports and analysis for research institutions and some of the largest companies in the brazilian financial sector, such as the BMG Bank, Sodexo and Pan Bank, besides dealing with databases that go beyond the billion rows.</p>
-<p>Furthermore, Pedro is specialized on the R programming language, and have given several lectures and courses about it, inside graduate centers (such as PPEA-UFOP<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>), in addition to federal and state organizations (such as FJP-MG<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>). As researcher, he have experience in the field of Science, Technology and Innovation Economics.</p>
-<p>Personal Website: <a href="https://pedro-faria.netlify.app/" class="uri">https://pedro-faria.netlify.app/</a></p>
-<p>Twitter: <a href="https://twitter.com/PedroPark9">@PedroPark9</a></p>
-<p>Mastodon: <a href="https://fosstodon.org/@pedropark99">@pedropark99@fosstodon.org</a></p>
-</section>
-<section id="books-metadata" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="books-metadata">Book’s metadata</h2>
-<section id="license" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="license">License</h3>
-<p>Copyright © 2024 Pedro Duarte Faria. This book is licensed by the <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0 Creative Commons Attribution 4.0 International Public License</a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-<p><img src="Figures/creative-commoms-88x31.png" class="img-fluid" width="88"></p>
-</section>
-<section id="corresponding-author-and-maintainer" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="corresponding-author-and-maintainer">Corresponding author and maintainer</h3>
-<p>Pedro Duarte Faria</p>
-<p>Contact: <a href="mailto:pedropark99@gmail.com">pedropark99@gmail.com</a></p>
-<p>Personal website: <a href="https://pedro-faria.netlify.app/" class="uri">https://pedro-faria.netlify.app/</a></p>
+<p>I begin this book by introducing some basic math, and also some technical terms (a.k.a. “jargon”) from computer graphics that will help you follow along. The idea of this chapter, is to be a really simple and quick introduction to the most essential math concepts that we use while drawing things in a image.</p>
+<p>First, I talk about coordinate systems, and the Cartesian plane, as the main coordinate system used here in this book. Second, I explain and establish some jargon’s used across this book, such as vertex, objects and vertices. Third, I end this chapter talking about angles, circles and everything you need to know about trigonometry (which is not much).</p>
+<section id="coordinate-systems" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="coordinate-systems"><span class="header-section-number">1.1</span> Coordinate systems</h2>
+<p>The coordinate system is the system that determines how an object will be positioned in the image given a x and y positions. In other words, this system determines how the x and y positions are combined to position your object in the image.</p>
+<p>In ggplot2 there are essentially 3 different coordinate systems, which are:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-coordinate-systems" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-coordinate-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-angles_files/figure-html/fig-coordinate-systems-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-coordinate-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.1: The three coordinate systems available in ggplot2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>By changing the coordinate system of your image, you change the way the objects are drawn and positioned in your image space <span class="citation" data-cites="book_ggplot2">(<a href="#ref-book_ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>. The Polar coordinate system is a circular coordinate system. Meaning that its coordinates form a circumference around a center point, and as a consequence, if you draw objects in this coordinate system, these objects tend to assume a round or circular shape.</p>
+<p>By default, ggplot2 always use the Cartesian coordinate system, which is created from the <code>coord_cartesian()</code> function. This is definitely the most familiar, and common type of coordinate system that see all the time in real life.</p>
+<p>The Cartesian coordinate system is based on a two-dimensional coordinate plane, that is formed by the intersection of two perpendicular lines. The horizontal line is known as the “x axis”, and the vertical line is known as the “y axis”. We usually identify a specific point/position in a Cartesian plane by giving the coordinate in the plane where this point/position is located.</p>
+<p>A coordinate in the cartesian plane is a pair of values. The first value is the position in the “x axis”, and the second value is the position in the “y axis”. As an example, the coordinate <span class="math inline">\((2, 8)\)</span> represents the point located at <span class="math inline">\(x = 2\)</span> and <span class="math inline">\(y = 8\)</span> in the plane. You could also interpret this coordinate as: it is the point located at two steps to the right, plus eight steps up.</p>
+<p>Is worth noting that ggplot2 is a data visualization framework capable of producing 2D graphics only. So even though the Cartesian system supports 3D graphics by introducing a third axis (z), only the x and y axis are used in the Cartesian plane of ggplot2.</p>
 
 
-</section>
-</section>
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn1"><p><a href="https://www.blip.ai/en/" class="uri">https://www.blip.ai/en/</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><a href="https://ppea.ufop.br/" class="uri">https://ppea.ufop.br/</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><a href="http://fjp.mg.gov.br/" class="uri">http://fjp.mg.gov.br/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p><a href="https://creativecommons.org/licenses/by/4.0/" class="uri">https://creativecommons.org/licenses/by/4.0/</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-book_ggplot2" class="csl-entry" role="listitem">
+Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. 2nd ed. Springer-Verlag New York. <a href="https://ggplot2-book.org/">https://ggplot2-book.org/</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -611,10 +634,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link  aria-label=" welcome"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Welcome</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Chapters/01-angles.html" class="pagination-link" aria-label="<span class='chapter-number'>1</span>&nbsp; <span class='chapter-title'>Coordinates, Angles and Objects</span>">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Coordinates, Angles and Objects</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../Chapters/01-transformations.html" class="pagination-link" aria-label="<span class='chapter-number'>2</span>&nbsp; <span class='chapter-title'>Introducing graphics transformations</span>">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing graphics transformations</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

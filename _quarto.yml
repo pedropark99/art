@@ -8,7 +8,9 @@ book:
   edition: "First edition"
   chapters:
     - index.qmd
+    - Chapters/01-angles.qmd
     - Chapters/01-transformations.qmd
+    - Chapters/02-random.qmd
 
 
 bibliography: references.bib
