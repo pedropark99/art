@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.538">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -189,7 +223,11 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#coordinate-systems" id="toc-coordinate-systems" class="nav-link active" data-scroll-target="#coordinate-systems"><span class="header-section-number">1.1</span> Coordinate systems</a></li>
+  <li><a href="#coordinate-systems" id="toc-coordinate-systems" class="nav-link active" data-scroll-target="#coordinate-systems"><span class="header-section-number">1.1</span> Coordinate systems</a>
+  <ul class="collapse">
+  <li><a href="#the-cartesian-plane" id="toc-the-cartesian-plane" class="nav-link" data-scroll-target="#the-cartesian-plane"><span class="header-section-number">1.1.1</span> The Cartesian plane</a></li>
+  <li><a href="#other-coordinate-systems" id="toc-other-coordinate-systems" class="nav-link" data-scroll-target="#other-coordinate-systems"><span class="header-section-number">1.1.2</span> Other coordinate systems</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -215,7 +253,7 @@ window.Quarto = {
 </header>
 
 
-<p>I begin this book by introducing some basic math, and also some technical terms (a.k.a. “jargon”) from computer graphics that will help you follow along. The idea of this chapter, is to be a really simple and quick introduction to the most essential math concepts that we use while drawing things in a image.</p>
+<p>I begin this book by introducing some basic math, and also some technical terms (a.k.a. “jargon”) from computer graphics that will help you follow along. The idea of this chapter is to be a really simple and quick introduction to the most essential math concepts that we use while drawing things in a image.</p>
 <p>First, I talk about coordinate systems, and the Cartesian plane, as the main coordinate system used here in this book. Second, I explain and establish some jargon’s used across this book, such as vertex, objects and vertices. Third, I end this chapter talking about angles, circles and everything you need to know about trigonometry (which is not much).</p>
 <section id="coordinate-systems" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="coordinate-systems"><span class="header-section-number">1.1</span> Coordinate systems</h2>
@@ -226,7 +264,7 @@ window.Quarto = {
 <div id="fig-coordinate-systems" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-coordinate-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="01-angles_files/figure-html/fig-coordinate-systems-1.png" class="img-fluid figure-img" width="672">
+<img src="01-angles_files/figure-html/fig-coordinate-systems-1.png" class="img-fluid figure-img" width="1400">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-coordinate-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1.1: The three coordinate systems available in ggplot2
@@ -235,11 +273,84 @@ Figure&nbsp;1.1: The three coordinate systems available in ggplot2
 </div>
 </div>
 </div>
-<p>By changing the coordinate system of your image, you change the way the objects are drawn and positioned in your image space <span class="citation" data-cites="book_ggplot2">(<a href="#ref-book_ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>. The Polar coordinate system is a circular coordinate system. Meaning that its coordinates form a circumference around a center point, and as a consequence, if you draw objects in this coordinate system, these objects tend to assume a round or circular shape.</p>
-<p>By default, ggplot2 always use the Cartesian coordinate system, which is created from the <code>coord_cartesian()</code> function. This is definitely the most familiar, and common type of coordinate system that see all the time in real life.</p>
-<p>The Cartesian coordinate system is based on a two-dimensional coordinate plane, that is formed by the intersection of two perpendicular lines. The horizontal line is known as the “x axis”, and the vertical line is known as the “y axis”. We usually identify a specific point/position in a Cartesian plane by giving the coordinate in the plane where this point/position is located.</p>
-<p>A coordinate in the cartesian plane is a pair of values. The first value is the position in the “x axis”, and the second value is the position in the “y axis”. As an example, the coordinate <span class="math inline">\((2, 8)\)</span> represents the point located at <span class="math inline">\(x = 2\)</span> and <span class="math inline">\(y = 8\)</span> in the plane. You could also interpret this coordinate as: it is the point located at two steps to the right, plus eight steps up.</p>
-<p>Is worth noting that ggplot2 is a data visualization framework capable of producing 2D graphics only. So even though the Cartesian system supports 3D graphics by introducing a third axis (z), only the x and y axis are used in the Cartesian plane of ggplot2.</p>
+<p>By changing the coordinate system of your image, you change the way the objects are drawn and positioned in your image space <span class="citation" data-cites="book_ggplot2">(<a href="#ref-book_ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>. In other words, a straight line will look straight in a Cartesian plane, but it will not look straight in a non-linear coordinate system, such as the Polar coordinate system, which is a circular coordinate system.</p>
+<p>The coordinates of a Polar coordinate system form a circumference around a center point, and as a consequence, if you draw any object in this coordinate system, this object will likely assume a round or circular shape, even if you did not have the intention of drawing something with this shape.</p>
+<section id="the-cartesian-plane" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="the-cartesian-plane"><span class="header-section-number">1.1.1</span> The Cartesian plane</h3>
+<p>By default, ggplot2 always use the Cartesian coordinate system, which is created from the <code>coord_cartesian()</code> function. This is definitely the most familiar, and common type of coordinate system that we see all the time in real life.</p>
+<p>We see it in math class, when we learn about vectors and linear algebra, and also in most kinds of data visualizations (like scatterplots or bar charts), and some types of maps too.</p>
+<p>The Cartesian coordinate system is based on a two-dimensional coordinate plane, that is formed by the intersection of two perpendicular lines. The horizontal line is known as the “x axis”, and the vertical line is known as the “y axis”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">12</span>, <span class="dv">10</span>, <span class="dv">18</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">29</span>, <span class="dv">50</span>, <span class="dv">32</span>, <span class="dv">32</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">60</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"x axis"</span>, <span class="at">y =</span> <span class="st">"y axis"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-angles_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A coordinate, or a point, or a position in the cartesian plane is identified by a pair of values. The first value is the position in the “x axis”, and the second value is the position in the “y axis”. As an example, the coordinate <span class="math inline">\((2, 8)\)</span> represents the point located at <span class="math inline">\(x = 2\)</span> and <span class="math inline">\(y = 8\)</span> in the plane. You could also interpret this coordinate as: it is the point located at two steps to the right, plus eight steps up.</p>
+</section>
+<section id="other-coordinate-systems" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="other-coordinate-systems"><span class="header-section-number">1.1.2</span> Other coordinate systems</h3>
+<p>I will not talk at length about the other coordinate systems, because this book focus on the Cartesian plane. When I talk about coordinates here, most of the time I’m referring to a coordinate in a Cartesian plane.</p>
+<p>Now, you can use any of the other two coordinate systems by adding one of these functions to your plot composition.</p>
+<ul>
+<li><code>coord_map()</code></li>
+<li><code>coord_quickmap()</code></li>
+<li><code>coord_polar()</code></li>
+</ul>
+<p>You can draw maps (or geographic data in general) into a Cartesian plane if you want to. However, when we do that, a small distortion happens to the points/coordinates that compose the map, and this obviously affect the visual shape of the map.</p>
+<p>This distortion happens essentially because geographic data is not based on a flat surface. Geographic data is based on two values, which are the latitude and longitude. These two values, or these two measures, represents a specific location in a spherical surface, which is the planet Earth.</p>
+<p>A Cartesian plane is flat surface (or a flat plane), like the surface of a dinner table. While the planet Earth, is much more similar to sphere, or a spherical surface, and this fact affects a lot on the way we see the objects that are drawn in this surface.</p>
+<p>That means that, if we want to drawn a map precisely in a 2D image, we need to <strong>project</strong> this map into a 2D plane, by using the <code>coord_map()</code> or <code>coord_quickmap()</code> functions that adjust the coordinates to create a projection of your map over the image. In other words, when you create a map projection, your image looks like as if you taken a photo of the planet Earth from a satellite.</p>
+<p>So, in summary, you should never use <code>coord_cartesian()</code> to print maps in ggplot2. Instead, add <code>coord_map()</code> or <code>coord_quickmap()</code> to your image composition.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>nzmap <span class="ot">&lt;-</span> maps<span class="sc">::</span><span class="fu">map</span>(<span class="st">"nz"</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>nzmap <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> long, <span class="at">y =</span> lat, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_map</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"azequalarea"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">orientation =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">36.92</span>, <span class="fl">174.6</span>, <span class="dv">0</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-angles_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>On the other hand, the Polar coordinate system is a system based on two coordinates: angle and radius. These two measures are the back-bone of circles. That is why it is a circular coordinate system, and also why most of the things that you drawn in this system end up looking like circles.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">angle =</span> <span class="fu">c</span>(<span class="dv">0</span>, pi<span class="sc">/</span><span class="dv">2</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">radius =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(angle, radius)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-angles_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
@@ -247,6 +358,7 @@ Figure&nbsp;1.1: The three coordinate systems available in ggplot2
 Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. 2nd ed. Springer-Verlag New York. <a href="https://ggplot2-book.org/">https://ggplot2-book.org/</a>.
 </div>
 </div>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -411,7 +523,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      return note.innerHTML;
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {

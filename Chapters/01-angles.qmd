@@ -3,7 +3,7 @@
 
 I begin this book by introducing some basic math, and also some
 technical terms (a.k.a. "jargon") from computer graphics that will
-help you follow along. The idea of this chapter, is to be a really simple
+help you follow along. The idea of this chapter is to be a really simple
 and quick introduction to the most essential math concepts
 that we use while drawing things in a image.
 
@@ -98,11 +98,16 @@ the "y axis".
 
 ```{r}
 library(ggplot2)
-ggplot(mtcars) +
-  geom_point(aes(disp, mpg)) +
+df <- data.frame(
+  x = c(5, 12, 10, 18),
+  y = c(29, 50, 32, 32)
+)
+ggplot(df) +
+  geom_point(aes(x, y)) +
   coord_cartesian(
-    xlim = c(0, 500), y = c(0, 35)
-  )
+    xlim = c(0, 20), y = c(0, 60)
+  ) +
+  labs(x = "x axis", y = "y axis")
 ```
 
 
@@ -115,9 +120,20 @@ at two steps to the right, plus eight steps up.
 
 
 
-### Map projections
+### Other coordinate systems
 
-You can draw maps (or geographic data in general) into a Cartesian plane.
+I will not talk at length about the other coordinate systems, because this book
+focus on the Cartesian plane. When I talk about coordinates here, most of the time
+I'm referring to a coordinate in a Cartesian plane.
+
+Now, you can use any of the other two coordinate systems by adding one of these functions
+to your plot composition.
+
+- `coord_map()`
+- `coord_quickmap()`
+- `coord_polar()`
+
+You can draw maps (or geographic data in general) into a Cartesian plane if you want to.
 However, when we do that, a small distortion happens to the points/coordinates that
 compose the map, and this obviously affect the visual shape of the map.
 
@@ -152,9 +168,10 @@ nzmap |>
 
 
 
-### Polar coordinates
-
-The Polar coordinate system is a system based on two coordinates: angle and radius.
+On the other hand, the Polar coordinate system is a system based on two coordinates:
+angle and radius. These two measures are the back-bone of circles.
+That is why it is a circular coordinate system, and also why most of the things
+that you drawn in this system end up looking like circles.
 
 ```{r}
 df <- data.frame(
