@@ -1,6 +1,5 @@
----
-title: "Introducing graphics transformations"
----
+
+# Introducing graphics transformations
 
 When we are displaying some object (or shape)
 in an image, we might want to transform this object (or shape)
@@ -19,7 +18,7 @@ essential to the world of computer graphics, which are:
 - Rotation.
 
 Each of these three basic transformations uses simple math operations over the
-coordinates of each vertex that compose your object to achieve a specific
+coordinates of the vertices that compose your object to achieve a specific
 visual effect/transformation.
 
 
@@ -52,7 +51,7 @@ then, you add a negative x offset. The same logic applies to vertical movements.
 For example, a triangle have three vertices. If we want to translate this
 triangle three points to the left, and two points up, then, we need to
 add the number 3 to the x position, and the number
-2 to the y position of each vertex of this triangle.
+2 to the y position of the vertices of this triangle.
 
 The following code demonstrates this idea. We have a first triangle (object `triangle`), represented
 by the vertices $(-1,0), (1,0), (0,2)$. Then, we create a new triangle (object `translated_triangle`)
@@ -93,7 +92,7 @@ canvas +
 
 
 So, if you need to translate any object in your image, you always
-need to do the same thing, which is to add x and y offsets to each coordinate/vertex
+need to do the same thing, which is to add x and y offsets to the vertices
 of your object.
 
 However, the way you do this can vary depending on the specific geom
@@ -110,7 +109,7 @@ of the rectangle), plus a width and height values for the rectangle.
 That sad, if you needed to translate a rectangle drawn by the `geom_rect()`
 geom, then, you do the same logic as the previous code example. But, in the other hand,
 is your rectangle is drawn by the `geom_tile()` geom, then, all you need to do is to
-translate a single coordinate (or vertex), which is the center point of
+translate a single coordinate, which is the center point of
 the rectangle.
 
 ```{r}
@@ -317,8 +316,8 @@ One important aspect about this operation, is that the above formulas
 of the Cartesian plane, i.e. coordinate $(0, 0)$.
 
 In other words, the object is rotated around the origin point of the Cartesian plane, instead
-of rotating around the center point of the object, or, rotating around the leftmost vertex of the object,
-or around whatever other point you imagine.
+of rotating around the center point of the object, or, rotating around the leftmost point
+of the vertices of the object, or around whatever other point you imagine.
 
 
 You can see more clearly the effects of this fact by increasing the distance of your object from

@@ -5,12 +5,12 @@ I begin this book by introducing some basic math, and also some
 technical terms (a.k.a. "jargon") from computer graphics that will
 help you follow along. The idea of this chapter is to be a really simple
 and quick introduction to the most essential math concepts
-that we use while drawing things in a image.
+that we use while drawing things in a computer screen.
 
 First, I talk about coordinate systems, and the Cartesian plane,
 as the main coordinate system used here in this book. Second,
 I explain and establish some jargon's used across this book, such as
-vertex, objects and vertices. Third, I end this chapter talking
+objects and vertices. Third, I end this chapter talking
 about angles, circles and everything you need to know about trigonometry
 (which is not much).
 
@@ -18,7 +18,7 @@ about angles, circles and everything you need to know about trigonometry
 ## Coordinate systems
 
 The coordinate system is the system that determines how an object will be positioned
-in the image given a x and y positions. In other words, this system determines
+in the image, given a x and y positions. In other words, this system determines
 how the x and y positions are combined to position your object in the image.
 
 In ggplot2 there are essentially 3 different coordinate systems, which are:
@@ -71,11 +71,11 @@ p + nzmap + pie
 ```
 
 By changing the coordinate system of your image, you change the way the objects are drawn
-and positioned in your image space [@book_ggplot2]. In other words, a straight line
-will look straight in a Cartesian plane, but it will not look straight in a non-linear
+and positioned in your image space [@ggplot2_book]. For example, a straight line
+will look straight in a Cartesian plane, but it will not look straight if we draw it in a non-linear
 coordinate system, such as the Polar coordinate system, which is a circular coordinate system.
 
-The coordinates of a Polar coordinate system form a circumference around a center point,
+In more details, the coordinates of a Polar coordinate system form a circumference around a center point,
 and as a consequence, if you draw any object in this coordinate system, this object will
 likely assume a round or circular shape, even if you did not have the intention of
 drawing something with this shape.
@@ -87,37 +87,120 @@ By default, ggplot2 always use the Cartesian coordinate system, which is
 created from the `coord_cartesian()` function. This is definitely the most familiar,
 and common type of coordinate system that we see all the time in real life.
 
-We see it in math class, when we learn about vectors and linear algebra, and
+We see this system in math class, when we learn about vectors and linear algebra, and
 also in most kinds of data visualizations (like scatterplots or bar charts),
 and some types of maps too.
 
 The Cartesian coordinate system is based on a two-dimensional coordinate plane,
 that is formed by the intersection of two perpendicular lines.
 The horizontal line is known as the "x axis", and the vertical line is known as
-the "y axis".
+the "y axis". These axis are also interpreted as the "height axis" (y) and "width axis" (x).
 
-```{r}
-library(ggplot2)
-df <- data.frame(
-  x = c(5, 12, 10, 18),
-  y = c(29, 50, 32, 32)
-)
-ggplot(df) +
-  geom_point(aes(x, y)) +
-  coord_cartesian(
-    xlim = c(0, 20), y = c(0, 60)
-  ) +
-  labs(x = "x axis", y = "y axis")
-```
+![Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. Bolino (Kbolino), based upon earlier versions., Public Domain, https://commons.wikimedia.org/w/index.php?curid=869195](./../Figures/cartesian-plane.svg){#fig-cartesian-plane}
 
-
-A coordinate, or a point, or a position in the cartesian plane is identified by a pair of values.
+A coordinate, or a point, or a position in the Cartesian plane is identified by a pair of values.
 The first value is the position in the "x axis", and the second value is
 the position in the "y axis".
-As an example, the coordinate $(2, 8)$ represents the point located at $x = 2$ and $y = 8$
+As an example, the coordinate $(2, -8)$ represents the point located at $x = 2$ and $y = -8$
 in the plane. You could also interpret this coordinate as: it is the point located
-at two steps to the right, plus eight steps up.
+at two steps to the right, plus eight steps down.
 
+The Cartesian coordinate system is originally a 2D coordinate system, meaning that it can
+be used to draw 2D images/graphics. But this system also supports 3D images/graphics
+by introducing a third axis (known as the "z axis", or the "depth axis") to the system.
+With this new axis, any coordinate in the plane becomes a set of 3 values: the x, y and z
+positions.
+
+In this book, we are concerned with 2D graphics only, because the ggplot2 framework
+supports only 2D images/graphics. Because of that, I will not mention the
+"z axis" again. Any coordinate that I describe further in this book will use only the
+x and y axis in the Cartesian plane.
+
+
+### Zooming into the Cartesian plane
+
+If you need to, in ggplot2, you can zoom into a specific area of your image.
+But ggplot2 have two distinct notions of zoom that produces different outputs.
+
+Both approach's of zoom consists in setting the limits (or ranges) of the
+values that will be displayed in the image. But you set these limits in
+different places:
+
+- Limiting the scale.
+- Limiting the coordinates.
+
+In ggplot2 we have scales. A scale control the details of how
+data values are translated to visual properties [@ggplot_docs].
+They take your data and turn it into something that you can see,
+like size, color, position or shape, and
+they also provide the tools that let you interpret the plot: the axes and legends [@ggplot2_book].
+
+You can control the limits of the x and y scales in your image,
+by setting the `limits` argument in `scale_x_continuous()` and `scale_y_continuous()` functions in
+your plot composition. Another alternative is the `lims()` function which
+is made for this operation.
+
+If you set the limits of the x and y scales, what happens is that ggplot2 **will omit (or ignore)**
+any data that goes beyond these limits. Take the plot below as an example, where we display three
+different lines, one above the other.
+
+```{r}
+df <- data.frame(
+  x = c(9, 10.5, 9.25, 10.75, 9.5, 11),
+  y = c(9, 10.5, 9.5, 11, 10, 11.5),
+  id = factor(c(1, 1, 2, 2, 3, 3))
+)
+
+ggplot(df) +
+  geom_line(aes(x, y, group = id))
+```
+
+Let's suppose we wanted to apply a small zoom into this plot, to look closely at the center region
+of these lines, like 9.15 < x < 11.15 and 9.15 < y < 11.15 for example.
+If we try to zoom by limiting the scale, you can see
+that two of the three lines are removed from the plot.
+
+```{r}
+ggplot(df) +
+  geom_line(aes(x, y, group = id)) +
+  lims(x = c(9.15, 11.15),
+       y = c(9.15, 11.15))
+```
+
+What happened in this case, is that I'm setting the limits of the x and y scale from 9.15 to 11.15.
+This means that ggplot2 will plot only objects who's x and y coordinates are between
+9.15 and 11.15. If any x or y coordinate of an object is out of this range, then, the entire object
+is marked as "out of the scale limits", and, as a consequence, ggplot2 completely
+ignores this object and its data.
+
+So, in the above example, two of three lines were ignored by ggplot2, because at least one
+of the coordinates of these lines (for example, $(9, 9)$ and $(11, 11.5)$
+were out of this 9.15 to 11.15 range.
+
+But instead of setting the limits of the scale, you can set the limits of the
+coordinate system, i.e. the Cartesian plane. By setting the `xlim` and `ylim`
+arguments of the `coord_cartesian()` function.
+When you do that, ggplot2 just limits the Cartesian plane to the range you specified.
+
+
+```{r}
+ggplot(df) +
+  geom_line(aes(x, y, group = id)) +
+  coord_cartesian(
+    xlim = c(9.15, 11.15),
+    ylim = c(9.15, 11.15)
+  )
+```
+
+So in other words, when you limit the range of the scale, you are basically
+zooming into your plot, but at the same time, you are limiting the values you
+want to display in your plot. Is like you were specifying which values you want
+to plot, and which values you don't want to plot.
+
+In contrast, when you limit the Cartesian plane, then, you perform a "true zoom",
+similar to when you zoom in a photo with a camera. Is like
+you were looking at a specific region of your plot under
+a magnifying glass.
 
 
 ### Other coordinate systems
@@ -126,8 +209,10 @@ I will not talk at length about the other coordinate systems, because this book
 focus on the Cartesian plane. When I talk about coordinates here, most of the time
 I'm referring to a coordinate in a Cartesian plane.
 
-Now, you can use any of the other two coordinate systems by adding one of these functions
-to your plot composition.
+But is worth to know
+that other coordinate systems exist in ggplot2.
+You can use any of the other two coordinate systems (Map or Polar system) by adding one of these functions
+to your plot composition:
 
 - `coord_map()`
 - `coord_quickmap()`
@@ -143,17 +228,18 @@ These two values, or these two measures, represents a specific location in a sph
 which is the planet Earth.
 
 A Cartesian plane is flat surface (or a flat plane), like the surface of a dinner table.
-While the planet Earth, is much more similar to sphere, or a spherical surface, and
-this fact affects a lot on the way we see the objects that are drawn in this surface.
+While the planet Earth, is a spherical surface, and this fact affects a lot
+on the way we see the objects that are drawn in this surface.
 
 That means that, if we want to drawn a map precisely in a 2D image, we need to **project**
-this map into a 2D plane, by using the `coord_map()` or `coord_quickmap()` functions
-that adjust the coordinates to create a projection of your map over the image.
+this map into a 2D plane, by using the `coord_map()` or `coord_quickmap()` functions.
+These functions adjust the coordinates to account this spherical surface factor that
+is carried in the coordinates, and create a projection of your map over the 2D image.
 In other words, when you create a map projection, your image looks like as
 if you taken a photo of the planet Earth from a satellite.
 
 So, in summary, you should never use `coord_cartesian()` to print maps in ggplot2.
-Instead, add `coord_map()` or `coord_quickmap()` to your image composition.
+Instead, add `coord_map()` or `coord_quickmap()` to your image composition, like this:
 
 ```{r}
 nzmap <- maps::map("nz", plot = FALSE)
@@ -183,5 +269,102 @@ ggplot(df) +
   geom_line(aes(angle, radius)) +
   coord_polar()
 ```
+
+
+
+## Describing some technical terms
+
+Now, I want to give you the meaning of some technical terms (a.k.a "jargons") that I will frequently use
+across this book. I understand that not all readers of this book
+are familiarized with the world of computer graphics, and that is precisely
+why this section of the book exists.
+
+
+### Canvas
+
+The term "canvas" comes from the world of painting. Canvas is essentially the available
+painting surface. It is the white board where the artist paint its art.
+In computer graphics, the term canvas have essentially the same meaning.
+That is, canvas is the visual space of the image where we can draw things.
+We begin with a blank canvas, or a blank image, and we start drawing things into this space
+to form the graph, or the art we want to build.
+
+
+### Plot vs Image
+
+The R package ggplot2 is essentially a data visualization framework. More precisely,
+it is a data visualization framework with more focus on statistics, data exploration and data analysis.
+Because of that, the output of ggplot2 code is more commonly referred to as a "plot".
+
+So I understand that some R users and ggplot2 users might "cringe" when I
+use the word "image" instead of "plot". Anyway, here in this book, I will
+use the words "plot" and "image" interchangeably. When you see the word
+"image" in this book, just interprets as "the ggplot2 code output", or,
+as "the image that is produced by ggplot2".
+
+
+### Objects
+
+Let's talk about what I consider as an "object" here in this book. I will use this
+term very frequently.
+
+The word "object" in this book refers to any individual entity, object or shape
+that we draw into our image. In the example below, I am drawing three different
+objects/entities, which are: a rectangle, a line and a star.
+
+Each one of these three things that are draw to the image I consider as a different
+object or entity.
+
+```{r}
+rectangle <- data.frame(
+  x = c(0, 8, 8, 0),
+  y = c(0, 0, 2, 2)
+)
+line <- data.frame(
+  x = c(0.67,12.3),
+  y = c(0.67,12.3)
+)
+star <- data.frame(
+  x = c(3, 4, 7, 4, 3, 2, -1, 2),
+  y = c(3, 6, 7, 8, 11, 8, 7, 6) + 1
+)
+
+ggplot() +
+  geom_polygon(aes(x, y), fill = "cyan",
+            data = rectangle) +
+  geom_line(aes(x, y), data = line) +
+  geom_polygon(aes(x, y), fill = "red",
+               data = star)
+```
+
+
+### Vertices vs vertex
+
+Vertices are the edge points of an object (or shape). Together, these
+edge points form a shape, an object, or a polygon. As an example,
+the rectangle below have 4 corners, each corner represents a
+different edge point.
+
+Vertex is a word that actually have different meanings, depending on the area
+you are. In computer graphics, vertex is an object that contain attributes that describe
+something to be rendered into a scene.
+But in mathematics/geometry, a vertex indicate a point where two lines meet and form an angle.
+
+Because of this polymorphism of the word, I will avoid to use the term "vertex"
+in this book. But if you do see this term anywhere in this book, you should know
+that I am using the meaning of vertex in the world of geometry. So
+a vertex, in the context of this book, is essentially the singular form of vertices.
+In other words, a vertex is a single edge point of an object.
+
+
+![The vertices of a rectangle. A set of vertex's form the vertices of an object](./../Figures/vertex.svg){#fig-vertex}
+
+
+## Angles and trigonometry
+
+![Clock movement direction](./../Figures/clockwise.svg){#fig-clockwise}
+
+
+
 
 
