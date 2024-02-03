@@ -370,7 +370,17 @@ ggplot(df) +
 
 ## Angles and trigonometry
 
-![Clock movement direction](./../Figures/clockwise.svg){#fig-clockwise}
+Trigonometry is the back-bone of circles. This is a really
+important topic in computer graphics, because is by using angles that
+we can rotate things in the computer screen, and is also by using
+trigonometry that we can draw curves.
+
+First, lets talk about angles. Angles, are usually measured in degrees,
+and is much easier for us, mere humans, to think about angles in this
+form. But one thing that not
+
+
+![How the sign of angles determine the direction of the rotation. Values in degrees](./../Figures/clockwise.svg){#fig-clockwise}
 
 
 
