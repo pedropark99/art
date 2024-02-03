@@ -7,12 +7,107 @@ help you follow along. The idea of this chapter is to be a really simple
 and quick introduction to the most essential math concepts
 that we use while drawing things in a computer screen.
 
-First, I talk about coordinate systems, and the Cartesian plane,
-as the main coordinate system used here in this book. Second,
-I explain and establish some jargon's used across this book, such as
-objects and vertices. Third, I end this chapter talking
+First, I explain and establish some jargon's used across this book, for those
+readers that are not very familiar with the world of computer graphics.
+Second, I talk about coordinate systems, and the Cartesian plane,
+as the main coordinate system used here in this book.
+Third, I end this chapter talking
 about angles, circles and everything you need to know about trigonometry
 (which is not much).
+
+
+
+## Describing some technical terms
+
+Now, I want to give you the meaning of some technical terms (a.k.a "jargons") that I will frequently use
+across this book. I understand that not all readers of this book
+are familiarized with the world of computer graphics, and that is precisely
+why this section of the book exists.
+
+
+### Canvas
+
+The term "canvas" comes from the world of painting. Canvas is essentially the surface area
+that you have available to paint your art. It is that blank and white board that
+we see all the time in films and photos, where the artist paint its art.
+
+In computer graphics, the term canvas have essentially the same meaning.
+That is, canvas is the visual space of the image where we can draw things.
+We begin with a blank canvas, or a blank image, and we start drawing things into this space
+to form the graph, or the art we want to build.
+
+
+### Plot vs Image
+
+The R package ggplot2 is essentially a data visualization framework. More precisely,
+it is a data visualization framework with focus on statistics, data exploration and data analysis.
+Because of that, the output of ggplot2 code is more commonly referred to as a "plot".
+
+So I understand that some R and ggplot2 users might "cringe" when I
+use the word "image" instead of "plot". Anyway, here in this book, I will
+use the words "plot" and "image" interchangeably. When you see the word
+"image" in this book, just interprets as "the ggplot2 code output", or,
+as "the image that is produced by ggplot2".
+
+
+### Objects
+
+Let's talk about what I consider as an "object" here in this book, because I will use this
+term very frequently.
+
+The word "object" in this book refers to any individual entity, object or shape
+that we draw into our image. In the example below, I am drawing three different
+objects/entities, which are: a rectangle, a line and a star.
+
+Each one of these three things that are draw to the image I consider as a different
+object or entity.
+
+```{r}
+library(ggplot2)
+rectangle <- data.frame(
+  x = c(0, 8, 8, 0),
+  y = c(0, 0, 2, 2)
+)
+line <- data.frame(
+  x = c(0.67,12.3),
+  y = c(0.67,12.3)
+)
+star <- data.frame(
+  x = c(3, 4, 7, 4, 3, 2, -1, 2),
+  y = c(3, 6, 7, 8, 11, 8, 7, 6) + 1
+)
+
+ggplot() +
+  geom_polygon(aes(x, y), fill = "cyan",
+            data = rectangle) +
+  geom_line(aes(x, y), data = line) +
+  geom_polygon(aes(x, y), fill = "red",
+               data = star)
+```
+
+
+### Vertices vs vertex
+
+Vertices are the edge points of an object (or shape). Together, these
+edge points form a shape, an object, or a polygon in the screen. As an example,
+the rectangle below have 4 corners, each corner represents a
+different edge point.
+
+Now, "vertex" is a more obscure word for most peoples, and it actually have different meanings, depending on the area
+you are. In computer graphics, vertex is an object that contain attributes that describe
+something to be rendered into a scene.
+But in mathematics/geometry, a vertex indicate a point where two lines meet and form an angle.
+
+Because of this polymorphism of the word, I will avoid to use the term "vertex"
+in this book. But if you do see this term anywhere in this book, you should know
+that I am using the meaning of vertex in the world of geometry. So
+a vertex, in the context of this book, is essentially the singular form of the word "vertices".
+In other words, a vertex is a single edge point of an object.
+
+
+![The vertices of a rectangle. A set of vertex's form the vertices of an object](./../Figures/vertex.svg){#fig-vertex}
+
+
 
 
 ## Coordinate systems
@@ -271,93 +366,6 @@ ggplot(df) +
 ```
 
 
-
-## Describing some technical terms
-
-Now, I want to give you the meaning of some technical terms (a.k.a "jargons") that I will frequently use
-across this book. I understand that not all readers of this book
-are familiarized with the world of computer graphics, and that is precisely
-why this section of the book exists.
-
-
-### Canvas
-
-The term "canvas" comes from the world of painting. Canvas is essentially the available
-painting surface. It is the white board where the artist paint its art.
-In computer graphics, the term canvas have essentially the same meaning.
-That is, canvas is the visual space of the image where we can draw things.
-We begin with a blank canvas, or a blank image, and we start drawing things into this space
-to form the graph, or the art we want to build.
-
-
-### Plot vs Image
-
-The R package ggplot2 is essentially a data visualization framework. More precisely,
-it is a data visualization framework with more focus on statistics, data exploration and data analysis.
-Because of that, the output of ggplot2 code is more commonly referred to as a "plot".
-
-So I understand that some R users and ggplot2 users might "cringe" when I
-use the word "image" instead of "plot". Anyway, here in this book, I will
-use the words "plot" and "image" interchangeably. When you see the word
-"image" in this book, just interprets as "the ggplot2 code output", or,
-as "the image that is produced by ggplot2".
-
-
-### Objects
-
-Let's talk about what I consider as an "object" here in this book. I will use this
-term very frequently.
-
-The word "object" in this book refers to any individual entity, object or shape
-that we draw into our image. In the example below, I am drawing three different
-objects/entities, which are: a rectangle, a line and a star.
-
-Each one of these three things that are draw to the image I consider as a different
-object or entity.
-
-```{r}
-rectangle <- data.frame(
-  x = c(0, 8, 8, 0),
-  y = c(0, 0, 2, 2)
-)
-line <- data.frame(
-  x = c(0.67,12.3),
-  y = c(0.67,12.3)
-)
-star <- data.frame(
-  x = c(3, 4, 7, 4, 3, 2, -1, 2),
-  y = c(3, 6, 7, 8, 11, 8, 7, 6) + 1
-)
-
-ggplot() +
-  geom_polygon(aes(x, y), fill = "cyan",
-            data = rectangle) +
-  geom_line(aes(x, y), data = line) +
-  geom_polygon(aes(x, y), fill = "red",
-               data = star)
-```
-
-
-### Vertices vs vertex
-
-Vertices are the edge points of an object (or shape). Together, these
-edge points form a shape, an object, or a polygon. As an example,
-the rectangle below have 4 corners, each corner represents a
-different edge point.
-
-Vertex is a word that actually have different meanings, depending on the area
-you are. In computer graphics, vertex is an object that contain attributes that describe
-something to be rendered into a scene.
-But in mathematics/geometry, a vertex indicate a point where two lines meet and form an angle.
-
-Because of this polymorphism of the word, I will avoid to use the term "vertex"
-in this book. But if you do see this term anywhere in this book, you should know
-that I am using the meaning of vertex in the world of geometry. So
-a vertex, in the context of this book, is essentially the singular form of vertices.
-In other words, a vertex is a single edge point of an object.
-
-
-![The vertices of a rectangle. A set of vertex's form the vertices of an object](./../Figures/vertex.svg){#fig-vertex}
 
 
 ## Angles and trigonometry
