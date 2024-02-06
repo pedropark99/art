@@ -395,12 +395,50 @@ topic in computer graphics, because is by using angles that we can
 rotate things in the computer screen, and is also by using trigonometry
 that we can draw curves.
 
-First, lets talk about angles. Angles, are usually measured in degrees,
-and is much easier for us, mere humans, to think about angles in this
-form. But one thing that not
+First, lets talk about angles. Angles, are usually measured in degrees
+(like 90 degrees, or 154 degrees), and is much easier for us, mere
+humans, to think about angles in this form. We learn in basic math that
+a complete turn in a circle is an angle of 360 degrees. As consequence,
+an angle measured in degrees is usually a number between 0 and 360,
+followed by the character **°** (which is the degree symbol).
 
-![How the sign of angles determine the direction of the rotation. Values
-in degrees](./../Figures/clockwise.svg){#fig-clockwise}
+But one thing that not many people remember, is that angles can also be
+negative. That is, an angle does not have to be a positive number, you
+can also have negative numbers, like an angle of -35 degrees. But when
+you do that, you change the "direction" of the angle.
+
+In more details, the signal of the angle (if it is a positive or
+negative number) defines the direction of the movement, or the direction
+of the rotation that the angle performs. A negative angle makes a
+clockwise movement, while a positive angle, makes a counter-clockwise
+movement. @fig-clockwise presents this idea visually:
+
+![The rotation direction in positive angles vs negative angles, values
+in degrees.](./../Figures/00-clockwise.svg){#fig-clockwise}
+
+### Trigonometry and the Radians measure
+
+Although we are used to talk about angles using the degrees measure, in
+trigonometry, angles are measured using the radians measure instead.
+This changes nothing about what an angle actually is, or how the signal
+of the angle changes the direction of the rotation made by that angle.
+The angle is just measured using a different scale.
+
+The radians scale is completely based on the PI value, which is denoted
+by the $\pi$ character. If you ever need to use the PI value in R,
+you can simply use the built-in variable called `pi` that
+stores the PI value.
+
+```{r}
+pi
+```
+
+
+In essence, $2\pi$ is equivalent to 360 degrees.
+So half of $2\pi$ would be equivalent to half of 360 degrees, which is
+180 degrees. If we follow this logic, and convert all the angles
+showed at @fig-clockwise from degrees
+to radians, we get the following values:
 
 ### Convert degrees to angles and vice-versa
 
