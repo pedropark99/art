@@ -105,7 +105,7 @@ a vertex, in the context of this book, is essentially the singular form of the w
 In other words, a vertex is a single edge point of an object.
 
 
-![The vertices of a rectangle. A set of vertex's form the vertices of an object](./../Figures/vertex.svg){#fig-vertex}
+![The vertices of a rectangle. A set of vertex's form the vertices of an object](./../Figures/00-vertex.svg){#fig-vertex}
 
 
 
@@ -191,7 +191,7 @@ that is formed by the intersection of two perpendicular lines.
 The horizontal line is known as the "x axis", and the vertical line is known as
 the "y axis". These axis are also interpreted as the "height axis" (y) and "width axis" (x).
 
-![Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. Bolino (Kbolino), based upon earlier versions., Public Domain, https://commons.wikimedia.org/w/index.php?curid=869195](./../Figures/cartesian-plane.svg){#fig-cartesian-plane}
+![Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. Bolino (Kbolino), based upon earlier versions., Public Domain, https://commons.wikimedia.org/w/index.php?curid=869195](./../Figures/00-cartesian-plane.svg){#fig-cartesian-plane}
 
 A coordinate, or a point, or a position in the Cartesian plane is identified by a pair of values.
 The first value is the position in the "x axis", and the second value is
