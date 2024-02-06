@@ -30,14 +30,15 @@ a specific visual effect/transformation.
 
 Lets begin with the easiest and simplest of all transformations, which
 is translation. A translation is used to move your object to a different
-position in the cartesian field.
+position in the Cartesian field.
 
 @fig-translation presents this transformation visually. The light blue
 rectangle represents the original position of the rectangle in the
-cartesian field. While the strong blue rectangle represents the position
-that the rectangle was moved after we applied the translation.
+Cartesian field. While the strong blue rectangle represents the new
+position where the original rectangle was moved to after we applied the
+translation.
 
-![An example of translating an object in a cartesian
+![An example of translating an object in a Cartesian
 field](./../Figures/01-translation.svg){#fig-translation}
 
 But how translation works? In summary, to translate an object, all you
@@ -46,8 +47,8 @@ your object. The "x offset" represents how much you want to move the
 object horizontally, while the "y offset" represents how much to move
 the object vertically.
 
-The direction of the movement is determined by the fact if the offset
-you are adding is a positive or a negative number. For example, if you
+The direction of the movement is determined by the signal of the offset
+(i.e. if it is a positive or a negative number). For example, if you
 want to move your object to the right, then, you add a positive x offset
 to each x position. But if you want to move your object to the left
 instead, then, you add a negative x offset. The same logic applies to
@@ -56,12 +57,12 @@ vertical movements.
 For example, a triangle have three vertices. If we want to translate
 this triangle three points to the left, and two points up, then, we need
 to add the number 3 to the x position, and the number 2 to the y
-position of the vertices of this triangle.
+position of the three vertices of this triangle.
 
 The following code demonstrates this idea. We have a first triangle
 (object `triangle`), represented by the vertices $(-1,0), (1,0), (0,2)$.
-Then, we create a new triangle (object `translated_triangle`) that is
-translated by adding the "x offset" and "y offset" to each x and y
+Then, we create a new triangle (object `translated_triangle`) from the
+first one, by translating it with a x and y offsets to each x and y
 positions, respectively.
 
 ```{r}
@@ -100,23 +101,27 @@ So, if you need to translate any object in your image, you always need
 to do the same thing, which is to add x and y offsets to the vertices of
 your object.
 
-However, the way you do this can vary depending on the specific geom you
-are using in your plot. Because different geoms in `ggplot2` can treat
-the vertices of your object very differently.
+However, the way you do this addition can vary depending on the specific
+geom you are using in your plot. Because different geoms in `ggplot2`
+can treat the vertices of your object very differently. In other words,
+each geom can use very different strategies to actually build the object
+your describing with your data, and because of that, you might need to
+change the way you add these offsets to your data, to actually make the
+translation work properly.
 
 For example, you can draw rectangles by using `geom_rect()` or
 `geom_tile()`. But these geoms are completely different in the way they
 draw the actual rectangle. `geom_rect()` draws a rectangle by using the
 coordinates of the four corners (or vertices) of the rectangle. In
 contrast, `geom_tile()` draw a rectangle by using a single coordinate
-(which is the center of the rectangle), plus a width and height values
-for the rectangle.
+(which is the center of the rectangle), plus the width and height of the
+rectangle.
 
-That sad, if you needed to translate a rectangle drawn by the
-`geom_rect()` geom, then, you do the same logic as the previous code
-example. But, in the other hand, is your rectangle is drawn by the
-`geom_tile()` geom, then, all you need to do is to translate a single
-coordinate, which is the center point of the rectangle.
+If you needed to translate a rectangle drawn by the `geom_rect()` geom,
+then, you do the same logic as the previous code example. But, in the
+other hand, if your rectangle is drawn by the `geom_tile()` geom
+instead, then, all you need to do is to translate a single coordinate,
+which is the center point of the rectangle.
 
 ```{r}
 r <- data.frame(
@@ -225,16 +230,16 @@ canvas +
 So all you need to do is to multiply each coordinate by the factor you
 want to scale the object. If you want a bigger object, then, the factor
 must be a number greater than 1. But if you want a smaller object
-instead, then, the factor must be a number between 0 and 1. If you want
-an object that is half the original size, you should use the factor is
-0.5.
+instead, then, the factor must be a number between 0 and 1. For example,
+if you want an object that is half the original size, you should use the
+factor is 0.5.
 
 ## Rotation
 
-Rotation is used to rotate your object to a different angle.
-@fig-rotation presents this transformation visually. We start with the
-light blue rectangle, which is parallel to the x axis, and then, we
-rotate this rectangle into a new angle, getting the strong blue
+Rotation is a transformation used to rotate your object to a different
+angle. @fig-rotation presents this transformation visually. We start
+with the light blue rectangle, which is parallel to the x axis, and
+then, we rotate this rectangle into a new angle, getting the strong blue
 rectangle as the result.
 
 ![Rotating a rectangle into a different
@@ -246,9 +251,9 @@ little of trigonometry.
 
 Given a coordinate with $x$ and $y$ positions in a Cartesian plane, and
 a angle $A$ in radians to rotate this initial coordinate, the new $x'$
-and $y'$ positions can be calculated using the formulas below. $cos()$
-and $sin()$ in these formulas are the cosine and sine trigonometric
-functions.
+and $y'$ positions of this coordinate after the rotation can be
+calculated using the formulas below. $cos()$ and $sin()$ in these
+formulas are the cosine and sine trigonometric functions.
 
 $$
 x' = x \times cos(A) + y \times - sin(A)
@@ -258,18 +263,22 @@ $$
 y' = x \times sin(A) + y \times cos(A)
 $$ {#eq-rotation2}
 
-This seems complicated, but, it actually is not. I mean really, you just
-have to follow these formulas above and you will be happy. But remember
-one detail about these formulas: the trigonometric functions `cos()` and
-`sin()` take as input angles that are in radians.
+### Remember to convert your angles in degrees to radians
 
-We usually think or talk about angles using the degrees measure (e.g. 90
-degrees, 180 degrees, etc.). So you must convert your angle in degrees
-to radians, before you pass it to `cos()` and `sin()` functions. You can
-do this by using the function `deg2rad()` below, that uses the equation
-that we introduced at Chapter 1 to convert these measures. Notice that
-this function uses the PI value (i.e. the built-in `pi` object) to make
-this conversion.
+This seems complicated, but, it is actually not. I mean really, you just
+have to follow these formulas above and you will be happy. But remember
+one important detail about these formulas: the trigonometric functions
+`cos()` and `sin()` take as input **angles that are in radians**.
+
+This is important, because we usually think or talk about angles using
+the degrees measure, which goes from -360 to 360 (e.g. 90 degrees, 180
+degrees, etc.). So you must convert your angle in degrees to radians,
+before you pass it to `cos()` and `sin()` functions.
+
+You can do this by using the function `deg2rad()` below. This function
+uses the @eq-deg2rad that we introduced at Chapter 1 to convert these
+measures. Notice that this function uses the PI value (i.e. the built-in
+`pi` object) to make this conversion.
 
 ```{r}
 # A function to convert degrees to radians
@@ -277,6 +286,8 @@ deg2rad <- function(deg){
   return(deg * pi / 180)
 }
 ```
+
+### A first example of rotation
 
 As a first example, lets take a triangle with coordinates
 $(0,0), (1,0), (0,2)$. Lets consider we wanted to perform two different
@@ -317,21 +328,28 @@ canvas +
   scale_fill_manual(values = c("#226ce3", "#0c3a85", "#a6c8ff"))
 ```
 
-One **very important aspect** about this operation, is that the above
-formulas (@eq-rotation1 and @eq-rotation2) calculate the new coordinates
-of the object considering the origin point of the Cartesian plane, i.e.
-coordinate $(0, 0)$ as the "center point of the rotation".
+Another **very important aspect** about this operation, is that the
+above formulas (@eq-rotation1 and @eq-rotation2) calculate the new
+coordinates of the object considering the origin point of the Cartesian
+plane, i.e. coordinate $(0, 0)$ as the "center point of the rotation".
 
-In other words, the object is rotated around the origin point of the
-Cartesian plane, instead of rotating around the center point of the
+In other words, instead of rotating around the center point of the
 object itself, or, rotating around the leftmost point of the vertices of
-the object, or around whatever other point you imagine.
+the object, or around whatever other point you imagine, the object is
+rotated around the origin point of the Cartesian plane.
+
+You can imagine this rotation as if the object followed the
+circumference of a circle that is centered in the origin point. The
+radius of the circle that is formed by this circumference is the actual
+distance that the object is from the origin point.
 
 You can see more clearly this fact by increasing the distance of your
 object from the origin point. In the example below, the same triangle
-and rotations as the previous example are used. But this time, the
+and rotation angles as the previous example are used. But this time, the
 original triangle is further apart from the origin point (code is
-omitted for brevity reasons).
+omitted for brevity reasons). To help you visualize, I also draw the
+circle that is centered at the origin point. You can see that the
+rotated triangles follows the circumference.
 
 ```{r}
 #| echo: false
@@ -352,6 +370,12 @@ second_rotated_triangle <- data.frame(
   y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))
 )
 
+circle <- data.frame(
+  x = 3 * cos(deg2rad(1:361 - 1)),
+  y = 3 * sin(deg2rad(1:361 - 1))
+)
+
+
 canvas +
   geom_polygon(
     aes(x = x, y = y, fill = "After second rotation"),
@@ -365,8 +389,14 @@ canvas +
     aes(x = x, y = y, fill = "Before rotation"),
     data = triangle
   ) +
+  geom_path(
+    aes(x, y, color = "Circumference of the circle\ncentered at origin"),
+    data = circle
+  ) +
   scale_fill_manual(values = c("#226ce3", "#0c3a85", "#a6c8ff"))
 ```
+
+### Alternative pair of formulas
 
 Therefore, you use @eq-rotation1 and @eq-rotation2 to calculate the new
 coordinates of a **polygon** that was rotated by a certain angle. But

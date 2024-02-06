@@ -384,5 +384,26 @@ form. But one thing that not
 
 
 
+### Convert degrees to angles and vice-versa
+
+Given that $d$ is an angle in degrees, and that $\pi$ represents the PI value, you can calculate the value in radians ($r$) that represents this exact same angle by following the formula below:
+
+$$
+r = \frac{d \times \pi}{180}
+$${#eq-deg2rad}
+
+You can also do the inverse, which is to convert a angle in radians to degress by following the formula below:
+
+$$
+d = \frac{r \times 180}{\pi}
+$${#eq-rad2deg}
+
+
+
+
+
+
+
+
 
 
