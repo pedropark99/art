@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.532">
+<meta name="generator" content="quarto-1.4.538">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -236,7 +236,11 @@ window.Quarto = {
   <li><a href="#zooming-into-the-cartesian-plane" id="toc-zooming-into-the-cartesian-plane" class="nav-link" data-scroll-target="#zooming-into-the-cartesian-plane"><span class="header-section-number">1.2.2</span> Zooming into the Cartesian plane</a></li>
   <li><a href="#other-coordinate-systems" id="toc-other-coordinate-systems" class="nav-link" data-scroll-target="#other-coordinate-systems"><span class="header-section-number">1.2.3</span> Other coordinate systems</a></li>
   </ul></li>
-  <li><a href="#angles-and-trigonometry" id="toc-angles-and-trigonometry" class="nav-link" data-scroll-target="#angles-and-trigonometry"><span class="header-section-number">1.3</span> Angles and trigonometry</a></li>
+  <li><a href="#angles-and-trigonometry" id="toc-angles-and-trigonometry" class="nav-link" data-scroll-target="#angles-and-trigonometry"><span class="header-section-number">1.3</span> Angles and trigonometry</a>
+  <ul class="collapse">
+  <li><a href="#convert-degrees-to-angles-and-vice-versa" id="toc-convert-degrees-to-angles-and-vice-versa" class="nav-link" data-scroll-target="#convert-degrees-to-angles-and-vice-versa"><span class="header-section-number">1.3.1</span> Convert degrees to angles and vice-versa</a></li>
+  <li><a href="#calculate-coordinates-in-a-circle" id="toc-calculate-coordinates-in-a-circle" class="nav-link" data-scroll-target="#calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.2</span> Calculate coordinates in a circle</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -323,7 +327,7 @@ window.Quarto = {
 <div id="fig-vertex" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vertex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./../Figures/vertex.svg" class="img-fluid figure-img">
+<img src="./../Figures/00-vertex.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vertex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1.1: The vertices of a rectangle. A set of vertex’s form the vertices of an object
@@ -338,7 +342,7 @@ Figure&nbsp;1.1: The vertices of a rectangle. A set of vertex’s form the verti
 <p>In ggplot2 there are essentially 3 different coordinate systems, which are:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-coordinate-systems" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
+<div id="fig-coordinate-systems" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-coordinate-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="01-angles_files/figure-html/fig-coordinate-systems-1.png" class="img-fluid figure-img" width="672">
@@ -360,7 +364,7 @@ Figure&nbsp;1.2: The three coordinate systems available in ggplot2
 <div id="fig-cartesian-plane" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cartesian-plane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./../Figures/cartesian-plane.svg" class="img-fluid figure-img">
+<img src="./../Figures/00-cartesian-plane.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cartesian-plane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. Bolino (Kbolino), based upon earlier versions., Public Domain, https://commons.wikimedia.org/w/index.php?curid=869195
@@ -491,7 +495,7 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 <section id="angles-and-trigonometry" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="angles-and-trigonometry"><span class="header-section-number">1.3</span> Angles and trigonometry</h2>
 <p>Trigonometry is the back-bone of circles. This is a really important topic in computer graphics, because is by using angles that we can rotate things in the computer screen, and is also by using trigonometry that we can draw curves.</p>
-<p>First, lets talk about angles. Angles, are usually measured in degrees. They are usually represented by a number followed by the ° character.</p>
+<p>First, lets talk about angles. Angles, are usually measured in degrees, and is much easier for us, mere humans, to think about angles in this form. But one thing that not</p>
 <div id="fig-clockwise" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clockwise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -501,6 +505,49 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 Figure&nbsp;1.4: How the sign of angles determine the direction of the rotation. Values in degrees
 </figcaption>
 </figure>
+</div>
+<section id="convert-degrees-to-angles-and-vice-versa" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="convert-degrees-to-angles-and-vice-versa"><span class="header-section-number">1.3.1</span> Convert degrees to angles and vice-versa</h3>
+<p>Given that <span class="math inline">\(d\)</span> is an angle in degrees, and that <span class="math inline">\(\pi\)</span> represents the PI value, you can calculate the value in radians (<span class="math inline">\(r\)</span>) that represents this exact same angle by following the formula below:</p>
+<p><span id="eq-deg2rad"><span class="math display">\[
+r = \frac{d \times \pi}{180}
+\tag{1.1}\]</span></span></p>
+<p>You can also do the inverse, which is to convert a angle in radians to degrees by following the formula below:</p>
+<p><span id="eq-rad2deg"><span class="math display">\[
+d = \frac{r \times 180}{\pi}
+\tag{1.2}\]</span></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A function to convert degrees into radians</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg){</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(deg <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="calculate-coordinates-in-a-circle" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.2</span> Calculate coordinates in a circle</h3>
+<p>With very little trigonometry, you can calculate the coordinates of any point in the circumference of a circle. If you want to draw a circle, you most certainly need to calculate the coordinates of the circumference.</p>
+<p>Given that <span class="math inline">\(Cx\)</span> and <span class="math inline">\(Cy\)</span> are the x and y positions in the Cartesian plane where the circle’s center is, that <span class="math inline">\(r\)</span> is the radius of the circle, and that <span class="math inline">\(A\)</span> is the angle, in radians, that identifies the position in the circumference that you are trying to calculate its coordinates (e.g.&nbsp;if you trying to calculate the position of the very top of the circle - the highest point in the circle, then the angle should be <span class="math inline">\(-\pi/2\)</span>, which is 90 degrees counter-clockwise), you can calculate the x (<span class="math inline">\(x'\)</span>) and y (<span class="math inline">\(y'\)</span>) coordinates of the corresponding position in the circumference by using the following pair of equations:</p>
+<p><span id="eq-rotation3"><span class="math display">\[
+x' = Cx + (r \times cos(A));
+\tag{1.3}\]</span></span></p>
+<p><span id="eq-rotation4"><span class="math display">\[
+y' = Cy + (r \times sin(A));
+\tag{1.4}\]</span></span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">360</span>, <span class="at">by =</span> <span class="dv">10</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>circle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">cos</span>(<span class="fu">deg2rad</span>(angles)),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="fu">deg2rad</span>(angles))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(circle) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-angles_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="336"></p>
+</figure>
+</div>
+</div>
 </div>
 
 
@@ -512,6 +559,7 @@ Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Spr
 Wickham, Hadley, Winston Chang, Lionel Henry, Thomas Lin Pedersen, Kohske Takahashi, Claus Wilke, Kara Woo, Hiroaki Yutani, and Dewey Dunnington. 2024. <span>“Ggplot2 3.4.4 Official Documentation.”</span> <a href="https://ggplot2.tidyverse.org/index.html">https://ggplot2.tidyverse.org/index.html</a>.
 </div>
 </div>
+</section>
 </section>
 
 </main> <!-- /main -->

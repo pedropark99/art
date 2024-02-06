@@ -343,13 +343,13 @@ circumference of a circle that is centered in the origin point. The
 radius of the circle that is formed by this circumference is the actual
 distance that the object is from the origin point.
 
-You can see more clearly this fact by increasing the distance of your
+You can see this fact more clearly by increasing the distance of your
 object from the origin point. In the example below, the same triangle
 and rotation angles as the previous example are used. But this time, the
 original triangle is further apart from the origin point (code is
-omitted for brevity reasons). To help you visualize, I also draw the
-circle that is centered at the origin point. You can see that the
-rotated triangles follows the circumference.
+omitted for brevity reasons). To help you visualize, I have also
+drawn the circle that is centered at the origin point. You can see that the
+rotated triangles follows the circumference of that circle.
 
 ```{r}
 #| echo: false
@@ -400,19 +400,18 @@ canvas +
 
 Therefore, you use @eq-rotation1 and @eq-rotation2 to calculate the new
 coordinates of a **polygon** that was rotated by a certain angle. But
-there is another pair of equations that you should know about, because
-they are the easiest equations to use when you want to rotate a line, a
-path, or a stroke if you prefer to call it this way.
+there is another pair of equations that you can use to calculate rotations,
+and you already saw them in this book, which is
+@eq-rotation3 and @eq-rotation4 that were presented in Chapter 1.
 
-Just to be clear, you can in fact use \@eq-rotation1 and \@eq-rotation2
+These two equations are useful to me, because they are
+the easiest pair of equations to use when you want to rotate specifically a line,
+or a stroke if you prefer to call it this way.
+
+Just to be clear, you can in fact use @eq-rotation1 and @eq-rotation2
 to calculate the new coordinates of a line after you rotated it by a
-certain angle. I just think that these equations are less intuitive for
-this specific case.
+certain angle. I just think that these equations are less intuitive than
+@eq-rotation3 and @eq-rotation4 for this specific case.
 
-$$
-x' = x + (radius \times cos(angle));
-$$ {#eq-rotation3}
 
-$$
-y' = y + (radius \times sin(angle));
-$$ {#eq-rotation4}
+

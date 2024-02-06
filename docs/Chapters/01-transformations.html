@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.532">
+<meta name="generator" content="quarto-1.4.538">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -205,7 +205,12 @@ window.Quarto = {
   <ul>
   <li><a href="#translation" id="toc-translation" class="nav-link active" data-scroll-target="#translation"><span class="header-section-number">2.1</span> Translation</a></li>
   <li><a href="#scaling" id="toc-scaling" class="nav-link" data-scroll-target="#scaling"><span class="header-section-number">2.2</span> Scaling</a></li>
-  <li><a href="#rotation" id="toc-rotation" class="nav-link" data-scroll-target="#rotation"><span class="header-section-number">2.3</span> Rotation</a></li>
+  <li><a href="#rotation" id="toc-rotation" class="nav-link" data-scroll-target="#rotation"><span class="header-section-number">2.3</span> Rotation</a>
+  <ul class="collapse">
+  <li><a href="#remember-to-convert-your-angles-in-degrees-to-radians" id="toc-remember-to-convert-your-angles-in-degrees-to-radians" class="nav-link" data-scroll-target="#remember-to-convert-your-angles-in-degrees-to-radians"><span class="header-section-number">2.3.1</span> Remember to convert your angles in degrees to radians</a></li>
+  <li><a href="#a-first-example-of-rotation" id="toc-a-first-example-of-rotation" class="nav-link" data-scroll-target="#a-first-example-of-rotation"><span class="header-section-number">2.3.2</span> A first example of rotation</a></li>
+  <li><a href="#alternative-pair-of-formulas" id="toc-alternative-pair-of-formulas" class="nav-link" data-scroll-target="#alternative-pair-of-formulas"><span class="header-section-number">2.3.3</span> Alternative pair of formulas</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -241,22 +246,22 @@ window.Quarto = {
 <p>Each of these three basic transformations uses simple math operations over the coordinates of the vertices that compose your object to achieve a specific visual effect/transformation.</p>
 <section id="translation" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="translation"><span class="header-section-number">2.1</span> Translation</h2>
-<p>Lets begin with the easiest and simplest of all transformations, which is translation. A translation is used to move your object to a different position in the cartesian field.</p>
-<p><a href="#fig-translation" class="quarto-xref">Figure&nbsp;<span>2.1</span></a> presents this transformation visually. The light blue rectangle represents the original position of the rectangle in the cartesian field. While the strong blue rectangle represents the position that the rectangle was moved after we applied the translation.</p>
+<p>Lets begin with the easiest and simplest of all transformations, which is translation. A translation is used to move your object to a different position in the Cartesian field.</p>
+<p><a href="#fig-translation" class="quarto-xref">Figure&nbsp;<span>2.1</span></a> presents this transformation visually. The light blue rectangle represents the original position of the rectangle in the Cartesian field. While the strong blue rectangle represents the new position where the original rectangle was moved to after we applied the translation.</p>
 <div id="fig-translation" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-translation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./../Figures/01-translation.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-translation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.1: An example of translating an object in a cartesian field
+Figure&nbsp;2.1: An example of translating an object in a Cartesian field
 </figcaption>
 </figure>
 </div>
 <p>But how translation works? In summary, to translate an object, all you have to do is to add a “x offset” and a “y offset” to all vertices of your object. The “x offset” represents how much you want to move the object horizontally, while the “y offset” represents how much to move the object vertically.</p>
-<p>The direction of the movement is determined by the fact if the offset you are adding is a positive or a negative number. For example, if you want to move your object to the right, then, you add a positive x offset to each x position. But if you want to move your object to the left instead, then, you add a negative x offset. The same logic applies to vertical movements.</p>
-<p>For example, a triangle have three vertices. If we want to translate this triangle three points to the left, and two points up, then, we need to add the number 3 to the x position, and the number 2 to the y position of the vertices of this triangle.</p>
-<p>The following code demonstrates this idea. We have a first triangle (object <code>triangle</code>), represented by the vertices <span class="math inline">\((-1,0), (1,0), (0,2)\)</span>. Then, we create a new triangle (object <code>translated_triangle</code>) that is translated by adding the “x offset” and “y offset” to each x and y positions, respectively.</p>
+<p>The direction of the movement is determined by the signal of the offset (i.e.&nbsp;if it is a positive or a negative number). For example, if you want to move your object to the right, then, you add a positive x offset to each x position. But if you want to move your object to the left instead, then, you add a negative x offset. The same logic applies to vertical movements.</p>
+<p>For example, a triangle have three vertices. If we want to translate this triangle three points to the left, and two points up, then, we need to add the number 3 to the x position, and the number 2 to the y position of the three vertices of this triangle.</p>
+<p>The following code demonstrates this idea. We have a first triangle (object <code>triangle</code>), represented by the vertices <span class="math inline">\((-1,0), (1,0), (0,2)\)</span>. Then, we create a new triangle (object <code>translated_triangle</code>) from the first one, by translating it with a x and y offsets to each x and y positions, respectively.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -299,9 +304,9 @@ Figure&nbsp;2.1: An example of translating an object in a cartesian field
 </div>
 </div>
 <p>So, if you need to translate any object in your image, you always need to do the same thing, which is to add x and y offsets to the vertices of your object.</p>
-<p>However, the way you do this can vary depending on the specific geom you are using in your plot. Because different geoms in <code>ggplot2</code> can treat the vertices of your object very differently.</p>
-<p>For example, you can draw rectangles by using <code>geom_rect()</code> or <code>geom_tile()</code>. But these geoms are completely different in the way they draw the actual rectangle. <code>geom_rect()</code> draws a rectangle by using the coordinates of the four corners (or vertices) of the rectangle. In contrast, <code>geom_tile()</code> draw a rectangle by using a single coordinate (which is the center of the rectangle), plus a width and height values for the rectangle.</p>
-<p>That sad, if you needed to translate a rectangle drawn by the <code>geom_rect()</code> geom, then, you do the same logic as the previous code example. But, in the other hand, is your rectangle is drawn by the <code>geom_tile()</code> geom, then, all you need to do is to translate a single coordinate, which is the center point of the rectangle.</p>
+<p>However, the way you do this addition can vary depending on the specific geom you are using in your plot. Because different geoms in <code>ggplot2</code> can treat the vertices of your object very differently. In other words, each geom can use very different strategies to actually build the object your describing with your data, and because of that, you might need to change the way you add these offsets to your data, to actually make the translation work properly.</p>
+<p>For example, you can draw rectangles by using <code>geom_rect()</code> or <code>geom_tile()</code>. But these geoms are completely different in the way they draw the actual rectangle. <code>geom_rect()</code> draws a rectangle by using the coordinates of the four corners (or vertices) of the rectangle. In contrast, <code>geom_tile()</code> draw a rectangle by using a single coordinate (which is the center of the rectangle), plus the width and height of the rectangle.</p>
+<p>If you needed to translate a rectangle drawn by the <code>geom_rect()</code> geom, then, you do the same logic as the previous code example. But, in the other hand, if your rectangle is drawn by the <code>geom_tile()</code> geom instead, then, all you need to do is to translate a single coordinate, which is the center point of the rectangle.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">center_x =</span> <span class="fl">0.5</span>,</span>
@@ -414,11 +419,11 @@ Figure&nbsp;2.2: Scaling a triangle into a bigger size
 </div>
 </div>
 </div>
-<p>So all you need to do is to multiply each coordinate by the factor you want to scale the object. If you want a bigger object, then, the factor must be a number greater than 1. But if you want a smaller object instead, then, the factor must be a number between 0 and 1. If you want an object that is half the original size, you should use the factor is 0.5.</p>
+<p>So all you need to do is to multiply each coordinate by the factor you want to scale the object. If you want a bigger object, then, the factor must be a number greater than 1. But if you want a smaller object instead, then, the factor must be a number between 0 and 1. For example, if you want an object that is half the original size, you should use the factor is 0.5.</p>
 </section>
 <section id="rotation" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="rotation"><span class="header-section-number">2.3</span> Rotation</h2>
-<p>Rotation is used to rotate your object to a different angle. <a href="#fig-rotation" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> presents this transformation visually. We start with the light blue rectangle, which is parallel to the x axis, and then, we rotate this rectangle into a new angle, getting the strong blue rectangle as the result.</p>
+<p>Rotation is a transformation used to rotate your object to a different angle. <a href="#fig-rotation" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> presents this transformation visually. We start with the light blue rectangle, which is parallel to the x axis, and then, we rotate this rectangle into a new angle, getting the strong blue rectangle as the result.</p>
 <div id="fig-rotation" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-rotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -430,21 +435,27 @@ Figure&nbsp;2.3: Rotating a rectangle into a different angle
 </figure>
 </div>
 <p>Rotating an object is a little more complicated than the other transformations. Only because it involves some magic calculations with a little of trigonometry.</p>
-<p>Given a coordinate with <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> positions in a Cartesian plane, and a angle <span class="math inline">\(A\)</span> in radians to rotate this initial coordinate, the new <span class="math inline">\(x'\)</span> and <span class="math inline">\(y'\)</span> positions can be calculated using the formulas below. <span class="math inline">\(cos()\)</span> and <span class="math inline">\(sin()\)</span> in these formulas are the cosine and sine trigonometric functions.</p>
+<p>Given a coordinate with <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> positions in a Cartesian plane, and a angle <span class="math inline">\(A\)</span> in radians to rotate this initial coordinate, the new <span class="math inline">\(x'\)</span> and <span class="math inline">\(y'\)</span> positions of this coordinate after the rotation can be calculated using the formulas below. <span class="math inline">\(cos()\)</span> and <span class="math inline">\(sin()\)</span> in these formulas are the cosine and sine trigonometric functions.</p>
 <p><span id="eq-rotation1"><span class="math display">\[
 x' = x \times cos(A) + y \times - sin(A)
 \tag{2.1}\]</span></span></p>
 <p><span id="eq-rotation2"><span class="math display">\[
 y' = x \times sin(A) + y \times cos(A)
 \tag{2.2}\]</span></span></p>
-<p>This seems complicated, but, it actually is not. I mean really, you just have to follow these formulas above and you will be happy. But remember one detail about these formulas: the trigonometric functions <code>cos()</code> and <code>sin()</code> take as input angles that are in radians.</p>
-<p>We usually think or talk about angles using the degrees measure (e.g.&nbsp;90 degrees, 180 degrees, etc.). So you must convert your angle in degrees to radians, before you pass it to <code>cos()</code> and <code>sin()</code> functions. You can do this by using the function <code>deg2rad()</code> below, that uses the equation that we introduced at Chapter 1 to convert these measures. Notice that this function uses the PI value (i.e.&nbsp;the built-in <code>pi</code> object) to make this conversion.</p>
+<section id="remember-to-convert-your-angles-in-degrees-to-radians" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="remember-to-convert-your-angles-in-degrees-to-radians"><span class="header-section-number">2.3.1</span> Remember to convert your angles in degrees to radians</h3>
+<p>This seems complicated, but, it is actually not. I mean really, you just have to follow these formulas above and you will be happy. But remember one important detail about these formulas: the trigonometric functions <code>cos()</code> and <code>sin()</code> take as input <strong>angles that are in radians</strong>.</p>
+<p>This is important, because we usually think or talk about angles using the degrees measure, which goes from -360 to 360 (e.g.&nbsp;90 degrees, 180 degrees, etc.). So you must convert your angle in degrees to radians, before you pass it to <code>cos()</code> and <code>sin()</code> functions.</p>
+<p>You can do this by using the function <code>deg2rad()</code> below. This function uses the <a href="01-angles.html#eq-deg2rad" class="quarto-xref">Equation&nbsp;<span>1.1</span></a> that we introduced at Chapter 1 to convert these measures. Notice that this function uses the PI value (i.e.&nbsp;the built-in <code>pi</code> object) to make this conversion.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A function to convert degrees to radians</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg){</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(deg <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="a-first-example-of-rotation" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="a-first-example-of-rotation"><span class="header-section-number">2.3.2</span> A first example of rotation</h3>
 <p>As a first example, lets take a triangle with coordinates <span class="math inline">\((0,0), (1,0), (0,2)\)</span>. Lets consider we wanted to perform two different rotations over this triangle. The first, we rotate it to 30 degrees clockwise, and in the second, 90 degrees clockwise.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>triangle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -486,9 +497,10 @@ y' = x \times sin(A) + y \times cos(A)
 </div>
 </div>
 </div>
-<p>One important aspect about this operation, is that the above formulas (<a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>) rotate the object around the origin point of the Cartesian plane, i.e.&nbsp;coordinate <span class="math inline">\((0, 0)\)</span>.</p>
-<p>In other words, the object is rotated around the origin point of the Cartesian plane, instead of rotating around the center point of the object, or, rotating around the leftmost point of the vertices of the object, or around whatever other point you imagine.</p>
-<p>You can see more clearly the effects of this fact by increasing the distance of your object from the origin point. In the example below, the same triangle and rotations as the previous example are used. But this time, the original triangle is further apart from the origin point (code is omitted for brevity reasons):</p>
+<p>Another <strong>very important aspect</strong> about this operation, is that the above formulas (<a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>) calculate the new coordinates of the object considering the origin point of the Cartesian plane, i.e.&nbsp;coordinate <span class="math inline">\((0, 0)\)</span> as the “center point of the rotation”.</p>
+<p>In other words, instead of rotating around the center point of the object itself, or, rotating around the leftmost point of the vertices of the object, or around whatever other point you imagine, the object is rotated around the origin point of the Cartesian plane.</p>
+<p>You can imagine this rotation as if the object followed the circumference of a circle that is centered in the origin point. The radius of the circle that is formed by this circumference is the actual distance that the object is from the origin point.</p>
+<p>You can see this fact more clearly by increasing the distance of your object from the origin point. In the example below, the same triangle and rotation angles as the previous example are used. But this time, the original triangle is further apart from the origin point (code is omitted for brevity reasons). To help you visualize, I have also drawn the circle that is centered at the origin point. You can see that the rotated triangles follows the circumference of that circle.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -498,8 +510,15 @@ y' = x \times sin(A) + y \times cos(A)
 </div>
 </div>
 </div>
+</section>
+<section id="alternative-pair-of-formulas" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="alternative-pair-of-formulas"><span class="header-section-number">2.3.3</span> Alternative pair of formulas</h3>
+<p>Therefore, you use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> to calculate the new coordinates of a <strong>polygon</strong> that was rotated by a certain angle. But there is another pair of equations that you can use to calculate rotations, and you already saw them in this book, which is <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> that were presented in Chapter 1.</p>
+<p>These two equations are useful to me, because they are the easiest pair of equations to use when you want to rotate specifically a line, or a stroke if you prefer to call it this way.</p>
+<p>Just to be clear, you can in fact use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> to calculate the new coordinates of a line after you rotated it by a certain angle. I just think that these equations are less intuitive than <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> for this specific case.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
