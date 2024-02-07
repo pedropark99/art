@@ -209,7 +209,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#remember-to-convert-your-angles-in-degrees-to-radians" id="toc-remember-to-convert-your-angles-in-degrees-to-radians" class="nav-link" data-scroll-target="#remember-to-convert-your-angles-in-degrees-to-radians"><span class="header-section-number">2.3.1</span> Remember to convert your angles in degrees to radians</a></li>
   <li><a href="#a-first-example-of-rotation" id="toc-a-first-example-of-rotation" class="nav-link" data-scroll-target="#a-first-example-of-rotation"><span class="header-section-number">2.3.2</span> A first example of rotation</a></li>
-  <li><a href="#alternative-pair-of-formulas" id="toc-alternative-pair-of-formulas" class="nav-link" data-scroll-target="#alternative-pair-of-formulas"><span class="header-section-number">2.3.3</span> Alternative pair of formulas</a></li>
+  <li><a href="#rotating-lines" id="toc-rotating-lines" class="nav-link" data-scroll-target="#rotating-lines"><span class="header-section-number">2.3.3</span> Rotating lines</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -435,18 +435,18 @@ Figure&nbsp;2.3: Rotating a rectangle into a different angle
 </figure>
 </div>
 <p>Rotating an object is a little more complicated than the other transformations. Only because it involves some magic calculations with a little of trigonometry.</p>
-<p>Given a coordinate with <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> positions in a Cartesian plane, and a angle <span class="math inline">\(A\)</span> in radians to rotate this initial coordinate, the new <span class="math inline">\(x'\)</span> and <span class="math inline">\(y'\)</span> positions of this coordinate after the rotation can be calculated using the formulas below. <span class="math inline">\(cos()\)</span> and <span class="math inline">\(sin()\)</span> in these formulas are the cosine and sine trigonometric functions.</p>
+<p>Given a coordinate with <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> positions in a Cartesian plane, and a angle <span class="math inline">\(A\)</span> in radians to rotate this initial coordinate, the new <span class="math inline">\(x'\)</span> and <span class="math inline">\(y'\)</span> positions of this coordinate after the rotation can be calculated using the formulas below. <span class="math inline">\(\cos()\)</span> and <span class="math inline">\(\sin()\)</span> in these formulas are the cosine and sine trigonometric functions.</p>
 <p><span id="eq-rotation1"><span class="math display">\[
-x' = x \times cos(A) + y \times - sin(A)
+x' = x \times \cos(A) + y \times - \sin(A)
 \tag{2.1}\]</span></span></p>
 <p><span id="eq-rotation2"><span class="math display">\[
-y' = x \times sin(A) + y \times cos(A)
+y' = x \times \sin(A) + y \times \cos(A)
 \tag{2.2}\]</span></span></p>
 <section id="remember-to-convert-your-angles-in-degrees-to-radians" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="remember-to-convert-your-angles-in-degrees-to-radians"><span class="header-section-number">2.3.1</span> Remember to convert your angles in degrees to radians</h3>
 <p>This seems complicated, but, it is actually not. I mean really, you just have to follow these formulas above and you will be happy. But remember one important detail about these formulas: the trigonometric functions <code>cos()</code> and <code>sin()</code> take as input <strong>angles that are in radians</strong>.</p>
 <p>This is important, because we usually think or talk about angles using the degrees measure, which goes from -360 to 360 (e.g.&nbsp;90 degrees, 180 degrees, etc.). So you must convert your angle in degrees to radians, before you pass it to <code>cos()</code> and <code>sin()</code> functions.</p>
-<p>You can do this by using the function <code>deg2rad()</code> below. This function uses the <a href="01-angles.html#eq-deg2rad" class="quarto-xref">Equation&nbsp;<span>1.1</span></a> that we introduced at Chapter 1 to convert these measures. Notice that this function uses the PI value (i.e.&nbsp;the built-in <code>pi</code> object) to make this conversion.</p>
+<p>You can do this by using the function <code>deg2rad()</code> that we introduced at Chapter 1. To make life easier, the function definition is repeated below:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A function to convert degrees to radians</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg){</span>
@@ -511,11 +511,51 @@ y' = x \times sin(A) + y \times cos(A)
 </div>
 </div>
 </section>
-<section id="alternative-pair-of-formulas" class="level3" data-number="2.3.3">
-<h3 data-number="2.3.3" class="anchored" data-anchor-id="alternative-pair-of-formulas"><span class="header-section-number">2.3.3</span> Alternative pair of formulas</h3>
+<section id="rotating-lines" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="rotating-lines"><span class="header-section-number">2.3.3</span> Rotating lines</h3>
 <p>Therefore, you use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> to calculate the new coordinates of a <strong>polygon</strong> that was rotated by a certain angle. But there is another pair of equations that you can use to calculate rotations, and you already saw them in this book, which is <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> that were presented in Chapter 1.</p>
-<p>These two equations are useful to me, because they are the easiest pair of equations to use when you want to rotate specifically a line, or a stroke if you prefer to call it this way.</p>
-<p>Just to be clear, you can in fact use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> to calculate the new coordinates of a line after you rotated it by a certain angle. I just think that these equations are less intuitive than <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> for this specific case.</p>
+<p>These two equations are useful in rotations because they are the easiest pair of equations to use when you want to rotate specifically a line, or a stroke if you prefer to call it this way.</p>
+<p>Just to be clear, you can in fact use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> to calculate the new coordinates of a line after you rotated it by a certain angle. Is just that these equations are less intuitive than <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> for this specific case.</p>
+<p>Lets begin our example with a line with coordinates <span class="math inline">\((1.5, 0.6)\)</span> and <span class="math inline">\((3.7, 2.7)\)</span>. This line is exposed in the plot below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>line <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">3.7</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">2.7</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>canvas <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(x,y), <span class="at">data =</span> line)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-transformations_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lets suppose you wanted to rotate this line 75 degrees counter-clockwise. How you do it? In this context, the variable <span class="math inline">\(r\)</span> that is present at <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> becomes the length of the line. So, first, we calculate the line length.</p>
+<p>Given that <span class="math inline">\(l\)</span> is the line length that we want to calculate, and that <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y_1\)</span> are the x and y positions of any of the endpoints of the line, and that <span class="math inline">\(x_2\)</span> and <span class="math inline">\(y_2\)</span> are the x and y positions of the other endpoint of the line, you can calculate the line length by following this formula:</p>
+<p><span id="eq-linelength"><span class="math display">\[
+l = \sqrt{[(x_2 - x_1)^2 + (y_2 - y_1)^2]}
+\tag{2.3}\]</span></span></p>
+<p>Is important to emphasize, that you can choose whatever endpoint you want for <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y_1\)</span>. It can be the leftmost point of the line, or the rightmost. Once you choose the endpoint for <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y_1\)</span>, the endpoint for <span class="math inline">\(x_2\)</span> and <span class="math inline">\(y_2\)</span> automatically becomes the other endpoint.</p>
+<p>In our example, lets use <span class="math inline">\((1.5, 0.6)\)</span> as our endpoint 1, and <span class="math inline">\((3.7, 2.7)\)</span> as our endpoint 2. With that, the line length is:</p>
+<p><span class="math display">\[
+l = \sqrt{(3.7 - 1.5)^2 + (2.7 - 0.6)^2}=3.041381
+\]</span></p>
+<p>We can obviously encapsulate <a href="#eq-linelength" class="quarto-xref">Equation&nbsp;<span>2.3</span></a> into a nice R function that we can reuse whenever we want. If we do that, we get a function similar to <code>line_length()</code> below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>line_length <span class="ot">&lt;-</span> <span class="cf">function</span>(x1, y1, x2, y2){</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  s1 <span class="ot">&lt;-</span> (x2 <span class="sc">-</span> x1)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  s2 <span class="ot">&lt;-</span> (y2 <span class="sc">-</span> y1)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sqrt</span>(s1 <span class="sc">+</span> s2))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">line_length</span>(<span class="fl">1.5</span>, <span class="fl">0.6</span>, <span class="fl">3.7</span>, <span class="fl">2.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.041381</code></pre>
+</div>
+</div>
 
 
 </section>

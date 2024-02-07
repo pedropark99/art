@@ -252,15 +252,15 @@ little of trigonometry.
 Given a coordinate with $x$ and $y$ positions in a Cartesian plane, and
 a angle $A$ in radians to rotate this initial coordinate, the new $x'$
 and $y'$ positions of this coordinate after the rotation can be
-calculated using the formulas below. $cos()$ and $sin()$ in these
+calculated using the formulas below. $\cos()$ and $\sin()$ in these
 formulas are the cosine and sine trigonometric functions.
 
 $$
-x' = x \times cos(A) + y \times - sin(A)
+x' = x \times \cos(A) + y \times - \sin(A)
 $$ {#eq-rotation1}
 
 $$
-y' = x \times sin(A) + y \times cos(A)
+y' = x \times \sin(A) + y \times \cos(A)
 $$ {#eq-rotation2}
 
 ### Remember to convert your angles in degrees to radians
@@ -275,10 +275,8 @@ the degrees measure, which goes from -360 to 360 (e.g. 90 degrees, 180
 degrees, etc.). So you must convert your angle in degrees to radians,
 before you pass it to `cos()` and `sin()` functions.
 
-You can do this by using the function `deg2rad()` below. This function
-uses the @eq-deg2rad that we introduced at Chapter 1 to convert these
-measures. Notice that this function uses the PI value (i.e. the built-in
-`pi` object) to make this conversion.
+You can do this by using the function `deg2rad()` that we introduced at Chapter 1.
+To make life easier, the function definition is repeated below:
 
 ```{r}
 # A function to convert degrees to radians
@@ -396,22 +394,85 @@ canvas +
   scale_fill_manual(values = c("#226ce3", "#0c3a85", "#a6c8ff"))
 ```
 
-### Alternative pair of formulas
+### How to rotate lines
 
 Therefore, you use @eq-rotation1 and @eq-rotation2 to calculate the new
 coordinates of a **polygon** that was rotated by a certain angle. But
-there is another pair of equations that you can use to calculate rotations,
-and you already saw them in this book, which is
+rotating lines is kind of a special case, because it is a bit trickier
+to rotate lines than most polygons.
+
+You can still use @eq-rotation1 and @eq-rotation2
+to calculate the new coordinates of a line after you rotated it by a
+certain angle. However, I personally find these equations less intuitive
+for this specific case.
+
+This means that there is another pair of equations that I personally
+prefer to use when I want to rotate a line. Actually, you already saw
+this pair of equations here in this book, which are
 @eq-rotation3 and @eq-rotation4 that were presented in Chapter 1.
 
-These two equations are useful to me, because they are
-the easiest pair of equations to use when you want to rotate specifically a line,
-or a stroke if you prefer to call it this way.
 
-Just to be clear, you can in fact use @eq-rotation1 and @eq-rotation2
-to calculate the new coordinates of a line after you rotated it by a
-certain angle. I just think that these equations are less intuitive than
-@eq-rotation3 and @eq-rotation4 for this specific case.
+Lets begin our example with a line with coordinates $(1.5, 0.6)$ and $(3.7, 2.7)$.
+This line is exposed in the plot below:
+
+```{r}
+line <- data.frame(
+  x = c(1.5, 3.7),
+  y = c(0.6, 2.7)
+)
+
+canvas +
+  geom_line(aes(x,y), data = line)
+```
+
+Lets suppose you wanted to rotate this line 75 degrees counter-clockwise.
+How you do it? In this context, the variable $r$ that is present at
+@eq-rotation3 and @eq-rotation4 becomes the length of the line.
+So, first, we need to calculate the length of the line.
+
+Given that $l$ is the line length that we want to calculate, and that
+$x_1$ and $y_1$ are the x and y positions of any of the endpoints
+of the line, and that $x_2$ and $y_2$ are the x and y positions
+of the other endpoint of the line, you can calculate the line
+length by following the formula below. This formula is also known
+as the "distance formula".
+
+$$
+l = \sqrt{[(x_2 - x_1)^2 + (y_2 - y_1)^2]}
+$${#eq-linelength}
+
+Is important to emphasize, that you can choose whatever endpoint
+you want for $x_1$ and $y_1$. It can be the leftmost point of the line,
+or the rightmost. Once you choose the endpoint for $x_1$ and $y_1$,
+the endpoint for $x_2$ and $y_2$ automatically becomes the other
+endpoint.
+
+In our example, lets use $(1.5, 0.6)$ as our endpoint 1, and $(3.7, 2.7)$
+as our endpoint 2. With that, the line length is:
+
+$$
+l = \sqrt{(3.7 - 1.5)^2 + (2.7 - 0.6)^2}=3.041381
+$$
+
+We can obviously encapsulate @eq-linelength into a nice R function that we can reuse
+whenever we want. If we do that, we get a function similar to `line_length()` below:
+
+```{r}
+# Function to calculate the length of a line
+line_length <- function(x1, y1, x2, y2){
+  s1 <- (x2 - x1)^2
+  s2 <- (y2 - y1)^2
+  return(sqrt(s1 + s2))
+}
+
+l <- line_length(1.5, 0.6, 3.7, 2.7)
+l
+```
+
+
+Now that we have the line length, we can rotate the line in 75 degrees clockwise.
+
+
 
 
 

@@ -238,8 +238,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#angles-and-trigonometry" id="toc-angles-and-trigonometry" class="nav-link" data-scroll-target="#angles-and-trigonometry"><span class="header-section-number">1.3</span> Angles and trigonometry</a>
   <ul class="collapse">
-  <li><a href="#convert-degrees-to-angles-and-vice-versa" id="toc-convert-degrees-to-angles-and-vice-versa" class="nav-link" data-scroll-target="#convert-degrees-to-angles-and-vice-versa"><span class="header-section-number">1.3.1</span> Convert degrees to angles and vice-versa</a></li>
-  <li><a href="#calculate-coordinates-in-a-circle" id="toc-calculate-coordinates-in-a-circle" class="nav-link" data-scroll-target="#calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.2</span> Calculate coordinates in a circle</a></li>
+  <li><a href="#the-direction-of-the-rotation" id="toc-the-direction-of-the-rotation" class="nav-link" data-scroll-target="#the-direction-of-the-rotation"><span class="header-section-number">1.3.1</span> The direction of the rotation</a></li>
+  <li><a href="#trigonometry-and-the-radians-measure" id="toc-trigonometry-and-the-radians-measure" class="nav-link" data-scroll-target="#trigonometry-and-the-radians-measure"><span class="header-section-number">1.3.2</span> Trigonometry and the Radians measure</a></li>
+  <li><a href="#convert-degrees-to-angles-and-vice-versa" id="toc-convert-degrees-to-angles-and-vice-versa" class="nav-link" data-scroll-target="#convert-degrees-to-angles-and-vice-versa"><span class="header-section-number">1.3.3</span> Convert degrees to angles and vice-versa</a></li>
+  <li><a href="#calculate-coordinates-in-a-circle" id="toc-calculate-coordinates-in-a-circle" class="nav-link" data-scroll-target="#calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.4</span> Calculate coordinates in a circle</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -278,13 +280,12 @@ window.Quarto = {
 </section>
 <section id="plot-vs-image" class="level3" data-number="1.1.2">
 <h3 data-number="1.1.2" class="anchored" data-anchor-id="plot-vs-image"><span class="header-section-number">1.1.2</span> Plot vs Image</h3>
-<p>The R package ggplot2 is essentially a data visualization framework. More precisely, it is a data visualization framework with focus on statistics, data exploration and data analysis. Because of that, the output of ggplot2 code is more commonly referred to as a “plot”.</p>
+<p>The R package ggplot2 is, essentially, a data visualization framework with focus on statistics, data exploration and data analysis. Because of that, users normally refer to the output of ggplot2 code, as a “plot”.</p>
 <p>So I understand that some R and ggplot2 users might “cringe” when I use the word “image” instead of “plot”. Anyway, here in this book, I will use the words “plot” and “image” interchangeably. When you see the word “image” in this book, just interprets as “the ggplot2 code output”, or, as “the image that is produced by ggplot2”.</p>
 </section>
 <section id="objects" class="level3" data-number="1.1.3">
 <h3 data-number="1.1.3" class="anchored" data-anchor-id="objects"><span class="header-section-number">1.1.3</span> Objects</h3>
-<p>Let’s talk about what I consider as an “object” here in this book, because I will use this term very frequently.</p>
-<p>The word “object” in this book refers to any individual entity, object or shape that we draw into our image. In the example below, I am drawing three different objects/entities, which are: a rectangle, a line and a star.</p>
+<p>Let’s talk about what I consider as an “object” here in this book, because I will use this term very frequently. The word “object” in this book refers to any individual entity, object or shape that we draw into our image. In the example below, I am drawing three different objects/entities, which are: a rectangle, a line and a star.</p>
 <p>Each one of these three things that are draw to the image I consider as a different object or entity.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -323,7 +324,7 @@ window.Quarto = {
 <h3 data-number="1.1.4" class="anchored" data-anchor-id="vertices-vs-vertex"><span class="header-section-number">1.1.4</span> Vertices vs vertex</h3>
 <p>Vertices are the edge points of an object (or shape). Together, these edge points form a shape, an object, or a polygon in the screen. As an example, the rectangle below have 4 corners, each corner represents a different edge point.</p>
 <p>Now, “vertex” is a more obscure word for most peoples, and it actually have different meanings, depending on the area you are. In computer graphics, vertex is an object that contain attributes that describe something to be rendered into a scene. But in mathematics/geometry, a vertex indicate a point where two lines meet and form an angle.</p>
-<p>Because of this polymorphism of the word, I will avoid to use the term “vertex” in this book. But if you do see this term anywhere in this book, you should know that I am using the meaning of vertex in the world of geometry. So a vertex, in the context of this book, is essentially the singular form of the word “vertices”. In other words, a vertex is a single edge point of an object.</p>
+<p>Because of this polymorphism of the word, I will avoid to use the term “vertex” in this book. But if you do see this term anywhere in this book, you should know that I am using the meaning of vertex in the world of geometry. So a vertex, in the context of this book, is essentially the singular form of the word “vertices”, i.e.&nbsp;a vertex is a single edge point of an object.</p>
 <div id="fig-vertex" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vertex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -358,8 +359,8 @@ Figure&nbsp;1.2: The three coordinate systems available in ggplot2
 <p>In more details, the coordinates of a Polar coordinate system form a circumference around a center point, and as a consequence, if you draw any object in this coordinate system, this object will likely assume a round or circular shape, even if you did not have the intention of drawing something with this shape.</p>
 <section id="the-cartesian-plane" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="the-cartesian-plane"><span class="header-section-number">1.2.1</span> The Cartesian plane</h3>
-<p>By default, ggplot2 always use the Cartesian coordinate system, which is created from the <code>coord_cartesian()</code> function. This is definitely the most familiar, and common type of coordinate system that we see all the time in real life.</p>
-<p>We see this system in math class, when we learn about vectors and linear algebra, and also in most kinds of data visualizations (like scatterplots or bar charts), and some types of maps too.</p>
+<p>By default, ggplot2 always use the Cartesian coordinate system, which is created from the <code>coord_cartesian()</code> function. This is definitely the most familiar, and common type of coordinate system, because we see it all the time in real life.</p>
+<p>We see this system in math class, when we learn about vectors and linear algebra, and also in most kinds of data visualizations (like scatter-plots or bar charts), and some types of maps too.</p>
 <p>The Cartesian coordinate system is based on a two-dimensional coordinate plane, that is formed by the intersection of two perpendicular lines. The horizontal line is known as the “x axis”, and the vertical line is known as the “y axis”. These axis are also interpreted as the “height axis” (y) and “width axis” (x).</p>
 <div id="fig-cartesian-plane" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -377,15 +378,15 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 </section>
 <section id="zooming-into-the-cartesian-plane" class="level3" data-number="1.2.2">
 <h3 data-number="1.2.2" class="anchored" data-anchor-id="zooming-into-the-cartesian-plane"><span class="header-section-number">1.2.2</span> Zooming into the Cartesian plane</h3>
-<p>If you need to, in ggplot2, you can zoom into a specific area of your image. But ggplot2 have two distinct notions of zoom that produces different outputs.</p>
-<p>Both approach’s of zoom consists in setting the limits (or ranges) of the values that will be displayed in the image. But you set these limits in different places:</p>
+<p>If you need to, in ggplot2, you can zoom into a specific area of the Cartesian plane. But ggplot2 have two distinct notions of zoom that produces slightly different outputs.</p>
+<p>Both approach’s of zoom consists in setting the limits (or ranges) of the values that will be displayed in the image. But you set these limits in different places: in the scale, or in the coordinate system. So you can zoom into an image by:</p>
 <ul>
 <li>Limiting the scale.</li>
 <li>Limiting the coordinates.</li>
 </ul>
 <p>In ggplot2 we have scales. A scale control the details of how data values are translated to visual properties <span class="citation" data-cites="ggplot_docs">(<a href="#ref-ggplot_docs" role="doc-biblioref">Wickham et al. 2024</a>)</span>. They take your data and turn it into something that you can see, like size, color, position or shape, and they also provide the tools that let you interpret the plot: the axes and legends <span class="citation" data-cites="ggplot2_book">(<a href="#ref-ggplot2_book" role="doc-biblioref">Wickham 2016</a>)</span>.</p>
-<p>You can control the limits of the x and y scales in your image, by setting the <code>limits</code> argument in <code>scale_x_continuous()</code> and <code>scale_y_continuous()</code> functions in your plot composition. Another alternative is the <code>lims()</code> function which is made for this operation.</p>
-<p>If you set the limits of the x and y scales, what happens is that ggplot2 <strong>will omit (or ignore)</strong> any data that goes beyond these limits. Take the plot below as an example, where we display three different lines, one above the other.</p>
+<p>The x and y axis are a type of scale, so you can control the limits of the x and y scales in your image, by setting the <code>limits</code> argument in <code>scale_x_continuous()</code> and <code>scale_y_continuous()</code> functions in your plot composition. Another alternative is the <code>lims()</code> function which is made for this operation.</p>
+<p>If you set the limits of the x and y scales, what happens is that ggplot2 will zoom into that specific region you limited, but also, <strong>will omit (or ignore)</strong> any data that goes beyond these limits. Take the plot below as a start point, where we display three different lines, one above the other.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">9</span>, <span class="fl">10.5</span>, <span class="fl">9.25</span>, <span class="fl">10.75</span>, <span class="fl">9.5</span>, <span class="dv">11</span>),</span>
@@ -422,7 +423,7 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 </div>
 <p>What happened in this case, is that I’m setting the limits of the x and y scale from 9.15 to 11.15. This means that ggplot2 will plot only objects who’s x and y coordinates are between 9.15 and 11.15. If any x or y coordinate of an object is out of this range, then, the entire object is marked as “out of the scale limits”, and, as a consequence, ggplot2 completely ignores this object and its data.</p>
 <p>So, in the above example, two of three lines were ignored by ggplot2, because at least one of the coordinates of these lines (for example, <span class="math inline">\((9, 9)\)</span> and <span class="math inline">\((11, 11.5)\)</span> were out of this 9.15 to 11.15 range.</p>
-<p>But instead of setting the limits of the scale, you can set the limits of the coordinate system, i.e.&nbsp;the Cartesian plane. By setting the <code>xlim</code> and <code>ylim</code> arguments of the <code>coord_cartesian()</code> function. When you do that, ggplot2 just limits the Cartesian plane to the range you specified.</p>
+<p>But instead of setting the limits of the scale, you can set the limits of the coordinate system, i.e.&nbsp;the Cartesian plane. By setting the <code>xlim</code> and <code>ylim</code> arguments of the <code>coord_cartesian()</code> function. When you do that, ggplot2 just zooms into that specific area of the Cartesian plane that you specified, and any object that goes “out of bounds” are still preserved in the image, even though a section of the object is not visible.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, y, <span class="at">group =</span> id)) <span class="sc">+</span></span>
@@ -495,20 +496,46 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 <section id="angles-and-trigonometry" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="angles-and-trigonometry"><span class="header-section-number">1.3</span> Angles and trigonometry</h2>
 <p>Trigonometry is the back-bone of circles. This is a really important topic in computer graphics, because is by using angles that we can rotate things in the computer screen, and is also by using trigonometry that we can draw curves.</p>
-<p>First, lets talk about angles. Angles, are usually measured in degrees, and is much easier for us, mere humans, to think about angles in this form. But one thing that not</p>
+<p>First, lets talk about angles. Angles, are usually measured in degrees (like 90 degrees, or 154 degrees), and is much easier for us, mere humans, to think about angles in this form. We learn in basic math that a complete turn in a circle is an angle of 360 degrees. As consequence, an angle measured in degrees is usually a number between 0 and 360, followed by the character <strong>°</strong> (which is the degree symbol).</p>
+<section id="the-direction-of-the-rotation" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="the-direction-of-the-rotation"><span class="header-section-number">1.3.1</span> The direction of the rotation</h3>
+<p>But one thing that not many people remember from math class, is that angles can also be negative. That is, an angle does not have to be a positive number, you can also have negative numbers, like an angle of -35 degrees. But when you change the signal of the number, you change the “direction” of the angle.</p>
+<p>In more details, the signal of the angle (if it is a positive or negative number) defines the direction of the movement, or, the direction of the rotation that the angle performs. A negative angle makes a clockwise movement, while a positive angle, makes a counter-clockwise movement. <a href="#fig-clockwise" class="quarto-xref">Figure&nbsp;<span>1.4</span></a> presents this idea visually:</p>
 <div id="fig-clockwise" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clockwise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./../Figures/clockwise.svg" class="img-fluid figure-img">
+<img src="./../Figures/00-clockwise.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clockwise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.4: How the sign of angles determine the direction of the rotation. Values in degrees
+Figure&nbsp;1.4: The rotation direction in positive angles vs negative angles, values in degrees.
 </figcaption>
 </figure>
 </div>
-<section id="convert-degrees-to-angles-and-vice-versa" class="level3" data-number="1.3.1">
-<h3 data-number="1.3.1" class="anchored" data-anchor-id="convert-degrees-to-angles-and-vice-versa"><span class="header-section-number">1.3.1</span> Convert degrees to angles and vice-versa</h3>
-<p>Given that <span class="math inline">\(d\)</span> is an angle in degrees, and that <span class="math inline">\(\pi\)</span> represents the PI value, you can calculate the value in radians (<span class="math inline">\(r\)</span>) that represents this exact same angle by following the formula below:</p>
+</section>
+<section id="trigonometry-and-the-radians-measure" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="trigonometry-and-the-radians-measure"><span class="header-section-number">1.3.2</span> Trigonometry and the Radians measure</h3>
+<p>Although we are used to talk about angles using the degrees measure, <strong>in trigonometry, angles are measured using the radians measure</strong>. As consequence, every function used in trigonometry (like tangent or cosine) uses radians values as input.</p>
+<p>Using radians instead of degrees to measure angles changes nothing about what the angle actually is, and it also changes nothing about how the signal of the angle changes the direction of the rotation made by that angle. This means that a negative radian value still represents a negative angle, that performs a clockwise movement, while a positive radian value represents the inverse of that.</p>
+<p>In summary, the radians scale is completely based on the PI value, which is denoted by the <span class="math inline">\(\pi\)</span> symbol. If you ever need to use the PI value in R, you can simply use the built-in variable called <code>pi</code> that stores the PI value for you.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.141593</code></pre>
+</div>
+</div>
+<p>In essence, <span class="math inline">\(2\pi\)</span> is equivalent to 360 degrees. So half of <span class="math inline">\(2\pi\)</span> would be equivalent to half of 360 degrees, which is 180 degrees. If we follow this logic, and convert all the angles showed at <a href="#fig-clockwise" class="quarto-xref">Figure&nbsp;<span>1.4</span></a> from degrees to radians, we get the following values:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>in_degrees <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">360</span>, <span class="dv">360</span>, <span class="at">by =</span> <span class="dv">90</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>in_radians <span class="ot">&lt;-</span> (in_degrees <span class="sc">/</span> <span class="dv">360</span>) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(in_radians, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -6.28 -4.71 -3.14 -1.57  0.00  1.57  3.14  4.71  6.28</code></pre>
+</div>
+</div>
+</section>
+<section id="convert-degrees-to-angles-and-vice-versa" class="level3" data-number="1.3.3">
+<h3 data-number="1.3.3" class="anchored" data-anchor-id="convert-degrees-to-angles-and-vice-versa"><span class="header-section-number">1.3.3</span> Convert degrees to angles and vice-versa</h3>
+<p>Let’s establish a common formula to use when converting degrees values into radian values, and vice-versa. Given that <span class="math inline">\(d\)</span> is an angle in degrees, and that <span class="math inline">\(\pi\)</span> represents the PI value, you can calculate the value in radians (<span class="math inline">\(r\)</span>) that represents this exact same angle by following the formula below:</p>
 <p><span id="eq-deg2rad"><span class="math display">\[
 r = \frac{d \times \pi}{180}
 \tag{1.1}\]</span></span></p>
@@ -516,35 +543,54 @@ r = \frac{d \times \pi}{180}
 <p><span id="eq-rad2deg"><span class="math display">\[
 d = \frac{r \times 180}{\pi}
 \tag{1.2}\]</span></span></p>
+<p>If we take the formulas above, and transport them into R, we would get the functions <code>deg2rad()</code> and <code>rad2deg()</code> below:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A function to convert degrees into radians</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg){</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(deg <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A function to convert degrees into radians</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>deg2rad <span class="ot">&lt;-</span> <span class="cf">function</span>(deg){</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(deg <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A function to convert radians into degrees</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>rad2deg <span class="ot">&lt;-</span> <span class="cf">function</span>(rad){</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(rad <span class="sc">*</span> <span class="dv">180</span><span class="sc">/</span> pi)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="calculate-coordinates-in-a-circle" class="level3" data-number="1.3.2">
-<h3 data-number="1.3.2" class="anchored" data-anchor-id="calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.2</span> Calculate coordinates in a circle</h3>
-<p>With very little trigonometry, you can calculate the coordinates of any point in the circumference of a circle. If you want to draw a circle, you most certainly need to calculate the coordinates of the circumference.</p>
-<p>Given that <span class="math inline">\(Cx\)</span> and <span class="math inline">\(Cy\)</span> are the x and y positions in the Cartesian plane where the circle’s center is, that <span class="math inline">\(r\)</span> is the radius of the circle, and that <span class="math inline">\(A\)</span> is the angle, in radians, that identifies the position in the circumference that you are trying to calculate its coordinates (e.g.&nbsp;if you trying to calculate the position of the very top of the circle - the highest point in the circle, then the angle should be <span class="math inline">\(-\pi/2\)</span>, which is 90 degrees counter-clockwise), you can calculate the x (<span class="math inline">\(x'\)</span>) and y (<span class="math inline">\(y'\)</span>) coordinates of the corresponding position in the circumference by using the following pair of equations:</p>
+<section id="calculate-coordinates-in-a-circle" class="level3" data-number="1.3.4">
+<h3 data-number="1.3.4" class="anchored" data-anchor-id="calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.4</span> Calculate coordinates in a circle</h3>
+<p>If you want to draw a circle, you need to calculate the coordinates of the circumference of that circle, and with very little trigonometry, you can do that! You can calculate the coordinates of any point you want in the circumference of a circle.</p>
+<p>Given that <span class="math inline">\(Cx\)</span> and <span class="math inline">\(Cy\)</span> are the x and y positions in the Cartesian plane where the circle’s center is, that <span class="math inline">\(r\)</span> is the radius of the circle, and that <span class="math inline">\(A\)</span> is the angle, in radians, that identifies the position in the circumference that you are trying to calculate its coordinates, you can calculate the x (<span class="math inline">\(x'\)</span>) and y (<span class="math inline">\(y'\)</span>) coordinates of the corresponding position in the circumference by using the following pair of equations:</p>
 <p><span id="eq-rotation3"><span class="math display">\[
-x' = Cx + (r \times cos(A));
+x' = Cx + (r \times \cos(A));
 \tag{1.3}\]</span></span></p>
 <p><span id="eq-rotation4"><span class="math display">\[
-y' = Cy + (r \times sin(A));
+y' = Cy + (r \times \sin(A));
 \tag{1.4}\]</span></span></p>
+<p>If the circle you are trying to draw is centered at the origin point of the Cartesian plane, i.e.&nbsp;coordinate <span class="math inline">\((0, 0)\)</span>, then, <span class="math inline">\(Cx = 0\)</span> and <span class="math inline">\(Cy = 0\)</span>, and, as a result, you can simplify the above formulas to <span class="math inline">\(y'=r\times \sin(A)\)</span> and <span class="math inline">\(x'=r\times \cos(A)\)</span>.</p>
+<p>As a first example, let’s suppose you wanted to calculate the coordinates of the very top of the circle, i.e.&nbsp;the highest point in the circle. If that is the case, then, the angle <span class="math inline">\(A\)</span> should be <span class="math inline">\(\pi/2\)</span>, which is 90 degrees counter-clockwise, or <span class="math inline">\(-3\pi/2\)</span>, which is 270 degrees clockwise. Both angles represents the highest point in the circle as shown in <a href="#fig-clockwise" class="quarto-xref">Figure&nbsp;<span>1.4</span></a>.</p>
+<p>Now, let’s also suppose that our circle have 5 units of radius, and it is centered in the origin point, so that we can use the simplified versions of <a href="#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a>. The code below calculates the coordinates of the “highest point” in this circle.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">360</span>, <span class="at">by =</span> <span class="dv">10</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>circle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">cos</span>(<span class="fu">deg2rad</span>(angles)),</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="fu">deg2rad</span>(angles))</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(circle) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">2</span>), <span class="dv">5</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">2</span>), <span class="dv">5</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"x: {x}, y: {y}"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x: 0, y: 5</code></pre>
+</div>
+</div>
+<p>So in the example above, we used a single angle value (<span class="math inline">\(\pi/2\)</span>) to calculate the coordinates of a single point in the circumference of our circle. But to actually draw a circle in the plane, we need to calculate the coordinates of multiple points in the circumference, and then, connect all of them together to form a curve.</p>
+<p>The code below demonstrates this idea. It starts by getting a sequence of angles (0, 10, 20, 30, … until 360). Then, it calculates the coordinates of the points in the circumference that are identified by each one of these angles in the sequence. Finally, we plot the calculated coordinates as points in the plane.</p>
+<p>You can see in the plot below that, the points follow the shape of a circle. If you change the geom from <code>geom_point()</code> to <code>geom_line()</code>, then, you get an actual circle.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">360</span>, <span class="at">by =</span> <span class="dv">10</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>circle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(<span class="fu">deg2rad</span>(angles)),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="fu">deg2rad</span>(angles))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(circle) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-angles_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="336"></p>
+<p><img src="01-angles_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="336"></p>
 </figure>
 </div>
 </div>

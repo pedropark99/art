@@ -42,10 +42,9 @@ build.
 
 ### Plot vs Image
 
-The R package ggplot2 is essentially a data visualization framework.
-More precisely, it is a data visualization framework with focus on
-statistics, data exploration and data analysis. Because of that, the
-output of ggplot2 code is more commonly referred to as a "plot".
+The R package ggplot2 is, essentially, a data visualization framework
+with focus on statistics, data exploration and data analysis. Because of that,
+users normally refer to the output of ggplot2 code, as a "plot".
 
 So I understand that some R and ggplot2 users might "cringe" when I use
 the word "image" instead of "plot". Anyway, here in this book, I will
@@ -57,7 +56,6 @@ as "the image that is produced by ggplot2".
 
 Let's talk about what I consider as an "object" here in this book,
 because I will use this term very frequently.
-
 The word "object" in this book refers to any individual entity, object
 or shape that we draw into our image. In the example below, I am drawing
 three different objects/entities, which are: a rectangle, a line and a
@@ -402,13 +400,16 @@ a complete turn in a circle is an angle of 360 degrees. As consequence,
 an angle measured in degrees is usually a number between 0 and 360,
 followed by the character **°** (which is the degree symbol).
 
-But one thing that not many people remember, is that angles can also be
+### The direction of the rotation
+
+But one thing that not many people remember from math class, is that angles can also be
 negative. That is, an angle does not have to be a positive number, you
 can also have negative numbers, like an angle of -35 degrees. But when
-you do that, you change the "direction" of the angle.
+you change the signal of the number, you change the "direction"
+of the angle.
 
 In more details, the signal of the angle (if it is a positive or
-negative number) defines the direction of the movement, or the direction
+negative number) defines the direction of the movement, or, the direction
 of the rotation that the angle performs. A negative angle makes a
 clockwise movement, while a positive angle, makes a counter-clockwise
 movement. @fig-clockwise presents this idea visually:
@@ -418,16 +419,24 @@ in degrees.](./../Figures/00-clockwise.svg){#fig-clockwise}
 
 ### Trigonometry and the Radians measure
 
-Although we are used to talk about angles using the degrees measure, in
-trigonometry, angles are measured using the radians measure instead.
-This changes nothing about what an angle actually is, or how the signal
-of the angle changes the direction of the rotation made by that angle.
-The angle is just measured using a different scale.
+Although we are used to talk about angles using the degrees measure,
+**in trigonometry, angles are measured using the radians measure**.
+As consequence, every function used in trigonometry (like tangent or cosine)
+uses radians values as input.
 
-The radians scale is completely based on the PI value, which is denoted
-by the $\pi$ character. If you ever need to use the PI value in R,
+Using radians instead of degrees to measure angles
+changes nothing about what the angle actually is, and it
+also changes nothing about how the signal of the angle changes the direction of
+the rotation made by that angle. This means that a negative
+radian value still represents a negative angle, that performs a
+clockwise movement, while a positive radian value represents
+the inverse of that.
+
+
+In summary, the radians scale is completely based on the PI value, which is denoted
+by the $\pi$ symbol. If you ever need to use the PI value in R,
 you can simply use the built-in variable called `pi` that
-stores the PI value.
+stores the PI value for you.
 
 ```{r}
 pi
@@ -440,8 +449,17 @@ So half of $2\pi$ would be equivalent to half of 360 degrees, which is
 showed at @fig-clockwise from degrees
 to radians, we get the following values:
 
+```{r}
+in_degrees <- seq(-360, 360, by = 90)
+in_radians <- (in_degrees / 360) * 2 * pi
+round(in_radians, 2)
+```
+
+
 ### Convert degrees to angles and vice-versa
 
+Let's establish a common formula to use when converting degrees values into
+radian values, and vice-versa.
 Given that $d$ is an angle in degrees, and that $\pi$ represents the PI
 value, you can calculate the value in radians ($r$) that represents this
 exact same angle by following the formula below:
@@ -457,45 +475,91 @@ $$
 d = \frac{r \times 180}{\pi}
 $$ {#eq-rad2deg}
 
+If we take the formulas above, and transport them into R,
+we would get the functions `deg2rad()` and `rad2deg()` below:
+
 ```{r}
 # A function to convert degrees into radians
 deg2rad <- function(deg){
   return(deg * pi / 180)
 }
+# A function to convert radians into degrees
+rad2deg <- function(rad){
+  return(rad * 180/ pi)
+}
 ```
 
 ### Calculate coordinates in a circle
 
-With very little trigonometry, you can calculate the coordinates of any
-point in the circumference of a circle. If you want to draw a circle,
-you most certainly need to calculate the coordinates of the
-circumference.
+If you want to draw a circle, you need to calculate
+the coordinates of the circumference of that circle,
+and with very little trigonometry, you can do that! You
+can calculate the coordinates of any
+point you want in the circumference of a circle.
 
 Given that $Cx$ and $Cy$ are the x and y positions in the Cartesian
 plane where the circle's center is, that $r$ is the radius of the
 circle, and that $A$ is the angle, in radians, that identifies the
 position in the circumference that you are trying to calculate its
-coordinates (e.g. if you trying to calculate the position of the very
-top of the circle - the highest point in the circle, then the angle
-should be $-\pi/2$, which is 90 degrees counter-clockwise), you can
+coordinates, you can
 calculate the x ($x'$) and y ($y'$) coordinates of the corresponding
 position in the circumference by using the following pair of equations:
 
 $$
-x' = Cx + (r \times cos(A));
+x' = Cx + (r \times \cos(A));
 $$ {#eq-rotation3}
 
 $$
-y' = Cy + (r \times sin(A));
+y' = Cy + (r \times \sin(A));
 $$ {#eq-rotation4}
+
+
+If the circle you are trying to draw is centered at the origin point of the Cartesian plane,
+i.e. coordinate $(0, 0)$, then, $Cx = 0$ and $Cy = 0$, and, as a result,
+you can simplify the above formulas to $y'=r\times \sin(A)$ and $x'=r\times \cos(A)$.
+
+
+As a first example, let's suppose you wanted to calculate the coordinates of the very
+top of the circle, i.e. the highest point in the circle. If that is the case, then,
+the angle $A$ should be $\pi/2$, which is 90 degrees counter-clockwise, or $-3\pi/2$,
+which is 270 degrees clockwise. Both angles represents the highest point in the circle
+as shown in @fig-clockwise.
+
+Now, let's also suppose that our circle have 5 units of radius, and it
+is centered in the origin point, so that
+we can use the simplified versions of @eq-rotation3 and @eq-rotation4. The code below
+calculates the coordinates of the "highest point" in this circle.
+
+```{r}
+x <- round(5 * cos(pi/2), 5)
+y <- round(5 * sin(pi/2), 5)
+glue::glue("x: {x}, y: {y}")
+```
+
+So in the example above, we used a single angle value ($\pi/2$) to calculate
+the coordinates of a single point in the circumference of our circle. But to
+actually draw a circle in the plane, we need to calculate the coordinates of
+multiple points in the circumference, and then, connect all of them together
+to form a curve.
+
+The code below demonstrates this idea. It starts by getting a sequence of
+angles (0, 10, 20, 30, ... until 360). Then, it calculates the
+coordinates of the points in the circumference that are identified by
+each one of these angles in the sequence. Finally, we plot the
+calculated coordinates as points in the plane.
+
+You can see in the plot below that, the points follow the shape of a circle.
+If you change the geom from `geom_point()` to `geom_line()`, then,
+you get an actual circle.
+
 
 ```{r}
 #| fig-width: 3.5
 #| fig-height: 3.5
 angles <- seq(0, 360, by = 10)
 circle <- data.frame(
-  x = 3 * cos(deg2rad(angles)),
-  y = 3 * sin(deg2rad(angles))
+  x = 5 * cos(deg2rad(angles)),
+  y = 5 * sin(deg2rad(angles))
 )
 
 ggplot(circle) + geom_point(aes(x, y))
