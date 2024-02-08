@@ -43,8 +43,8 @@ build.
 ### Plot vs Image
 
 The R package ggplot2 is, essentially, a data visualization framework
-with focus on statistics, data exploration and data analysis. Because of that,
-users normally refer to the output of ggplot2 code, as a "plot".
+with focus on statistics, data exploration and data analysis. Because of
+that, users normally refer to the output of ggplot2 code, as a "plot".
 
 So I understand that some R and ggplot2 users might "cringe" when I use
 the word "image" instead of "plot". Anyway, here in this book, I will
@@ -55,11 +55,10 @@ as "the image that is produced by ggplot2".
 ### Objects
 
 Let's talk about what I consider as an "object" here in this book,
-because I will use this term very frequently.
-The word "object" in this book refers to any individual entity, object
-or shape that we draw into our image. In the example below, I am drawing
-three different objects/entities, which are: a rectangle, a line and a
-star.
+because I will use this term very frequently. The word "object" in this
+book refers to any individual entity, object or shape that we draw into
+our image. In the example below, I am drawing three different
+objects/entities, which are: a rectangle, a line and a star.
 
 Each one of these three things that are draw to the image I consider as
 a different object or entity.
@@ -402,17 +401,17 @@ followed by the character **°** (which is the degree symbol).
 
 ### The direction of the rotation
 
-But one thing that not many people remember from math class, is that angles can also be
-negative. That is, an angle does not have to be a positive number, you
-can also have negative numbers, like an angle of -35 degrees. But when
-you change the signal of the number, you change the "direction"
-of the angle.
+But one thing that not many people remember from math class, is that
+angles can also be negative. That is, an angle does not have to be a
+positive number, you can also have negative numbers, like an angle of
+-35 degrees. But when you change the signal of the number, you change
+the "direction" of the angle.
 
 In more details, the signal of the angle (if it is a positive or
-negative number) defines the direction of the movement, or, the direction
-of the rotation that the angle performs. A negative angle makes a
-clockwise movement, while a positive angle, makes a counter-clockwise
-movement. @fig-clockwise presents this idea visually:
+negative number) defines the direction of the movement, or, the
+direction of the rotation that the angle performs. A negative angle
+makes a clockwise movement, while a positive angle, makes a
+counter-clockwise movement. @fig-clockwise presents this idea visually:
 
 ![The rotation direction in positive angles vs negative angles, values
 in degrees.](./../Figures/00-clockwise.svg){#fig-clockwise}
@@ -420,63 +419,62 @@ in degrees.](./../Figures/00-clockwise.svg){#fig-clockwise}
 ### Trigonometry and the Radians measure
 
 Although we are used to talk about angles using the degrees measure,
-**in trigonometry, angles are measured using the radians measure**.
-As consequence, every function used in trigonometry (like tangent or cosine)
-uses radians values as input.
+**in trigonometry, angles are measured using the radians measure**. As
+consequence, every function used in trigonometry (like tangent or
+cosine) uses radians values as input.
 
-Using radians instead of degrees to measure angles
-changes nothing about what the angle actually is, and it
-also changes nothing about how the signal of the angle changes the direction of
-the rotation made by that angle. This means that a negative
-radian value still represents a negative angle, that performs a
-clockwise movement, while a positive radian value represents
-the inverse of that.
+Using radians instead of degrees to measure angles changes nothing about
+what the angle actually is, and it also changes nothing about how the
+signal of the angle changes the direction of the rotation made by that
+angle.
 
+Radians is just a different scale, with a different range of values.
+This means that a negative radian value still represents a negative
+angle, that performs a clockwise movement, while a positive radian value
+represents a positive angle, that performs a counter-clockwise movement.
 
-In summary, the radians scale is completely based on the PI value, which is denoted
-by the $\pi$ symbol. If you ever need to use the PI value in R,
-you can simply use the built-in variable called `pi` that
-stores the PI value for you.
+In summary, the radians scale is completely based on the PI value, which
+is denoted by the $\pi$ symbol. If you ever need to use the PI value in
+R, you can simply use the built-in variable called `pi` that stores the
+PI value for you.
 
 ```{r}
 pi
 ```
 
-
-In essence, $2\pi$ is equivalent to 360 degrees.
-So half of $2\pi$ would be equivalent to half of 360 degrees, which is
-180 degrees. If we follow this logic, and convert all the angles
-showed at @fig-clockwise from degrees
-to radians, we get the following values:
+In essence, we learn in basic math that $2\pi$ is equivalent to 360
+degrees. So half of $2\pi$ would be equivalent to half of 360 degrees,
+which is 180 degrees. If we follow this logic, and convert all the
+angles showed at @fig-clockwise from degrees to radians, we get the
+following values:
 
 ```{r}
 in_degrees <- seq(-360, 360, by = 90)
-in_radians <- (in_degrees / 360) * 2 * pi
+in_radians <- (in_degrees / 360) * (2 * pi)
 round(in_radians, 2)
 ```
 
-
 ### Convert degrees to angles and vice-versa
 
-Let's establish a common formula to use when converting degrees values into
-radian values, and vice-versa.
-Given that $d$ is an angle in degrees, and that $\pi$ represents the PI
-value, you can calculate the value in radians ($r$) that represents this
-exact same angle by following the formula below:
+Let's establish a common formula to use when converting degrees values
+into radian values, and vice-versa. Given that $d$ is an angle in
+degrees, and that $\pi$ represents the PI value, you can calculate the
+value in radians ($r$) that represents this exact same angle by
+following the formula below:
 
 $$
 r = \frac{d \times \pi}{180}
 $$ {#eq-deg2rad}
 
 You can also do the inverse, which is to convert a angle in radians to
-degrees by following the formula below:
+degrees by following this formula:
 
 $$
 d = \frac{r \times 180}{\pi}
 $$ {#eq-rad2deg}
 
-If we take the formulas above, and transport them into R,
-we would get the functions `deg2rad()` and `rad2deg()` below:
+If we take the formulas above, and transport them into R, we would get
+the functions `deg2rad()` and `rad2deg()` below:
 
 ```{r}
 # A function to convert degrees into radians
@@ -489,21 +487,47 @@ rad2deg <- function(rad){
 }
 ```
 
+### Trigonometric functions
+
+Trigonometry is the field of mathematics that study angles and their relationships between
+each other. In this field, three essential functions were developed:
+
+- cosine (usually written as $\cos()$);
+- sine (usually written as $\sin()$);
+- tangent (usually written as $\tan()$);
+
+These three functions were originally born from the ratios between the
+edges of a right triangle. But you can use them to make fancy calculations
+with angles, and that is the essential part.
+
+We will use these functions extensively in this book, so you should get
+familiarized with them. Because without them, we cannot draw circles
+or rotate objects in the screen.
+
+Each one of these three trigonometric functions are present in R
+as built-in functions. In other words, these functions are
+exported from `base R`. And all of them receives an angle, in radians,
+as input.
+
+- `cos()` for cosine;
+- `sin()` for sine;
+- `tan()` for tangent;
+
+
 ### Calculate coordinates in a circle
 
-If you want to draw a circle, you need to calculate
-the coordinates of the circumference of that circle,
-and with very little trigonometry, you can do that! You
-can calculate the coordinates of any
+If you want to draw a circle, you need first to calculate the
+coordinates of the circumference of this circle, and with very little
+trigonometry, you can do that! You can calculate the coordinates of any
 point you want in the circumference of a circle.
 
 Given that $Cx$ and $Cy$ are the x and y positions in the Cartesian
 plane where the circle's center is, that $r$ is the radius of the
 circle, and that $A$ is the angle, in radians, that identifies the
 position in the circumference that you are trying to calculate its
-coordinates, you can
-calculate the x ($x'$) and y ($y'$) coordinates of the corresponding
-position in the circumference by using the following pair of equations:
+coordinates, you can calculate the x ($x'$) and y ($y'$) coordinates of
+the corresponding position in the circumference by using the following
+pair of equations:
 
 $$
 x' = Cx + (r \times \cos(A));
@@ -513,22 +537,22 @@ $$
 y' = Cy + (r \times \sin(A));
 $$ {#eq-rotation4}
 
+If the circle you are trying to draw is centered at the origin point of
+the Cartesian plane, i.e. coordinate $(0, 0)$, then, $Cx = 0$ and
+$Cy = 0$, and, as a result, you can simplify the above formulas to
+$y'=r\times \sin(A)$ and $x'=r\times \cos(A)$.
 
-If the circle you are trying to draw is centered at the origin point of the Cartesian plane,
-i.e. coordinate $(0, 0)$, then, $Cx = 0$ and $Cy = 0$, and, as a result,
-you can simplify the above formulas to $y'=r\times \sin(A)$ and $x'=r\times \cos(A)$.
+As a first example, let's suppose you wanted to calculate the
+coordinates of the very top of the circle, i.e. the highest point in the
+circle. If that is the case, then, the angle $A$ should be $\pi/2$,
+which is 90 degrees counter-clockwise, or $-3\pi/2$, which is 270
+degrees clockwise. Both angles represents the highest point in the
+circle as shown in @fig-clockwise.
 
-
-As a first example, let's suppose you wanted to calculate the coordinates of the very
-top of the circle, i.e. the highest point in the circle. If that is the case, then,
-the angle $A$ should be $\pi/2$, which is 90 degrees counter-clockwise, or $-3\pi/2$,
-which is 270 degrees clockwise. Both angles represents the highest point in the circle
-as shown in @fig-clockwise.
-
-Now, let's also suppose that our circle have 5 units of radius, and it
-is centered in the origin point, so that
-we can use the simplified versions of @eq-rotation3 and @eq-rotation4. The code below
-calculates the coordinates of the "highest point" in this circle.
+Let's also suppose that our circle have 5 units of radius, and that it
+is centered in the origin point, so that we can use the simplified
+versions of @eq-rotation3 and @eq-rotation4. The code below calculates
+the coordinates of the "highest point" in this circle.
 
 ```{r}
 x <- round(5 * cos(pi/2), 5)
@@ -536,22 +560,21 @@ y <- round(5 * sin(pi/2), 5)
 glue::glue("x: {x}, y: {y}")
 ```
 
-So in the example above, we used a single angle value ($\pi/2$) to calculate
-the coordinates of a single point in the circumference of our circle. But to
-actually draw a circle in the plane, we need to calculate the coordinates of
-multiple points in the circumference, and then, connect all of them together
-to form a curve.
+So in the example above, we used a single angle value ($\pi/2$) to
+calculate the coordinates of a single point in the circumference of our
+circle. But to actually draw a circle in the plane, we need to calculate
+the coordinates of several points in the circumference, and then,
+connect all of them together to draw the circumference.
 
-The code below demonstrates this idea. It starts by getting a sequence of
-angles (0, 10, 20, 30, ... until 360). Then, it calculates the
+The code below demonstrates this idea. It starts by getting a sequence
+of angles (0, 10, 20, 30, ... until 360). Then, it calculates the
 coordinates of the points in the circumference that are identified by
 each one of these angles in the sequence. Finally, we plot the
 calculated coordinates as points in the plane.
 
-You can see in the plot below that, the points follow the shape of a circle.
-If you change the geom from `geom_point()` to `geom_line()`, then,
-you get an actual circle.
-
+You can see in the plot below that, the points follow the shape of a
+circle. If you change the geom from `geom_point()` to `geom_path()`,
+then, you get an actual circle.
 
 ```{r}
 #| fig-width: 3.5

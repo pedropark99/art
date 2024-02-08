@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.538">
+<meta name="generator" content="quarto-1.4.532">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -241,7 +241,8 @@ window.Quarto = {
   <li><a href="#the-direction-of-the-rotation" id="toc-the-direction-of-the-rotation" class="nav-link" data-scroll-target="#the-direction-of-the-rotation"><span class="header-section-number">1.3.1</span> The direction of the rotation</a></li>
   <li><a href="#trigonometry-and-the-radians-measure" id="toc-trigonometry-and-the-radians-measure" class="nav-link" data-scroll-target="#trigonometry-and-the-radians-measure"><span class="header-section-number">1.3.2</span> Trigonometry and the Radians measure</a></li>
   <li><a href="#convert-degrees-to-angles-and-vice-versa" id="toc-convert-degrees-to-angles-and-vice-versa" class="nav-link" data-scroll-target="#convert-degrees-to-angles-and-vice-versa"><span class="header-section-number">1.3.3</span> Convert degrees to angles and vice-versa</a></li>
-  <li><a href="#calculate-coordinates-in-a-circle" id="toc-calculate-coordinates-in-a-circle" class="nav-link" data-scroll-target="#calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.4</span> Calculate coordinates in a circle</a></li>
+  <li><a href="#trigonometric-functions" id="toc-trigonometric-functions" class="nav-link" data-scroll-target="#trigonometric-functions"><span class="header-section-number">1.3.4</span> Trigonometric functions</a></li>
+  <li><a href="#calculate-coordinates-in-a-circle" id="toc-calculate-coordinates-in-a-circle" class="nav-link" data-scroll-target="#calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.5</span> Calculate coordinates in a circle</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -343,7 +344,7 @@ Figure&nbsp;1.1: The vertices of a rectangle. A set of vertex’s form the verti
 <p>In ggplot2 there are essentially 3 different coordinate systems, which are:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-coordinate-systems" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-coordinate-systems" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-coordinate-systems-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="01-angles_files/figure-html/fig-coordinate-systems-1.png" class="img-fluid figure-img" width="672">
@@ -515,7 +516,8 @@ Figure&nbsp;1.4: The rotation direction in positive angles vs negative angles, v
 <section id="trigonometry-and-the-radians-measure" class="level3" data-number="1.3.2">
 <h3 data-number="1.3.2" class="anchored" data-anchor-id="trigonometry-and-the-radians-measure"><span class="header-section-number">1.3.2</span> Trigonometry and the Radians measure</h3>
 <p>Although we are used to talk about angles using the degrees measure, <strong>in trigonometry, angles are measured using the radians measure</strong>. As consequence, every function used in trigonometry (like tangent or cosine) uses radians values as input.</p>
-<p>Using radians instead of degrees to measure angles changes nothing about what the angle actually is, and it also changes nothing about how the signal of the angle changes the direction of the rotation made by that angle. This means that a negative radian value still represents a negative angle, that performs a clockwise movement, while a positive radian value represents the inverse of that.</p>
+<p>Using radians instead of degrees to measure angles changes nothing about what the angle actually is, and it also changes nothing about how the signal of the angle changes the direction of the rotation made by that angle.</p>
+<p>Radians is just a different scale, with a different range of values. This means that a negative radian value still represents a negative angle, that performs a clockwise movement, while a positive radian value represents a positive angle, that performs a counter-clockwise movement.</p>
 <p>In summary, the radians scale is completely based on the PI value, which is denoted by the <span class="math inline">\(\pi\)</span> symbol. If you ever need to use the PI value in R, you can simply use the built-in variable called <code>pi</code> that stores the PI value for you.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -523,10 +525,10 @@ Figure&nbsp;1.4: The rotation direction in positive angles vs negative angles, v
 <pre><code>[1] 3.141593</code></pre>
 </div>
 </div>
-<p>In essence, <span class="math inline">\(2\pi\)</span> is equivalent to 360 degrees. So half of <span class="math inline">\(2\pi\)</span> would be equivalent to half of 360 degrees, which is 180 degrees. If we follow this logic, and convert all the angles showed at <a href="#fig-clockwise" class="quarto-xref">Figure&nbsp;<span>1.4</span></a> from degrees to radians, we get the following values:</p>
+<p>In essence, we learn in basic math that <span class="math inline">\(2\pi\)</span> is equivalent to 360 degrees. So half of <span class="math inline">\(2\pi\)</span> would be equivalent to half of 360 degrees, which is 180 degrees. If we follow this logic, and convert all the angles showed at <a href="#fig-clockwise" class="quarto-xref">Figure&nbsp;<span>1.4</span></a> from degrees to radians, we get the following values:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>in_degrees <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">360</span>, <span class="dv">360</span>, <span class="at">by =</span> <span class="dv">90</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>in_radians <span class="ot">&lt;-</span> (in_degrees <span class="sc">/</span> <span class="dv">360</span>) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>in_radians <span class="ot">&lt;-</span> (in_degrees <span class="sc">/</span> <span class="dv">360</span>) <span class="sc">*</span> (<span class="dv">2</span> <span class="sc">*</span> pi)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(in_radians, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -6.28 -4.71 -3.14 -1.57  0.00  1.57  3.14  4.71  6.28</code></pre>
@@ -539,7 +541,7 @@ Figure&nbsp;1.4: The rotation direction in positive angles vs negative angles, v
 <p><span id="eq-deg2rad"><span class="math display">\[
 r = \frac{d \times \pi}{180}
 \tag{1.1}\]</span></span></p>
-<p>You can also do the inverse, which is to convert a angle in radians to degrees by following the formula below:</p>
+<p>You can also do the inverse, which is to convert a angle in radians to degrees by following this formula:</p>
 <p><span id="eq-rad2deg"><span class="math display">\[
 d = \frac{r \times 180}{\pi}
 \tag{1.2}\]</span></span></p>
@@ -555,9 +557,26 @@ d = \frac{r \times 180}{\pi}
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="calculate-coordinates-in-a-circle" class="level3" data-number="1.3.4">
-<h3 data-number="1.3.4" class="anchored" data-anchor-id="calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.4</span> Calculate coordinates in a circle</h3>
-<p>If you want to draw a circle, you need to calculate the coordinates of the circumference of that circle, and with very little trigonometry, you can do that! You can calculate the coordinates of any point you want in the circumference of a circle.</p>
+<section id="trigonometric-functions" class="level3" data-number="1.3.4">
+<h3 data-number="1.3.4" class="anchored" data-anchor-id="trigonometric-functions"><span class="header-section-number">1.3.4</span> Trigonometric functions</h3>
+<p>Trigonometry is the field of mathematics that study angles and their relationships between each other. In this field, three essential functions were developed:</p>
+<ul>
+<li>cosine (usually written as <span class="math inline">\(\cos()\)</span>);</li>
+<li>sine (usually written as <span class="math inline">\(\sin()\)</span>);</li>
+<li>tangent (usually written as <span class="math inline">\(\tan()\)</span>);</li>
+</ul>
+<p>These three functions were originally born from the ratios between the edges of a right triangle. But you can use them to make fancy calculations with angles, and that is the essential part.</p>
+<p>We will use these functions extensively in this book, so you should get familiarized with them. Because without them, we cannot draw circles or rotate objects in the screen.</p>
+<p>Each one of these three trigonometric functions are present in R as built-in functions. In other words, these functions are exported from <code>base R</code>. And all of them receives an angle, in radians, as input.</p>
+<ul>
+<li><code>cos()</code> for cosine;</li>
+<li><code>sin()</code> for sine;</li>
+<li><code>tan()</code> for tangent;</li>
+</ul>
+</section>
+<section id="calculate-coordinates-in-a-circle" class="level3" data-number="1.3.5">
+<h3 data-number="1.3.5" class="anchored" data-anchor-id="calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.5</span> Calculate coordinates in a circle</h3>
+<p>If you want to draw a circle, you need first to calculate the coordinates of the circumference of this circle, and with very little trigonometry, you can do that! You can calculate the coordinates of any point you want in the circumference of a circle.</p>
 <p>Given that <span class="math inline">\(Cx\)</span> and <span class="math inline">\(Cy\)</span> are the x and y positions in the Cartesian plane where the circle’s center is, that <span class="math inline">\(r\)</span> is the radius of the circle, and that <span class="math inline">\(A\)</span> is the angle, in radians, that identifies the position in the circumference that you are trying to calculate its coordinates, you can calculate the x (<span class="math inline">\(x'\)</span>) and y (<span class="math inline">\(y'\)</span>) coordinates of the corresponding position in the circumference by using the following pair of equations:</p>
 <p><span id="eq-rotation3"><span class="math display">\[
 x' = Cx + (r \times \cos(A));
@@ -567,7 +586,7 @@ y' = Cy + (r \times \sin(A));
 \tag{1.4}\]</span></span></p>
 <p>If the circle you are trying to draw is centered at the origin point of the Cartesian plane, i.e.&nbsp;coordinate <span class="math inline">\((0, 0)\)</span>, then, <span class="math inline">\(Cx = 0\)</span> and <span class="math inline">\(Cy = 0\)</span>, and, as a result, you can simplify the above formulas to <span class="math inline">\(y'=r\times \sin(A)\)</span> and <span class="math inline">\(x'=r\times \cos(A)\)</span>.</p>
 <p>As a first example, let’s suppose you wanted to calculate the coordinates of the very top of the circle, i.e.&nbsp;the highest point in the circle. If that is the case, then, the angle <span class="math inline">\(A\)</span> should be <span class="math inline">\(\pi/2\)</span>, which is 90 degrees counter-clockwise, or <span class="math inline">\(-3\pi/2\)</span>, which is 270 degrees clockwise. Both angles represents the highest point in the circle as shown in <a href="#fig-clockwise" class="quarto-xref">Figure&nbsp;<span>1.4</span></a>.</p>
-<p>Now, let’s also suppose that our circle have 5 units of radius, and it is centered in the origin point, so that we can use the simplified versions of <a href="#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a>. The code below calculates the coordinates of the “highest point” in this circle.</p>
+<p>Let’s also suppose that our circle have 5 units of radius, and that it is centered in the origin point, so that we can use the simplified versions of <a href="#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a>. The code below calculates the coordinates of the “highest point” in this circle.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">2</span>), <span class="dv">5</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">2</span>), <span class="dv">5</span>)</span>
@@ -576,9 +595,9 @@ y' = Cy + (r \times \sin(A));
 <pre><code>x: 0, y: 5</code></pre>
 </div>
 </div>
-<p>So in the example above, we used a single angle value (<span class="math inline">\(\pi/2\)</span>) to calculate the coordinates of a single point in the circumference of our circle. But to actually draw a circle in the plane, we need to calculate the coordinates of multiple points in the circumference, and then, connect all of them together to form a curve.</p>
+<p>So in the example above, we used a single angle value (<span class="math inline">\(\pi/2\)</span>) to calculate the coordinates of a single point in the circumference of our circle. But to actually draw a circle in the plane, we need to calculate the coordinates of several points in the circumference, and then, connect all of them together to draw the circumference.</p>
 <p>The code below demonstrates this idea. It starts by getting a sequence of angles (0, 10, 20, 30, … until 360). Then, it calculates the coordinates of the points in the circumference that are identified by each one of these angles in the sequence. Finally, we plot the calculated coordinates as points in the plane.</p>
-<p>You can see in the plot below that, the points follow the shape of a circle. If you change the geom from <code>geom_point()</code> to <code>geom_line()</code>, then, you get an actual circle.</p>
+<p>You can see in the plot below that, the points follow the shape of a circle. If you change the geom from <code>geom_point()</code> to <code>geom_path()</code>, then, you get an actual circle.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">360</span>, <span class="at">by =</span> <span class="dv">10</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>circle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>

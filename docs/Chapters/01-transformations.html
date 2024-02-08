@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.538">
+<meta name="generator" content="quarto-1.4.532">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -208,8 +208,8 @@ window.Quarto = {
   <li><a href="#rotation" id="toc-rotation" class="nav-link" data-scroll-target="#rotation"><span class="header-section-number">2.3</span> Rotation</a>
   <ul class="collapse">
   <li><a href="#remember-to-convert-your-angles-in-degrees-to-radians" id="toc-remember-to-convert-your-angles-in-degrees-to-radians" class="nav-link" data-scroll-target="#remember-to-convert-your-angles-in-degrees-to-radians"><span class="header-section-number">2.3.1</span> Remember to convert your angles in degrees to radians</a></li>
-  <li><a href="#a-first-example-of-rotation" id="toc-a-first-example-of-rotation" class="nav-link" data-scroll-target="#a-first-example-of-rotation"><span class="header-section-number">2.3.2</span> A first example of rotation</a></li>
-  <li><a href="#rotating-lines" id="toc-rotating-lines" class="nav-link" data-scroll-target="#rotating-lines"><span class="header-section-number">2.3.3</span> Rotating lines</a></li>
+  <li><a href="#sec-rotation-example" id="toc-sec-rotation-example" class="nav-link" data-scroll-target="#sec-rotation-example"><span class="header-section-number">2.3.2</span> A first example of rotation</a></li>
+  <li><a href="#how-to-rotate-lines" id="toc-how-to-rotate-lines" class="nav-link" data-scroll-target="#how-to-rotate-lines"><span class="header-section-number">2.3.3</span> How to rotate lines</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -454,8 +454,8 @@ y' = x \times \sin(A) + y \times \cos(A)
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="a-first-example-of-rotation" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="a-first-example-of-rotation"><span class="header-section-number">2.3.2</span> A first example of rotation</h3>
+<section id="sec-rotation-example" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="sec-rotation-example"><span class="header-section-number">2.3.2</span> A first example of rotation</h3>
 <p>As a first example, lets take a triangle with coordinates <span class="math inline">\((0,0), (1,0), (0,2)\)</span>. Lets consider we wanted to perform two different rotations over this triangle. The first, we rotate it to 30 degrees clockwise, and in the second, 90 degrees clockwise.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>triangle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -503,20 +503,61 @@ y' = x \times \sin(A) + y \times \cos(A)
 <p>You can see this fact more clearly by increasing the distance of your object from the origin point. In the example below, the same triangle and rotation angles as the previous example are used. But this time, the original triangle is further apart from the origin point (code is omitted for brevity reasons). To help you visualize, I have also drawn the circle that is centered at the origin point. You can see that the rotated triangles follows the circumference of that circle.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="01-transformations_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-rotation-origin-point" class="quarto-figure quarto-figure-center quarto-float anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rotation-origin-point-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-transformations_files/figure-html/fig-rotation-origin-point-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotation-origin-point-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.4: Rotating a triangle around the origin point
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
+<p>In the other hand, if you do not want to have this effect in your rotation; if you do not want your objects to have a drastic movement around the plane; if you just want to rotate the object, but, at the same time, preserve it’s current position, then, you need to perform the rotation in three different stages (or steps).</p>
+<p>In the first stage, you use translation to move your object to the origin point of the Cartesian plane. In the second stage, you apply the rotation to the object after the previous translation, that is, you use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> to calculate the new x and y positions after the rotation. Then, in the final and third stage, you use translation again to move your object back to the original position it had in the Cartesian plane.</p>
 </section>
-<section id="rotating-lines" class="level3" data-number="2.3.3">
-<h3 data-number="2.3.3" class="anchored" data-anchor-id="rotating-lines"><span class="header-section-number">2.3.3</span> Rotating lines</h3>
-<p>Therefore, you use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> to calculate the new coordinates of a <strong>polygon</strong> that was rotated by a certain angle. But there is another pair of equations that you can use to calculate rotations, and you already saw them in this book, which is <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> that were presented in Chapter 1.</p>
-<p>These two equations are useful in rotations because they are the easiest pair of equations to use when you want to rotate specifically a line, or a stroke if you prefer to call it this way.</p>
-<p>Just to be clear, you can in fact use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> to calculate the new coordinates of a line after you rotated it by a certain angle. Is just that these equations are less intuitive than <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> for this specific case.</p>
-<p>Lets begin our example with a line with coordinates <span class="math inline">\((1.5, 0.6)\)</span> and <span class="math inline">\((3.7, 2.7)\)</span>. This line is exposed in the plot below:</p>
+<section id="how-to-rotate-lines" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="how-to-rotate-lines"><span class="header-section-number">2.3.3</span> How to rotate lines</h3>
+<p>Therefore, you can use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> to calculate the new coordinates of a <strong>polygon</strong> that was rotated by a certain angle. However, rotating lines is kind of a special case, because it is a bit trickier to rotate lines than most polygons.</p>
+<section id="why-is-it-trickier" class="level4" data-number="2.3.3.1">
+<h4 data-number="2.3.3.1" class="anchored" data-anchor-id="why-is-it-trickier"><span class="header-section-number">2.3.3.1</span> Why is it trickier?</h4>
+<p>I mean, you can still use <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>, as we were using before, to calculate the new coordinates of a line after you rotated it by a certain angle. You will definitely get an output that is mathematically right. But it probably will be wrong on the logic, and will likely not be what you really want.</p>
+<p>Generally speaking, when you are rotating a line, there are two basic scenarios, which are exposed in <a href="#fig-linerotation" class="quarto-xref">Figure&nbsp;<span>2.5</span></a>. You are normally trying to achieve one of these two scenarios. In the first scenario, you lock one of the endpoints of the line, then, you rotate the rest of the line around this locked point. Is like you were increasing (or decreasing) the angle of one of the triangle’s edges. In contrast, in the second scenario, we are rotating the entire line around it’s center. Is like when you are playing that “spin the bottle” game in teenagers parties. You are trying to rotate the bottle, but at the same time, maintaining it’s center point intact.</p>
+<div id="fig-linerotation" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-linerotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./../Figures/01-line-rotation.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-linerotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.5: Scenarios when you are trying to rotate a line
+</figcaption>
+</figure>
+</div>
+<p>However, when you use directly <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> as we were using before, you get the effect that we described at <a href="#fig-rotation-origin-point" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>. Thus, you rotate the line around the origin point of the Cartesian plane, instead of rotating it around it’s center point, or around one of it’s endpoint.</p>
+<p>So when you do use directly <a href="#eq-rotation1" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> and <a href="#eq-rotation2" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>, instead of getting scenario 1 or scenario 2 of <a href="#fig-linerotation" class="quarto-xref">Figure&nbsp;<span>2.5</span></a>, you would get a visual result that would looks something like this:</p>
+<div id="fig-wrong-linerotation" class="quarto-figure quarto-figure-center quarto-float anchored" width="60%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-wrong-linerotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./../Figures/01-wrong-line-rotation.svg" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wrong-linerotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.6: Rotating a line around the origin point
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="how-to-solve-it" class="level4" data-number="2.3.3.2">
+<h4 data-number="2.3.3.2" class="anchored" data-anchor-id="how-to-solve-it"><span class="header-section-number">2.3.3.2</span> How to solve it?</h4>
+<p>But you already know the solution to this problem, because we already talked about it , at the end of <a href="#sec-rotation-example" class="quarto-xref"><span>Section 2.3.2</span></a>. If you want to perform a static rotation, i.e.&nbsp;a rotation that just rotate the object and does not move the object around the Cartesian plane, you need to perform the rotation in three stages:</p>
+<ol type="1">
+<li>translation to origin.</li>
+<li>rotation.</li>
+<li>translation back to the original position.</li>
+</ol>
+<p>The essence is the same. So, the first thing that we need to do is to move the line to the origin point in the plane. Now, the way you perform this first step will determine which one of the two scenarios we described at <a href="#fig-linerotation" class="quarto-xref">Figure&nbsp;<span>2.5</span></a> you will get.</p>
+<p>As the example in this section, let’s use the line described in the plot below. Which have the coordinates <span class="math inline">\((1.5, 0.6)\)</span> and <span class="math inline">\((3.7, 2.7)\)</span>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>line <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">3.7</span>),</span>
@@ -533,8 +574,39 @@ y' = x \times \sin(A) + y \times \cos(A)
 </div>
 </div>
 </div>
-<p>Lets suppose you wanted to rotate this line 75 degrees counter-clockwise. How you do it? In this context, the variable <span class="math inline">\(r\)</span> that is present at <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> becomes the length of the line. So, first, we calculate the line length.</p>
-<p>Given that <span class="math inline">\(l\)</span> is the line length that we want to calculate, and that <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y_1\)</span> are the x and y positions of any of the endpoints of the line, and that <span class="math inline">\(x_2\)</span> and <span class="math inline">\(y_2\)</span> are the x and y positions of the other endpoint of the line, you can calculate the line length by following this formula:</p>
+<p>If you want to apply a rotation over this line that looks like scenario 1, then, you should first choose which one of the two endpoints of the line will be your “locked point”. After you choose the point, you apply a translation over the line, using the x and y positions of the “locked point” as the x and y offsets of the translation.</p>
+<p>In this example, let’s suppose we wanted the coordinate <span class="math inline">\((1.5, 0.6)\)</span> to be our locked point, and also, that we wanted to apply a 35 degrees counter-clockwise rotation to the line. To achieve scenario 1, we would do something like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(<span class="dv">35</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>rotated_line <span class="ot">&lt;-</span> line <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x =</span> x <span class="sc">-</span> <span class="fl">1.5</span>, <span class="at">y =</span> y <span class="sc">-</span> <span class="fl">0.6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> (x <span class="sc">*</span> <span class="fu">cos</span>(A)) <span class="sc">+</span> (y <span class="sc">*</span> <span class="sc">-</span><span class="fu">sin</span>(A)),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> (x <span class="sc">*</span> <span class="fu">sin</span>(A)) <span class="sc">+</span> (y <span class="sc">*</span> <span class="fu">cos</span>(A))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x =</span> x <span class="sc">+</span> <span class="fl">1.5</span>, <span class="at">y =</span> y <span class="sc">+</span> <span class="fl">0.6</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>canvas <span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">color =</span> <span class="st">"Original line"</span>),</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> line</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">color =</span> <span class="st">"Rotated line"</span>),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> rotated_line</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01-transformations_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This means that there is another pair of equations that I personally prefer to use when I want to rotate a line. Actually, you already saw this pair of equations here in this book, which are <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> that were presented in Chapter 1.</p>
+<p>Lets suppose you wanted to rotate this line 75 degrees counter-clockwise. How you do it? In this context, the variable <span class="math inline">\(r\)</span> that is present at <a href="01-angles.html#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="01-angles.html#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> becomes the length of the line. So, first, we need to calculate the length of the line.</p>
+<p>Given that <span class="math inline">\(l\)</span> is the line length that we want to calculate, and that <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y_1\)</span> are the x and y positions of any of the endpoints of the line, and that <span class="math inline">\(x_2\)</span> and <span class="math inline">\(y_2\)</span> are the x and y positions of the other endpoint of the line, you can calculate the line length by following the formula below. This formula is also known as the “distance formula”.</p>
 <p><span id="eq-linelength"><span class="math display">\[
 l = \sqrt{[(x_2 - x_1)^2 + (y_2 - y_1)^2]}
 \tag{2.3}\]</span></span></p>
@@ -545,19 +617,23 @@ l = \sqrt{(3.7 - 1.5)^2 + (2.7 - 0.6)^2}=3.041381
 \]</span></p>
 <p>We can obviously encapsulate <a href="#eq-linelength" class="quarto-xref">Equation&nbsp;<span>2.3</span></a> into a nice R function that we can reuse whenever we want. If we do that, we get a function similar to <code>line_length()</code> below:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>line_length <span class="ot">&lt;-</span> <span class="cf">function</span>(x1, y1, x2, y2){</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  s1 <span class="ot">&lt;-</span> (x2 <span class="sc">-</span> x1)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  s2 <span class="ot">&lt;-</span> (y2 <span class="sc">-</span> y1)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sqrt</span>(s1 <span class="sc">+</span> s2))</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">line_length</span>(<span class="fl">1.5</span>, <span class="fl">0.6</span>, <span class="fl">3.7</span>, <span class="fl">2.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to calculate the length of a line</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>line_length <span class="ot">&lt;-</span> <span class="cf">function</span>(x1, y1, x2, y2){</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  s1 <span class="ot">&lt;-</span> (x2 <span class="sc">-</span> x1)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  s2 <span class="ot">&lt;-</span> (y2 <span class="sc">-</span> y1)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sqrt</span>(s1 <span class="sc">+</span> s2))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">line_length</span>(<span class="fl">1.5</span>, <span class="fl">0.6</span>, <span class="fl">3.7</span>, <span class="fl">2.7</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>l</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.041381</code></pre>
 </div>
 </div>
+<p>Now that we have the line length, we can rotate the line in 75 degrees clockwise.</p>
 
 
+</section>
 </section>
 </section>
 

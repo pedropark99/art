@@ -285,7 +285,7 @@ deg2rad <- function(deg){
 }
 ```
 
-### A first example of rotation
+### A first example of rotation {#sec-rotation-example}
 
 As a first example, lets take a triangle with coordinates
 $(0,0), (1,0), (0,2)$. Lets consider we wanted to perform two different
@@ -351,6 +351,8 @@ rotated triangles follows the circumference of that circle.
 
 ```{r}
 #| echo: false
+#| fig-cap: "Rotating a triangle around the origin point"
+#| label: "fig-rotation-origin-point"
 triangle <- data.frame(
   x = c(0, 1, 0),
   y = c(3, 3, 5)
@@ -394,26 +396,76 @@ canvas +
   scale_fill_manual(values = c("#226ce3", "#0c3a85", "#a6c8ff"))
 ```
 
+In the other hand, if you do not want to have this effect in your rotation;
+if you do not want your objects to have a drastic movement around the plane;
+if you just want to rotate the object, but, at the same time, preserve
+it's current position, then, you need to perform the rotation in three different
+stages (or steps).
+
+In the first stage, you use translation to move your object to
+the origin point of the Cartesian plane. In the second stage,
+you apply the rotation to the object after the previous translation,
+that is, you use @eq-rotation1 and @eq-rotation2 to calculate the new x and y positions
+after the rotation. Then, in the final and
+third stage, you use translation again to move your object back to
+the original position it had in the Cartesian plane.
+
 ### How to rotate lines
 
-Therefore, you use @eq-rotation1 and @eq-rotation2 to calculate the new
-coordinates of a **polygon** that was rotated by a certain angle. But
+Therefore, you can use @eq-rotation1 and @eq-rotation2 to calculate the new
+coordinates of a **polygon** that was rotated by a certain angle. However,
 rotating lines is kind of a special case, because it is a bit trickier
 to rotate lines than most polygons.
 
-You can still use @eq-rotation1 and @eq-rotation2
-to calculate the new coordinates of a line after you rotated it by a
-certain angle. However, I personally find these equations less intuitive
-for this specific case.
+#### Why is it trickier?
 
-This means that there is another pair of equations that I personally
-prefer to use when I want to rotate a line. Actually, you already saw
-this pair of equations here in this book, which are
-@eq-rotation3 and @eq-rotation4 that were presented in Chapter 1.
+I mean, you can still use @eq-rotation1 and @eq-rotation2, as we were using
+before, to calculate the new coordinates of a line after you rotated it by a
+certain angle. You will definitely get an output that is mathematically right.
+But it probably will be wrong on the logic, and will likely not
+be what you really want.
+
+Generally speaking, when you are rotating a line, there are two basic scenarios, which are exposed
+in @fig-linerotation. You are normally trying to achieve one of these two scenarios.
+In the first scenario, you lock one of the endpoints of the line, then,
+you rotate the rest of the line around this locked point. Is like you were increasing (or decreasing)
+the angle of one of the triangle's edges. In contrast, in the second scenario, we
+are rotating the entire line around it's center. Is like when you are playing that "spin the bottle" game
+in teenagers parties. You are trying to rotate the bottle, but at the same time,
+maintaining it's center point intact.
+
+![Scenarios when you are trying to rotate a line](./../Figures/01-line-rotation.svg){#fig-linerotation}
+
+However, when you use directly @eq-rotation1 and @eq-rotation2 as we were using before,
+you get the effect that we described at @fig-rotation-origin-point. Thus, you rotate
+the line around the origin point of the Cartesian plane, instead of rotating it around it's center point,
+or around one of it's endpoint.
+
+So when you do use directly @eq-rotation1 and @eq-rotation2, instead
+of getting scenario 1 or scenario 2 of @fig-linerotation, you would get a visual result that would looks
+something like this:
+
+![Rotating a line around the origin point](./../Figures/01-wrong-line-rotation.svg){#fig-wrong-linerotation width=60%}
 
 
-Lets begin our example with a line with coordinates $(1.5, 0.6)$ and $(3.7, 2.7)$.
-This line is exposed in the plot below:
+#### How to solve it?
+
+But you already know the solution to this problem, because we already talked about it
+, at the end of @sec-rotation-example. If you want to perform a static rotation,
+i.e. a rotation that just rotate the object and does not move the object around
+the Cartesian plane, you need to perform the rotation in three stages:
+
+1. translation to origin.
+1. rotation.
+1. translation back to the original position.
+
+The essence is the same. So, the first thing that we need to do is to move the line
+to the origin point in the plane. Now, the way you perform this first step
+will determine which one of the two scenarios we described at @fig-linerotation
+you will get.
+
+As the example in this section, let's use the line described in the plot below.
+Which have the coordinates $(1.5, 0.6)$ and $(3.7, 2.7)$:
 
 ```{r}
 line <- data.frame(
@@ -424,6 +476,114 @@ line <- data.frame(
 canvas +
   geom_line(aes(x,y), data = line)
 ```
+
+If you want to apply a rotation over this line that looks like scenario 1, then,
+you should first choose which one of the two endpoints of the line will be
+your "locked point". After you choose the point, you apply a translation over the line,
+using the x and y positions of the "locked point" as the x and y offsets of the
+translation.
+
+In this example, let's suppose we wanted the coordinate $(1.5, 0.6)$ to be our locked point,
+and also, that we wanted to apply a 35 degrees counter-clockwise rotation to the line.
+To achieve scenario 1, we would do something like this:
+
+```{r}
+#| warning: false
+library(dplyr)
+A <- deg2rad(35)
+rotated_line <- line |>
+  mutate(x = x - 1.5, y = y - 0.6) |>
+  mutate(
+    x = (x * cos(A)) + (y * -sin(A)),
+    y = (x * sin(A)) + (y * cos(A))
+  ) |>
+  mutate(x = x + 1.5, y = y + 0.6)
+
+canvas +
+  geom_line(
+    aes(x, y, color = "Original line"),
+    data = line
+  ) +
+  geom_line(
+    aes(x, y, color = "Rotated line"),
+    data = rotated_line
+  )
+```
+
+
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+
+line_length <- function(x1, y1, x2, y2){
+  s1 <- (x2 - x1)^2
+  s2 <- (y2 - y1)^2
+  return(sqrt(s1 + s2))
+}
+l <- line_length(0, 0, 2.2, 2.1)
+
+angles <- seq(0, 360, by = 1)
+circle <- data.frame(
+  x = l * cos(deg2rad(angles)),
+  y = l * sin(deg2rad(angles))
+)
+
+
+
+A <- deg2rad(35)
+# acos( (v1x * v2x + v1y * v2y) / (sqrt(v1x^2 + v1y^2) * sqrt(v2x^2 + v2y^2)) )
+current_angle <- acos( (l * 2.2 + 0 * 2.1) / (sqrt(l^2 + 0^2) * sqrt(2.2^2 + 2.1^2)) )
+new_angle <- current_angle + A
+
+line <- data.frame(
+  x = c(0, 2.2),
+  y = c(0, 2.1)
+)
+
+rotated_line <- line |>
+  mutate(
+    x = c(0, l * cos(new_angle)),
+    y = c(0, l * sin(new_angle))
+  )
+
+
+
+
+
+ggplot() +
+  geom_line(
+    aes(x, y, color = "Vertical line"),
+    data = data.frame(x = c(0, 0), y = c(0, l))
+  ) +
+  geom_line(
+    aes(x, y, color = "Original line"),
+    data = line
+  ) +
+  geom_line(
+    aes(x, y, color = "Rotated line"),
+    data = rotated_line
+  ) +
+  geom_path(
+    aes(x, y),
+    data = circle
+  )
+
+
+```
+
+
+
+
+
+This means that there is another pair of equations that I personally
+prefer to use when I want to rotate a line. Actually, you already saw
+this pair of equations here in this book, which are
+@eq-rotation3 and @eq-rotation4 that were presented in Chapter 1.
+
+
+
 
 Lets suppose you wanted to rotate this line 75 degrees counter-clockwise.
 How you do it? In this context, the variable $r$ that is present at
