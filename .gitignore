@@ -1,3 +1,4 @@
 /.quarto/
+/site_libs/
 .Rproj.user
 .Rhistory
