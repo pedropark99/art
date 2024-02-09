@@ -7,11 +7,22 @@ pallete1 <- c(
   "#f0eab9"
 )
 
+palette2 <- c(
+  "#263F30",
+  "#EAD3D2",
+  "#361d06",
+  "#AAC0AA",
+  "white",
+#  "#83B692",
+  "#450b20",
+  "#67597A"
+)
+
 
 dados <- tibble(
   x = runif(100),
   y = runif(100),
-  color = sample(pallete1, 100, replace = TRUE)
+  color = sample(palette2, 100, replace = TRUE)
 )
 
 
@@ -22,5 +33,5 @@ dados %>%
   ) +
   scale_color_identity() +
   theme_void() +
-  theme(plot.background = element_rect(fill = pallete1[1]))
+  theme(plot.background = element_rect(fill = palette2[1]))
 
