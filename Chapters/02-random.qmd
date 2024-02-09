@@ -1,7 +1,6 @@
----
-title: "Producing chaos in an ordered manner"
----
 
+
+# Producing chaos in an ordered manner
 
 Stock prices are an example of chaos that exists in our economic system.
 For example, if tomorrow, Microsoft suffers a huge lost of investments (because

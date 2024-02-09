@@ -20,6 +20,3 @@ format:
   html:
     theme: 
       - cosmo
-  pdf:
-    fontfamily: "Times New Roman"
-    fontsize: 11pt

@@ -1,0 +1,10 @@
+---
+title: "Practical Generative Art with R and ggplot2: drawing with data"
+author: "Pedro Duarte Faria"
+date: "today"
+format:
+  typst:
+    toc: true
+    bibliography: "references.bib"
+    number-sections: true
+---

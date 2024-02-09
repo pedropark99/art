@@ -30,7 +30,7 @@ Copyright © 2024 Pedro Duarte Faria. This book is licensed by the [CC-BY 4.0 Cr
 
 [^cc-license]: <https://creativecommons.org/licenses/by/4.0/>
 
-![](Figures/creative-commoms-88x31.png){width=88px}
+![](Figures/creative-commoms-88x31.png)
 
 
 

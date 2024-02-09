@@ -1,8 +1,4 @@
----
-editor: 
-  markdown: 
-    wrap: 72
----
+
 
 # Introducing graphics transformations
 
@@ -11,6 +7,18 @@ to transform this object (or shape) in some way. For example, we might
 need to move this object to a different location in the image, or we
 might need to scale this object to a different size, or maybe, to rotate
 it into a different angle.
+
+```{r}
+#| include: false
+# A function to convert degrees into radians
+deg2rad <- function(deg){
+  return(deg * pi / 180)
+}
+# A function to convert radians into degrees
+rad2deg <- function(rad){
+  return(rad * 180/ pi)
+}
+```
 
 In computer graphics, this is called as a **transformation**. We apply a
 *transformation* to the object we have, and this object gets moved in
@@ -38,8 +46,7 @@ Cartesian field. While the strong blue rectangle represents the new
 position where the original rectangle was moved to after we applied the
 translation.
 
-![An example of translating an object in a Cartesian
-field](./../Figures/01-translation.svg){#fig-translation}
+![An example of translating an object in a Cartesian field](./../Figures/01-translation.svg){#fig-translation}
 
 But how translation works? In summary, to translate an object, all you
 have to do is to add a "x offset" and a "y offset" to all vertices of
@@ -164,8 +171,7 @@ process visually. We begin with the light blue and smaller triangle, and
 then, we scale this triangle into a bigger size, getting the strong blue
 triangle as a result.
 
-![Scaling a triangle into a bigger
-size](./../Figures/01-scaling.svg){#fig-scaling}
+![Scaling a triangle into a bigger size](./../Figures/01-scaling.svg){#fig-scaling}
 
 To scale an object, we perform essentially the same thing that we did in
 translation, which was a simple math operation over the coordinates of
@@ -242,8 +248,7 @@ with the light blue rectangle, which is parallel to the x axis, and
 then, we rotate this rectangle into a new angle, getting the strong blue
 rectangle as the result.
 
-![Rotating a rectangle into a different
-angle](./../Figures/01-rotation.svg){#fig-rotation}
+![Rotating a rectangle into a different angle](./../Figures/01-rotation.svg){#fig-rotation}
 
 Rotating an object is a little more complicated than the other
 transformations. Only because it involves some magic calculations with a
@@ -410,26 +415,26 @@ after the rotation. Then, in the final and
 third stage, you use translation again to move your object back to
 the original position it had in the Cartesian plane.
 
-### How to rotate lines
+## How to rotate lines
 
 Therefore, you can use @eq-rotation1 and @eq-rotation2 to calculate the new
 coordinates of a **polygon** that was rotated by a certain angle. However,
 rotating lines is kind of a special case, because it is a bit trickier
 to rotate lines than most polygons.
 
-#### Why is it trickier?
+### Why is it trickier?
 
 I mean, you can still use @eq-rotation1 and @eq-rotation2, as we were using
 before, to calculate the new coordinates of a line after you rotated it by a
 certain angle. You will definitely get an output that is mathematically right.
-But it probably will be wrong on the logic, and will likely not
+But this output will probably look wrong, and will likely not
 be what you really want.
 
 Generally speaking, when you are rotating a line, there are two basic scenarios, which are exposed
 in @fig-linerotation. You are normally trying to achieve one of these two scenarios.
 In the first scenario, you lock one of the endpoints of the line, then,
 you rotate the rest of the line around this locked point. Is like you were increasing (or decreasing)
-the angle of one of the triangle's edges. In contrast, in the second scenario, we
+the angle in one edge of a triangle. In contrast, in the second scenario, we
 are rotating the entire line around it's center. Is like when you are playing that "spin the bottle" game
 in teenagers parties. You are trying to rotate the bottle, but at the same time,
 maintaining it's center point intact.
@@ -441,22 +446,21 @@ you get the effect that we described at @fig-rotation-origin-point. Thus, you ro
 the line around the origin point of the Cartesian plane, instead of rotating it around it's center point,
 or around one of it's endpoint.
 
-So when you do use directly @eq-rotation1 and @eq-rotation2, instead
-of getting scenario 1 or scenario 2 of @fig-linerotation, you would get a visual result that would looks
-something like this:
+So when you use @eq-rotation1 and @eq-rotation2 directly, instead
+of getting scenario 1 or scenario 2 from @fig-linerotation, you would get a visual result that would looks something like this:
 
 ![Rotating a line around the origin point](./../Figures/01-wrong-line-rotation.svg){#fig-wrong-linerotation width=60%}
 
 
-#### How to solve it?
+### How to solve it?
 
 But you already know the solution to this problem, because we already talked about it
-, at the end of @sec-rotation-example. If you want to perform a static rotation,
-i.e. a rotation that just rotate the object and does not move the object around
-the Cartesian plane, you need to perform the rotation in three stages:
+, at the end of @sec-rotation-example. If you want to perform a static rotation
+(i.e. a rotation that just rotate the object and does not move the object around
+the Cartesian plane), you need to perform the rotation in three stages:
 
-1. translation to origin.
-1. rotation.
+1. translation to the origin point.
+1. rotate the object.
 1. translation back to the original position.
 
 The essence is the same. So, the first thing that we need to do is to move the line
@@ -511,52 +515,28 @@ canvas +
 ```
 
 
+Now, if you want to achieve the scenario 2 in @fig-linerotation instead, then, all you need
+to do is to change the x and y offsets when translating the object. Because
+in this situation, you want to move the center of the line to the origin point,
+and not one of the endpoints of the line.
+
+First, we calculate where the coordinates of the line's center. Once we have that, we
+use the x and y positions of this center point as the x and y offsets in the
+translations. As a result, we get a rotation that looks like scenario 2:
 
 ```{r}
-library(dplyr)
-library(ggplot2)
-
-
-line_length <- function(x1, y1, x2, y2){
-  s1 <- (x2 - x1)^2
-  s2 <- (y2 - y1)^2
-  return(sqrt(s1 + s2))
-}
-l <- line_length(0, 0, 2.2, 2.1)
-
-angles <- seq(0, 360, by = 1)
-circle <- data.frame(
-  x = l * cos(deg2rad(angles)),
-  y = l * sin(deg2rad(angles))
-)
-
-
-
-A <- deg2rad(35)
-# acos( (v1x * v2x + v1y * v2y) / (sqrt(v1x^2 + v1y^2) * sqrt(v2x^2 + v2y^2)) )
-current_angle <- acos( (l * 2.2 + 0 * 2.1) / (sqrt(l^2 + 0^2) * sqrt(2.2^2 + 2.1^2)) )
-new_angle <- current_angle + A
-
-line <- data.frame(
-  x = c(0, 2.2),
-  y = c(0, 2.1)
-)
+xd <- (max(line$x) + min(line$x)) / 2
+yd <- (max(line$y) + min(line$y)) / 2
 
 rotated_line <- line |>
+  mutate(x = x - xd, y = y - yd) |>
   mutate(
-    x = c(0, l * cos(new_angle)),
-    y = c(0, l * sin(new_angle))
-  )
+    x = (x * cos(A)) + (y * -sin(A)),
+    y = (x * sin(A)) + (y * cos(A))
+  ) |>
+  mutate(x = x + xd, y = y + yd)
 
-
-
-
-
-ggplot() +
-  geom_line(
-    aes(x, y, color = "Vertical line"),
-    data = data.frame(x = c(0, 0), y = c(0, l))
-  ) +
+canvas +
   geom_line(
     aes(x, y, color = "Original line"),
     data = line
@@ -564,31 +544,66 @@ ggplot() +
   geom_line(
     aes(x, y, color = "Rotated line"),
     data = rotated_line
-  ) +
-  geom_path(
-    aes(x, y),
-    data = circle
   )
-
-
 ```
 
 
+### How to rotate a line and keep the same length
 
+Maybe, you have noticed in the previous two examples, that the rotated
+line got a little smaller in length compared to the original line. This
+happened because of the way @eq-rotation1 and @eq-rotation2 works.
 
+But what if you do not want to have this effect? What you should do
+to avoid a reduction/increase in the length of the line. If that is
+your case, then, the best solution is to change completely the
+strategy we are using to rotate the line.
 
-This means that there is another pair of equations that I personally
-prefer to use when I want to rotate a line. Actually, you already saw
+This new strategy, involves the use of another pair of equations
+to rotate the line. Actually, you already saw
 this pair of equations here in this book, which are
 @eq-rotation3 and @eq-rotation4 that were presented in Chapter 1.
 
+We use @eq-rotation3 and @eq-rotation4 to calculate the coordinate of
+any point in the circumference of a circle. But we can also use these
+equations to calculate the coordinates of a line rotated
+to a specific angle.
+
+In this context, we want to use the simplified versions
+of @eq-rotation3 and @eq-rotation4,
+which uses a circle that is centered at the origin point
+of the Cartesian plane. Besides that, in this context,
+the variable $r$ that is present both at
+@eq-rotation3 and @eq-rotation4 becomes the length of the line
+we want to calculate.
+
+Having that in mind, given that $x'$ and $y'$ are the x and y
+positions of the line, that $l$ is the line's length, and
+that $A$ is the angle of the line, we get the following formulas:
+
+$$
+x' = l \times \cos(A)
+$${#eq-line-rotation1}
+
+
+$$
+y' = l \times \sin(A)
+$${#eq-line-rotation2}
+
+
+By using these equations, we can calculate the coordinates of line with length $l$, that is in a specific angle $A$. But in order to use these two equations,
+we first need to calculate:
+
+1. the length of our line.
+1. the current angle of our line.
 
 
 
-Lets suppose you wanted to rotate this line 75 degrees counter-clockwise.
-How you do it? In this context, the variable $r$ that is present at
-@eq-rotation3 and @eq-rotation4 becomes the length of the line.
-So, first, we need to calculate the length of the line.
+### Calculating the length of the line
+
+Let's start by calculating the length of our line. Remember that,
+we are using the line with coordinates
+$(1.5, 0.6)$ and $(3.7, 2.7)$ as our main example here.
 
 Given that $l$ is the line length that we want to calculate, and that
 $x_1$ and $y_1$ are the x and y positions of any of the endpoints
@@ -605,7 +620,7 @@ Is important to emphasize, that you can choose whatever endpoint
 you want for $x_1$ and $y_1$. It can be the leftmost point of the line,
 or the rightmost. Once you choose the endpoint for $x_1$ and $y_1$,
 the endpoint for $x_2$ and $y_2$ automatically becomes the other
-endpoint.
+endpoint of the line.
 
 In our example, lets use $(1.5, 0.6)$ as our endpoint 1, and $(3.7, 2.7)$
 as our endpoint 2. With that, the line length is:
@@ -615,7 +630,8 @@ l = \sqrt{(3.7 - 1.5)^2 + (2.7 - 0.6)^2}=3.041381
 $$
 
 We can obviously encapsulate @eq-linelength into a nice R function that we can reuse
-whenever we want. If we do that, we get a function similar to `line_length()` below:
+whenever we want. If we do that, we get a function similar to `line_length()` below.
+You can see that we get the same result as above:
 
 ```{r}
 # Function to calculate the length of a line
@@ -630,7 +646,205 @@ l
 ```
 
 
-Now that we have the line length, we can rotate the line in 75 degrees clockwise.
+
+### Calculating the current angle of the line
+
+You can easily calculate the current angle of a line by using
+the arc-tangent function with two arguments, also known as the
+`atan2()` function from R.
+
+However, before you use this function, you have to move/translate
+your line to the origin point of the Cartesian plane. This way, you will
+get a single $(x, y)$ coordinate that is capable of identifying the line,
+because the other coordinate will always be the origin point - $(0, 0)$.
+
+We can see in the result below, that the new coordinate of the endpoint
+of the line after we translated it to the origin point is $(2.2, 2.1)$.
+
+```{r}
+translated_line <- line |>
+  mutate(
+    x = x - min(x),
+    y = y - min(y)
+  )
+
+translated_line
+```
+
+So this is the coordinate we need to use in the `atan2()` function.
+For some reason, in `atan2()` you need to provide the y position first,
+and the x position second. A little and odd detail about this function.
+
+Anyway, the code below demonstrates that the current angle of our line is
+approximately 43.6 degrees.
+
+```{r}
+A <- atan2(2.1, 2.2)
+print(glue::glue("In radians: {A}"))
+D <- rad2deg(A)
+print(glue::glue("In degrees: {D}"))
+```
+
+
+If you prefer, there is also another method to to calculate the angle
+of a line. But this other method involves a weird formula from geometry.
+This formula is used to calculate the angle between two vectors
+in the Euclidean space.
+
+To use this formula you must provide the coordinates of two vectors.
+Is worth noting that each vector is identified by a single $(x, y)$ coordinate.
+Because both vectors starts at the origin point ($(0, 0)$) and goes to $(x, y)$ coordinate, which is the x and y positions that mark the endpoint of the vector.
+
+Given that $x_1$ and $y_1$ are the x and y positions of vector 1,
+and that $x_2$ and $y_2$ are the x and y positions
+of the other vector, you can calculate the angle (in radians)
+between these two vectors by following the formula below.
+In this formula, $\arccos$ represents the arc-cosine function,
+which is the inverse function for cosine.
+
+$$
+A = \arccos{\frac{
+    (x_1 \times x_2) + (y_1 \times y_2)
+  }
+  {
+    \sqrt{x_1^2 + y_1^2} \times \sqrt{x_2^2 + y_2^2}
+  }}
+$${#eq-current-angle}
+
+
+Is a good idea to incorporate this crazy formula into a nice
+and simple R function, to make our life much easier. If we do that,
+we get the `line_angle()` function below as result:
+
+```{r}
+line_angle <- function(x1, y1, x2, y2){
+  h <- (x1 * x2) + (y1 * y2)
+  b <- sqrt((x1 ^ 2) + (y1 ^ 2)) *
+    sqrt((x2 ^ 2) + (y2 ^ 2))
+  
+  return(acos(h/b))
+}
+```
+
+The $x_2$ and $y_2$ coordinates should represent the x axis. So, you
+can set these variables to $x_2 = 4$ and $y_2 = 0$ for example.
+In the other hand, $x_2$ and $y_2$ coordinates are the same as
+we used in `atan2()`, that is, $x_1 = 2.2$ and $y_1 = 2.1$.
+
+You can see below that, by using the `line_angle()` function
+we got the exact same results as the `atan2()` function.
+
+```{r}
+A <- line_angle(2.2, 2.1, 4, 0)
+print(glue::glue("In radians: {A}"))
+D <- rad2deg(A)
+print(glue::glue("In degrees: {D}"))
+```
+
+
+
+### Rotating the line
+
+Now that we have the two essential information we
+needed: 1) the length of the line; 2) the current
+angle of the line. We can proceed and effectively rotate
+the line, while, at the same time, maintaining the length
+of the line intact.
+
+
+
+```{r}
+# Current angle
+A <- atan2(2.1, 2.2)
+# Current angle + the angle we want to rotate
+A <- A + deg2rad(35)
+# The length of the line
+l <- line_length(1.5, 0.6, 3.7, 2.7)
+rotated_line <- line |>
+  mutate(
+    x = c(0, l * cos(A)),
+    y = c(0, l * sin(A))
+  ) |>
+  mutate(
+    x = x + 1.5,
+    y = y + 0.6
+  )
+
+canvas +
+  geom_path(
+    aes(x, y, color = "Rotated line"),
+    data = rotated_line
+  ) +
+  geom_path(
+    aes(x, y, color = "Original line"),
+    data = line
+  )
+```
+
+
+Remember, the above example uses the values $1.5$ and $0.6$ as
+the x and y offsets in the translations to produce a rotation similar
+to scenario 1 presented at @fig-linerotation.
+
+If you want a rotation similar to scenario 2 instead, then,
+you have to change the x and y offsets in the translation
+to move your rotated line back to the center point of your
+original line. In other words, if $l1$ is your original line
+, and $l2$ is the rotated version of the line, you have
+to choose x and y offsets in the translation that will
+lined up the center point of $l2$ with the center point
+of $l1$.
+
+If we wanted to replicate the scenario 2 for the above example, we
+would need first, to calculate the coordinates of the center point
+of both $l1$ and $l2$, then, calculate the difference between the
+coordinates of these two center points, then, use this difference
+as the x and y offsets in the translation.
+
+Take the case below as an example:
+
+
+```{r}
+rotated_line <- line |>
+  mutate(
+    x = c(0, l * cos(A)),
+    y = c(0, l * sin(A))
+  )
+
+rotated_centerx <- (
+  max(rotated_line$x)
+  + min(rotated_line$x)
+) / 2
+rotated_centery <- (
+  max(rotated_line$y)
+  + min(rotated_line$y)
+) / 2
+
+original_centerx <- (
+  max(line$x) + min(line$x)
+) / 2
+original_centery <- (
+  max(line$y) + min(line$y)
+) / 2
+
+xd <- original_centerx - rotated_centerx
+yd <- original_centery - rotated_centery
+rotated_line <- rotated_line |>
+  mutate(
+    x = x + xd,
+    y = y + yd
+  )
+
+canvas +
+  geom_path(
+    aes(x, y, color = "Rotated line"),
+    data = rotated_line
+  ) +
+  geom_path(
+    aes(x, y, color = "Original line"),
+    data = line
+  )
+```
 
 
 
