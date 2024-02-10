@@ -129,6 +129,7 @@ draw_line <- function(start_position){
   ))
 }
 
+set.seed(10)
 n_lines <- 300
 xs <- runif(n_lines, 50, 450)
 ys <- runif(n_lines, 50, 450)
@@ -149,7 +150,8 @@ sampled_colors <- tibble(
   color = sample(palette2, n_lines, replace = TRUE)
 )
 
-lines <- lines %>% left_join(sampled_colors)
+lines <- lines %>%
+  left_join(sampled_colors)
 
 
 pl <- lines %>% 
@@ -158,13 +160,17 @@ pl <- lines %>%
     aes(x, y, group = line_id, color = color),
   ) +
   cartesian_grid +
-  background +
+  theme_void() +
   scale_color_identity()
+
+print(pl)
+
+
 
 ragg::agg_png("Cover/Figures/flow_field1.png",
         res = 500,
-        width = 5600,
-        height = 3600)
+        width = 5000,
+        height = 4200, background = NULL)
 print(pl)
 dev.off()
 
