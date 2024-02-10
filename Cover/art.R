@@ -145,13 +145,31 @@ lines <- map_dfr(
 ) %>% 
   mutate(line_id = as.integer(line_id))
 
-sampled_colors <- tibble(
+set.seed(10)
+random_colors <- tibble(
   line_id = seq_len(n_lines),
   color = sample(palette2, n_lines, replace = TRUE)
 )
+lines <- lines %>% left_join(random_colors)
 
-lines <- lines %>%
-  left_join(sampled_colors)
+
+### To end the lines in random places: 
+# set.seed(10)
+# random_ends <- as.integer(runif(n_lines, 5, 50))
+# random_colors <- sample(palette2, n_lines, replace = TRUE)
+# lines <- lines %>% 
+#   group_by(line_id) %>% 
+#   summarise(max_step_id = max(step_id)) %>% 
+#   mutate(
+#     max_step_id = if_else(max_step_id > 50, max_step_id - random_ends, max_step_id),
+#     color = random_colors,
+#     step_id = map(max_step_id, function(x) seq_len(x))
+#   ) %>%
+#   unnest(c(step_id)) %>% 
+#   left_join(lines, by = join_by(line_id, step_id))
+
+
+
 
 
 pl <- lines %>% 
