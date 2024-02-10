@@ -505,6 +505,14 @@ as input.
 - `sin()` for sine;
 - `tan()` for tangent;
 
+We also have an inverse function for each of one of these
+three main trigonometric functions. These functions are commonly referred to
+as the "arc functions".
+
+- `acos()` for arc-cosine (inverse of cosine);
+- `asin()` for arc-sine (inverse of sine);
+- `atan()` and `atan2()` for arc-tangent (inverse of tangent);
+
 
 ### Calculate coordinates in a circle
 
