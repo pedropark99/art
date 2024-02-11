@@ -61,7 +61,7 @@ to produce chaos. But you can achieve that, if you want to,
 by asking the computer to produce random values, and using
 these random values as factors to produce the chaos you want.
 
-## The different styles of randomness
+## The different styles of randomness {#sec-random-styles}
 
 We have different generators of random values available in R.
 Each generator produces random values following a specific
@@ -92,6 +92,38 @@ which are:
 - `ambient::noise_simplex()`: produces random values using the Simplex Noise algorithm.
 
 [^ambient-pkg]: <https://ambient.data-imaginist.com/index.html>.
+
+
+## About seeds and number generation
+
+Computers are very precise machines, and as a result of that,
+they cannot generate "true random numbers". Instead, they use an
+"initial state" as the basis for generating the random values.
+Having that in mind, we can say that computers generate
+"pseudo-random numbers".
+
+The computer can use multiple things as the "initial state" for this generation.
+A classical example is the current time stamp in the internal clock of the computer.
+Another example is to use a specific integer that represents this state. Or also,
+the current prediction of wheather in the day.
+
+Despite this wide range of options, the majority of generators in the industry
+opted for using "seeds" as the main option for representing the state in
+random number generation. This means that, to generate random numbers
+in R, or in Python, or in JavaScript, or in any other technology
+you may use in the future, a "seed" is used as the initial state from
+which they will generate the random numbers.
+
+R itself does the job of automatically choosing a random seed to use
+as the initial state for you. But if you need to, you can explicity
+set the seed you want to use, and by setting the seed/state you want to
+use, you become capable of producing the same. And when you do that, you can generate
+the same set of random numbers.
+
+This "seed" is represented as an integer. Each integer represents
+a different seed that can be used.
+
+he values produced by the generators  
 
 
 ## Generating one dimensional randomness
