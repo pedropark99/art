@@ -392,7 +392,7 @@ a complete turn in a circle is an angle of 360 degrees. As consequence,
 an angle measured in degrees is usually a number between 0 and 360,
 followed by the character **°** (which is the degree symbol).
 
-### The direction of the rotation
+### The direction of the rotation {#sec-angle-direction}
 
 But one thing that not many people remember from math class, is that
 angles can also be negative. That is, an angle does not have to be a
@@ -411,14 +411,14 @@ counter-clockwise movement. @fig-clockwise presents this idea visually:
 ### Trigonometry and the Radians measure
 
 Although we are used to talk about angles using the degrees measure,
-**in trigonometry, angles are measured using the radians measure**. As
+**in trigonometry, angles are measured in radians**. As
 consequence, every function used in trigonometry (like tangent or
-cosine) uses radians values as input.
+cosine) uses radians values as input, instead of degrees values.
 
 Using radians instead of degrees to measure angles changes nothing about
 what the angle actually is, and it also changes nothing about how the
 signal of the angle changes the direction of the rotation made by that
-angle.
+angle, as I showed at @sec-angle-direction.
 
 Radians is just a different scale, with a different range of values.
 This means that a negative radian value still represents a negative
@@ -446,10 +446,10 @@ in_radians <- (in_degrees / 360) * (2 * pi)
 round(in_radians, 2)
 ```
 
-### Convert degrees to angles and vice-versa
+### Convert degrees into radians and vice-versa
 
 Let's establish a common formula to use when converting degrees values
-into radian values, and vice-versa. Given that $d$ is an angle in
+into radians values, and vice-versa. Given that $d$ is an angle in
 degrees, and that $\pi$ represents the PI value, you can calculate the
 value in radians ($r$) that represents this exact same angle by
 following the formula below:
@@ -580,9 +580,10 @@ then, you get an actual circle.
 #| fig-width: 3.5
 #| fig-height: 3.5
 angles <- seq(0, 360, by = 10)
+angles <- deg2rad(angles)
 circle <- data.frame(
-  x = 5 * cos(deg2rad(angles)),
-  y = 5 * sin(deg2rad(angles))
+  x = 5 * cos(angles),
+  y = 5 * sin(angles)
 )
 
 ggplot(circle) + geom_point(aes(x, y))

@@ -238,9 +238,9 @@ window.Quarto = {
   </ul></li>
   <li><a href="#angles-and-trigonometry" id="toc-angles-and-trigonometry" class="nav-link" data-scroll-target="#angles-and-trigonometry"><span class="header-section-number">1.3</span> Angles and trigonometry</a>
   <ul class="collapse">
-  <li><a href="#the-direction-of-the-rotation" id="toc-the-direction-of-the-rotation" class="nav-link" data-scroll-target="#the-direction-of-the-rotation"><span class="header-section-number">1.3.1</span> The direction of the rotation</a></li>
+  <li><a href="#sec-angle-direction" id="toc-sec-angle-direction" class="nav-link" data-scroll-target="#sec-angle-direction"><span class="header-section-number">1.3.1</span> The direction of the rotation</a></li>
   <li><a href="#trigonometry-and-the-radians-measure" id="toc-trigonometry-and-the-radians-measure" class="nav-link" data-scroll-target="#trigonometry-and-the-radians-measure"><span class="header-section-number">1.3.2</span> Trigonometry and the Radians measure</a></li>
-  <li><a href="#convert-degrees-to-angles-and-vice-versa" id="toc-convert-degrees-to-angles-and-vice-versa" class="nav-link" data-scroll-target="#convert-degrees-to-angles-and-vice-versa"><span class="header-section-number">1.3.3</span> Convert degrees to angles and vice-versa</a></li>
+  <li><a href="#convert-degrees-into-radians-and-vice-versa" id="toc-convert-degrees-into-radians-and-vice-versa" class="nav-link" data-scroll-target="#convert-degrees-into-radians-and-vice-versa"><span class="header-section-number">1.3.3</span> Convert degrees into radians and vice-versa</a></li>
   <li><a href="#trigonometric-functions" id="toc-trigonometric-functions" class="nav-link" data-scroll-target="#trigonometric-functions"><span class="header-section-number">1.3.4</span> Trigonometric functions</a></li>
   <li><a href="#calculate-coordinates-in-a-circle" id="toc-calculate-coordinates-in-a-circle" class="nav-link" data-scroll-target="#calculate-coordinates-in-a-circle"><span class="header-section-number">1.3.5</span> Calculate coordinates in a circle</a></li>
   </ul></li>
@@ -498,8 +498,8 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 <h2 data-number="1.3" class="anchored" data-anchor-id="angles-and-trigonometry"><span class="header-section-number">1.3</span> Angles and trigonometry</h2>
 <p>Trigonometry is the back-bone of circles. This is a really important topic in computer graphics, because is by using angles that we can rotate things in the computer screen, and is also by using trigonometry that we can draw curves.</p>
 <p>First, lets talk about angles. Angles, are usually measured in degrees (like 90 degrees, or 154 degrees), and is much easier for us, mere humans, to think about angles in this form. We learn in basic math that a complete turn in a circle is an angle of 360 degrees. As consequence, an angle measured in degrees is usually a number between 0 and 360, followed by the character <strong>°</strong> (which is the degree symbol).</p>
-<section id="the-direction-of-the-rotation" class="level3" data-number="1.3.1">
-<h3 data-number="1.3.1" class="anchored" data-anchor-id="the-direction-of-the-rotation"><span class="header-section-number">1.3.1</span> The direction of the rotation</h3>
+<section id="sec-angle-direction" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="sec-angle-direction"><span class="header-section-number">1.3.1</span> The direction of the rotation</h3>
 <p>But one thing that not many people remember from math class, is that angles can also be negative. That is, an angle does not have to be a positive number, you can also have negative numbers, like an angle of -35 degrees. But when you change the signal of the number, you change the “direction” of the angle.</p>
 <p>In more details, the signal of the angle (if it is a positive or negative number) defines the direction of the movement, or, the direction of the rotation that the angle performs. A negative angle makes a clockwise movement, while a positive angle, makes a counter-clockwise movement. <a href="#fig-clockwise" class="quarto-xref">Figure&nbsp;<span>1.4</span></a> presents this idea visually:</p>
 <div id="fig-clockwise" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -515,8 +515,8 @@ Figure&nbsp;1.4: The rotation direction in positive angles vs negative angles, v
 </section>
 <section id="trigonometry-and-the-radians-measure" class="level3" data-number="1.3.2">
 <h3 data-number="1.3.2" class="anchored" data-anchor-id="trigonometry-and-the-radians-measure"><span class="header-section-number">1.3.2</span> Trigonometry and the Radians measure</h3>
-<p>Although we are used to talk about angles using the degrees measure, <strong>in trigonometry, angles are measured using the radians measure</strong>. As consequence, every function used in trigonometry (like tangent or cosine) uses radians values as input.</p>
-<p>Using radians instead of degrees to measure angles changes nothing about what the angle actually is, and it also changes nothing about how the signal of the angle changes the direction of the rotation made by that angle.</p>
+<p>Although we are used to talk about angles using the degrees measure, <strong>in trigonometry, angles are measured in radians</strong>. As consequence, every function used in trigonometry (like tangent or cosine) uses radians values as input, instead of degrees values.</p>
+<p>Using radians instead of degrees to measure angles changes nothing about what the angle actually is, and it also changes nothing about how the signal of the angle changes the direction of the rotation made by that angle, as I showed at <a href="#sec-angle-direction" class="quarto-xref"><span>Section 1.3.1</span></a>.</p>
 <p>Radians is just a different scale, with a different range of values. This means that a negative radian value still represents a negative angle, that performs a clockwise movement, while a positive radian value represents a positive angle, that performs a counter-clockwise movement.</p>
 <p>In summary, the radians scale is completely based on the PI value, which is denoted by the <span class="math inline">\(\pi\)</span> symbol. If you ever need to use the PI value in R, you can simply use the built-in variable called <code>pi</code> that stores the PI value for you.</p>
 <div class="cell">
@@ -535,9 +535,9 @@ Figure&nbsp;1.4: The rotation direction in positive angles vs negative angles, v
 </div>
 </div>
 </section>
-<section id="convert-degrees-to-angles-and-vice-versa" class="level3" data-number="1.3.3">
-<h3 data-number="1.3.3" class="anchored" data-anchor-id="convert-degrees-to-angles-and-vice-versa"><span class="header-section-number">1.3.3</span> Convert degrees to angles and vice-versa</h3>
-<p>Let’s establish a common formula to use when converting degrees values into radian values, and vice-versa. Given that <span class="math inline">\(d\)</span> is an angle in degrees, and that <span class="math inline">\(\pi\)</span> represents the PI value, you can calculate the value in radians (<span class="math inline">\(r\)</span>) that represents this exact same angle by following the formula below:</p>
+<section id="convert-degrees-into-radians-and-vice-versa" class="level3" data-number="1.3.3">
+<h3 data-number="1.3.3" class="anchored" data-anchor-id="convert-degrees-into-radians-and-vice-versa"><span class="header-section-number">1.3.3</span> Convert degrees into radians and vice-versa</h3>
+<p>Let’s establish a common formula to use when converting degrees values into radians values, and vice-versa. Given that <span class="math inline">\(d\)</span> is an angle in degrees, and that <span class="math inline">\(\pi\)</span> represents the PI value, you can calculate the value in radians (<span class="math inline">\(r\)</span>) that represents this exact same angle by following the formula below:</p>
 <p><span id="eq-deg2rad"><span class="math display">\[
 r = \frac{d \times \pi}{180}
 \tag{1.1}\]</span></span></p>
@@ -606,12 +606,13 @@ y' = Cy + (r \times \sin(A));
 <p>You can see in the plot below that, the points follow the shape of a circle. If you change the geom from <code>geom_point()</code> to <code>geom_path()</code>, then, you get an actual circle.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">360</span>, <span class="at">by =</span> <span class="dv">10</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>circle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(<span class="fu">deg2rad</span>(angles)),</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="fu">deg2rad</span>(angles))</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(circle) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(angles)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>circle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(angles),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(angles)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(circle) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

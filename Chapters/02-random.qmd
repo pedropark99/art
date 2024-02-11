@@ -38,5 +38,73 @@ chaos and randomness. But you also want to balance this chaos with some
 degree of order. Hence the current chapter title (producing chaos in an ordered manner).
 
 
+## The begin
+
+```{r}
+library(ggplot2)
+n <- 100
+random <- matrix(
+  c(runif(n), runif(n)),
+  n, n
+)
+
+d <- data.frame(
+  col_id = rep(seq_len(n), each = n),
+  row_id = rep(seq_len(n), times = n),
+  value = random |> as.vector()
+)
+
+
+ggplot(d) +
+  geom_point(
+    aes(x = col_id, y = row_id, color = value )
+  ) +
+  theme_void()
+```
+
+
+
+```{r}
+set.seed(40)
+x <- rnorm(n)
+set.seed(45)
+y <- rnorm(n)
+random <- matrix(c(x, y), n, n)
+
+d <- data.frame(
+  col_id = rep(seq_len(n), each = n),
+  row_id = rep(seq_len(n), times = n),
+  value = random |> as.vector()
+)
+
+
+ggplot(d) +
+  geom_point(
+    aes(x = col_id, y = row_id, color = value )
+  ) +
+  theme_void()
+```
+
+
+
+```{r}
+library(ambient)
+random <- noise_perlin(c(n, n))
+
+d <- data.frame(
+  col_id = rep(seq_len(n), each = n),
+  row_id = rep(seq_len(n), times = n),
+  value = random |> as.vector()
+)
+
+
+ggplot(d) +
+  geom_point(
+    aes(x = col_id, y = row_id, color = value )
+  ) +
+  theme_void()
+```
+
+
 
 
