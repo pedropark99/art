@@ -1,7 +1,4 @@
-
-
-# Producing chaos in an ordered manner
-
+<!--
 Stock prices are an example of chaos that exists in our economic system.
 For example, if tomorrow, Microsoft suffers a huge lost of investments (because
 of a wrong strategy, or some internal scandal, etc.), the stock prices
@@ -22,7 +19,6 @@ But there are so many effects (both in quantity and in quality), that becomes im
 to comprehend all of these effects at once, hence the "chaos feeling" that you feel
 when you work with the stock market.
 
-
 This is frustrating for humans. We want to comprehend everything we are seeing!
 We want to know why, when, who and how everything happens.
 But at the same time, we as humans have limited resources: a limit
@@ -36,17 +32,83 @@ We can easily understand what we are seeing in the image.
 So when you are building your generative art, you want some degree of
 chaos and randomness. But you also want to balance this chaos with some
 degree of order. Hence the current chapter title (producing chaos in an ordered manner).
+-->
 
 
-## The begin
+# Producing chaos in an ordered manner
+
+In this chapter, we will study more about how to produce chaos
+with randomness. We will learn about the different styles of
+randomness that are available in R, and we will also learn
+about producing randomness in one and two dimensional spaces.
+
+Generative art is mostly a synergy between chaos and order.
+A big part of it comes from combining random patterns
+we find in nature with the order and logic of math.
+In other words, we use geometry and a lot of math to draw and mold shapes
+in the screen, and we combine that with randomness to
+achieve random patterns that are interesting to look
+at.
+
+However, chaos is a hard topic in general for us, programmers. Because
+our job is the complete opposite of chaos. We work with
+logic, precision, and computers. Chaos and randomness is not
+a part of our essence.
+
+Furthermore, computers are, essentially, precision machines.
+As a result, it seems very wrong and unlikely to use them
+to produce chaos. But you can achieve that, if you want to,
+by asking the computer to produce random values, and using
+these random values as factors to produce the chaos you want.
+
+## The different styles of randomness
+
+We have different generators of random values available in R.
+Each generator produces random values following a specific
+rule or target. And as a consequence of that, the
+randomness that each generator produces will be slightly different
+from the others.
+
+In base R, there at least three generators that you must known:
+
+- `runif()` produces random values that follow a uniform distribution;
+- `rnorm()` produces random values that follow a normal distribution;
+- `sample()` produces a random sample from a set of values;
+
+The functions `runif()` and `rnorm()` can be used to generate random numbers, and
+the function `sample()` can be used when you are trying to select a random sample
+from a known set of values. To some extent, you can say that `sample()` is used
+whenever you want to randomly select a value (or select a random sample of values)
+from a known set of values.
+
+There are other generators available in R that might be very useful,
+specially trough the `ambient` R package[^ambient-pkg],
+which is a R interface to the `FastNoise` C++ library.
+
+This `ambient` package offers two other generators that will be discussed here,
+which are:
+
+- `ambient::noise_perlin()`: produces random values using the Perlin Noise algorithm.
+- `ambient::noise_simplex()`: produces random values using the Simplex Noise algorithm.
+
+[^ambient-pkg]: <https://ambient.data-imaginist.com/index.html>.
+
+
+## Generating one dimensional randomness
+
+We begin our discussion by generating random values in one dimension.
+Since, these generators from the `ambient` R package are generators for 2 to 3 dimensions.
+Because of that, we will talk about them solely at @sec-two-dimensions-random.
+
+## Generating two dimensional randomness {#sec-two-dimensions-random}
+
+### The true randomness of `runif()`
 
 ```{r}
 library(ggplot2)
 n <- 100
-random <- matrix(
-  c(runif(n), runif(n)),
-  n, n
-)
+set.seed(40)
+random <- matrix(runif(n ^ 2), n, n)
 
 d <- data.frame(
   col_id = rep(seq_len(n), each = n),
@@ -57,19 +119,32 @@ d <- data.frame(
 
 ggplot(d) +
   geom_point(
-    aes(x = col_id, y = row_id, color = value )
+    aes(x = col_id, y = row_id, color = value),
+    size = 3
   ) +
   theme_void()
 ```
 
+When we use `rnorm()`, it still produces a pretty random result. However,
+we can see that the colors are more flat, they seem less random compared
+to `runif()`. What is happening is that `rnorm()` outputs random values
+based on a probabilistic distribution, or more specifically, based on
+a mean value.
 
+The end result of this, is that `rnorm()` tend to output values that
+are closer to the mean of the probabilistic distribution. In the case
+below, the mean value of the distribution is zero. So, the colors in
+the image below seen more flat, because the majority of the values
+sorted by `rnorm()` are values that are very close to zero.
+
+Hence, what you see in the image below is still a collection of many random values.
+But a big chunk of these random values are values that are very close to zero.
+That is why most of the points in this image are in the middle of
+the black and blue gradient scale.
 
 ```{r}
 set.seed(40)
-x <- rnorm(n)
-set.seed(45)
-y <- rnorm(n)
-random <- matrix(c(x, y), n, n)
+random <- matrix(rnorm(n ^ 2), n, n)
 
 d <- data.frame(
   col_id = rep(seq_len(n), each = n),
@@ -80,7 +155,8 @@ d <- data.frame(
 
 ggplot(d) +
   geom_point(
-    aes(x = col_id, y = row_id, color = value )
+    aes(x = col_id, y = row_id, color = value),
+    size = 3
   ) +
   theme_void()
 ```
@@ -100,7 +176,8 @@ d <- data.frame(
 
 ggplot(d) +
   geom_point(
-    aes(x = col_id, y = row_id, color = value )
+    aes(x = col_id, y = row_id, color = value),
+    size = 3
   ) +
   theme_void()
 ```

@@ -110,11 +110,31 @@
     ]
   },
   {
-    "objectID": "Chapters/02-random.html#the-begin",
-    "href": "Chapters/02-random.html#the-begin",
+    "objectID": "Chapters/02-random.html#two-dimensional-randomness",
+    "href": "Chapters/02-random.html#two-dimensional-randomness",
     "title": "3  Producing chaos in an ordered manner",
-    "section": "3.1 The begin",
-    "text": "3.1 The begin\n\nlibrary(ggplot2)\n\nWarning: package 'ggplot2' was built under R version 4.3.2\n\nn &lt;- 100\nrandom &lt;- matrix(\n  c(runif(n), runif(n)),\n  n, n\n)\n\nd &lt;- data.frame(\n  col_id = rep(seq_len(n), each = n),\n  row_id = rep(seq_len(n), times = n),\n  value = random |&gt; as.vector()\n)\n\n\nggplot(d) +\n  geom_point(\n    aes(x = col_id, y = row_id, color = value )\n  ) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nset.seed(40)\nx &lt;- rnorm(n)\nset.seed(45)\ny &lt;- rnorm(n)\nrandom &lt;- matrix(c(x, y), n, n)\n\nd &lt;- data.frame(\n  col_id = rep(seq_len(n), each = n),\n  row_id = rep(seq_len(n), times = n),\n  value = random |&gt; as.vector()\n)\n\n\nggplot(d) +\n  geom_point(\n    aes(x = col_id, y = row_id, color = value )\n  ) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nlibrary(ambient)\n\nWarning: package 'ambient' was built under R version 4.3.2\n\nrandom &lt;- noise_perlin(c(n, n))\n\nd &lt;- data.frame(\n  col_id = rep(seq_len(n), each = n),\n  row_id = rep(seq_len(n), times = n),\n  value = random |&gt; as.vector()\n)\n\n\nggplot(d) +\n  geom_point(\n    aes(x = col_id, y = row_id, color = value )\n  ) +\n  theme_void()",
+    "section": "3.2 Two dimensional randomness",
+    "text": "3.2 Two dimensional randomness\n\n3.2.1 The true randomness of runif()\n\nlibrary(ggplot2)\n\nWarning: package 'ggplot2' was built under R version 4.3.2\n\nn &lt;- 100\nset.seed(40)\nrandom &lt;- matrix(runif(n ^ 2), n, n)\n\nd &lt;- data.frame(\n  col_id = rep(seq_len(n), each = n),\n  row_id = rep(seq_len(n), times = n),\n  value = random |&gt; as.vector()\n)\n\n\nggplot(d) +\n  geom_point(\n    aes(x = col_id, y = row_id, color = value),\n    size = 3\n  ) +\n  theme_void()\n\n\n\n\n\n\n\n\nWhen we use rnorm(), it still produces a pretty random result. However, we can see that the colors are more flat, they seem less random compared to runif(). What is happening is that rnorm() outputs random values based on a probabilistic distribution, or more specifically, based on a mean value.\nThe end result of this, is that rnorm() tend to output values that are closer to the mean of the probabilistic distribution. In the case below, the mean value of the distribution is zero. So, the colors in the image below seen more flat, because the majority of the values sorted by rnorm() are values that are very close to zero.\nHence, what you see in the image below is still a collection of many random values. But a big chunk of these random values are values that are very close to zero. That is why most of the points in this image are in the middle of the black and blue gradient scale.\n\nset.seed(40)\nrandom &lt;- matrix(rnorm(n ^ 2), n, n)\n\nd &lt;- data.frame(\n  col_id = rep(seq_len(n), each = n),\n  row_id = rep(seq_len(n), times = n),\n  value = random |&gt; as.vector()\n)\n\n\nggplot(d) +\n  geom_point(\n    aes(x = col_id, y = row_id, color = value),\n    size = 3\n  ) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nlibrary(ambient)\n\nWarning: package 'ambient' was built under R version 4.3.2\n\nrandom &lt;- noise_perlin(c(n, n))\n\nd &lt;- data.frame(\n  col_id = rep(seq_len(n), each = n),\n  row_id = rep(seq_len(n), times = n),\n  value = random |&gt; as.vector()\n)\n\n\nggplot(d) +\n  geom_point(\n    aes(x = col_id, y = row_id, color = value),\n    size = 3\n  ) +\n  theme_void()",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Producing chaos in an ordered manner</span>"
+    ]
+  },
+  {
+    "objectID": "Chapters/02-random.html#the-different-styles-of-randomness",
+    "href": "Chapters/02-random.html#the-different-styles-of-randomness",
+    "title": "3  Producing chaos in an ordered manner",
+    "section": "3.1 The different styles of randomness",
+    "text": "3.1 The different styles of randomness\nWe have different generators of random values available in R. Each generator produces random values following a specific rule or target. And as a consequence of that, the randomness that each generator produces will be slightly different from the others.\nIn base R, there at least three generators that you must known:\n\nrunif() produces random values that follow a uniform distribution;\nrnorm() produces random values that follow a normal distribution;\nsample() produces a random sample from a set of values;\n\nThe functions runif() and rnorm() can be used to generate random numbers, and the function sample() can be used when you are trying to select a random sample from a known set of values. To some extent, you can say that sample() is used whenever you want to randomly select a value (or select a random sample of values) from a known set of values.\nThere are other generators available in R that might be very useful, specially trough the ambient R package1, which is a R interface to the FastNoise C++ library.\nThis ambient package offers other two generators that are very important to us, which are:\n\nambient::noise_perlin(): produces random values using the Perlin Noise algorithm.\nambient::noise_simplex(): produces random values using the Simplex Noise algorithm.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Producing chaos in an ordered manner</span>"
+    ]
+  },
+  {
+    "objectID": "Chapters/02-random.html#footnotes",
+    "href": "Chapters/02-random.html#footnotes",
+    "title": "3  Producing chaos in an ordered manner",
+    "section": "",
+    "text": "https://ambient.data-imaginist.com/index.html.↩︎",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Producing chaos in an ordered manner</span>"
     ]

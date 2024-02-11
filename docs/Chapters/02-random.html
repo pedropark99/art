@@ -173,7 +173,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-begin" id="toc-the-begin" class="nav-link active" data-scroll-target="#the-begin"><span class="header-section-number">3.1</span> The begin</a></li>
+  <li><a href="#the-different-styles-of-randomness" id="toc-the-different-styles-of-randomness" class="nav-link active" data-scroll-target="#the-different-styles-of-randomness"><span class="header-section-number">3.1</span> The different styles of randomness</a></li>
+  <li><a href="#two-dimensional-randomness" id="toc-two-dimensional-randomness" class="nav-link" data-scroll-target="#two-dimensional-randomness"><span class="header-section-number">3.2</span> Two dimensional randomness</a>
+  <ul class="collapse">
+  <li><a href="#the-true-randomness-of-runif" id="toc-the-true-randomness-of-runif" class="nav-link" data-scroll-target="#the-true-randomness-of-runif"><span class="header-section-number">3.2.1</span> The true randomness of <code>runif()</code></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -199,37 +203,88 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Stock prices are an example of chaos that exists in our economic system. For example, if tomorrow, Microsoft suffers a huge lost of investments (because of a wrong strategy, or some internal scandal, etc.), the stock prices of Apple will most likely go up. Apple did not had do to a thing! Its concurrent made a mistake, as a result, the price of its stock raised “automatically”, as a side-effect.</p>
-<p>Also, huge and billionaire companies such as Apple have some degree of control over their stock price. In other words, these companies can inject huge amounts of money into the market, or, influence government decisions to slightly influence the price of their stocks. So when these big companies influence the market, we introduce a new effect on the table.</p>
-<p>Sometimes we can predict some of these effects, specially if we have good sources of information inside the market. But there are so many effects (both in quantity and in quality), that becomes impossible to comprehend all of these effects at once, hence the “chaos feeling” that you feel when you work with the stock market.</p>
-<p>This is frustrating for humans. We want to comprehend everything we are seeing! We want to know why, when, who and how everything happens. But at the same time, we as humans have limited resources: a limit amount of attention that we can spend, and limited brain processing power that we can spend when learning/understanding about something.</p>
-<p>That is why some degree of order, or symmetry, or logic in a image is very pleasant to the eyes. Because is easy to understand a symmetric object. We can easily understand what we are seeing in the image.</p>
-<p>So when you are building your generative art, you want some degree of chaos and randomness. But you also want to balance this chaos with some degree of order. Hence the current chapter title (producing chaos in an ordered manner).</p>
-<section id="the-begin" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="the-begin"><span class="header-section-number">3.1</span> The begin</h2>
+<!--
+Stock prices are an example of chaos that exists in our economic system.
+For example, if tomorrow, Microsoft suffers a huge lost of investments (because
+of a wrong strategy, or some internal scandal, etc.), the stock prices
+of Apple will most likely go up. Apple did not had do to
+a thing! Its concurrent made a mistake, as a result, the price of its
+stock raised "automatically", as a side-effect.
+
+Also, huge and billionaire companies such as Apple have some degree of
+control over their stock price. In other words, these companies can
+inject huge amounts of money into the market, or, influence government decisions
+to slightly influence the price of their stocks.
+So when these big companies influence the market, we introduce
+a new effect on the table.
+
+Sometimes we can predict some of these effects,
+specially if we have good sources of information inside the market.
+But there are so many effects (both in quantity and in quality), that becomes impossible
+to comprehend all of these effects at once, hence the "chaos feeling" that you feel
+when you work with the stock market.
+
+This is frustrating for humans. We want to comprehend everything we are seeing!
+We want to know why, when, who and how everything happens.
+But at the same time, we as humans have limited resources: a limit
+amount of attention that we can spend, and limited brain processing power
+that we can spend when learning/understanding about something.
+
+That is why some degree of order, or symmetry, or logic in a image is very
+pleasant to the eyes. Because is easy to understand a symmetric object.
+We can easily understand what we are seeing in the image.
+
+So when you are building your generative art, you want some degree of
+chaos and randomness. But you also want to balance this chaos with some
+degree of order. Hence the current chapter title (producing chaos in an ordered manner).
+-->
+<p>In this chapter, we will study more about how to produce chaos with randomness. We will learn about the different styles of randomness that are available in R, and we will also learn about producing randomness in one and two dimensional spaces.</p>
+<p>Generative art is mostly a synergy between chaos and order. A big part of it comes from combining random patterns we find in nature with the order and logic of math. In other words, we use geometry and a lot of math to draw and mold shapes in the screen, and we combine that with randomness to achieve random patterns that are interesting to look at.</p>
+<p>However, chaos is a hard topic in general for us, programmers. Because our job is the complete opposite of chaos. We work with logic, precision, and computers. Chaos and randomness is not a part of our essence.</p>
+<p>Furthermore, computers are, essentially, precision machines. As a result, it seems very wrong and unlikely to use them to produce chaos. But you can achieve that, if you want to, by asking the computer to produce random values, and using these random values as factors to produce the chaos you want.</p>
+<section id="the-different-styles-of-randomness" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="the-different-styles-of-randomness"><span class="header-section-number">3.1</span> The different styles of randomness</h2>
+<p>We have different generators of random values available in R. Each generator produces random values following a specific rule or target. And as a consequence of that, the randomness that each generator produces will be slightly different from the others.</p>
+<p>In base R, there at least three generators that you must known:</p>
+<ul>
+<li><code>runif()</code> produces random values that follow a uniform distribution;</li>
+<li><code>rnorm()</code> produces random values that follow a normal distribution;</li>
+<li><code>sample()</code> produces a random sample from a set of values;</li>
+</ul>
+<p>The functions <code>runif()</code> and <code>rnorm()</code> can be used to generate random numbers, and the function <code>sample()</code> can be used when you are trying to select a random sample from a known set of values. To some extent, you can say that <code>sample()</code> is used whenever you want to randomly select a value (or select a random sample of values) from a known set of values.</p>
+<p>There are other generators available in R that might be very useful, specially trough the <code>ambient</code> R package<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, which is a R interface to the <code>FastNoise</code> C++ library.</p>
+<p>This ambient package offers other two generators that are very important to us, which are:</p>
+<ul>
+<li><code>ambient::noise_perlin()</code>: produces random values using the Perlin Noise algorithm.</li>
+<li><code>ambient::noise_simplex()</code>: produces random values using the Simplex Noise algorithm.</li>
+</ul>
+</section>
+<section id="two-dimensional-randomness" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="two-dimensional-randomness"><span class="header-section-number">3.2</span> Two dimensional randomness</h2>
+<section id="the-true-randomness-of-runif" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="the-true-randomness-of-runif"><span class="header-section-number">3.2.1</span> The true randomness of <code>runif()</code></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'ggplot2' was built under R version 4.3.2</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>random <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="fu">runif</span>(n), <span class="fu">runif</span>(n)),</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  n, n</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_id =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(n), <span class="at">each =</span> n),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">row_id =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(n), <span class="at">times =</span> n),</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> random <span class="sc">|&gt;</span> <span class="fu">as.vector</span>()</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> col_id, <span class="at">y =</span> row_id, <span class="at">color =</span> value )</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">40</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>random <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(n <span class="sc">^</span> <span class="dv">2</span>), n, n)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_id =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(n), <span class="at">each =</span> n),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">row_id =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(n), <span class="at">times =</span> n),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> random <span class="sc">|&gt;</span> <span class="fu">as.vector</span>()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> col_id, <span class="at">y =</span> row_id, <span class="at">color =</span> value),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -238,25 +293,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>When we use <code>rnorm()</code>, it still produces a pretty random result. However, we can see that the colors are more flat, they seem less random compared to <code>runif()</code>. What is happening is that <code>rnorm()</code> outputs random values based on a probabilistic distribution, or more specifically, based on a mean value.</p>
+<p>The end result of this, is that <code>rnorm()</code> tend to output values that are closer to the mean of the probabilistic distribution. In the case below, the mean value of the distribution is zero. So, the colors in the image below seen more flat, because the majority of the values sorted by <code>rnorm()</code> are values that are very close to zero.</p>
+<p>Hence, what you see in the image below is still a collection of many random values. But a big chunk of these random values are values that are very close to zero. That is why most of the points in this image are in the middle of the black and blue gradient scale.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">40</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">45</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>random <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(x, y), n, n)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_id =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(n), <span class="at">each =</span> n),</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">row_id =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(n), <span class="at">times =</span> n),</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> random <span class="sc">|&gt;</span> <span class="fu">as.vector</span>()</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> col_id, <span class="at">y =</span> row_id, <span class="at">color =</span> value )</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>random <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">^</span> <span class="dv">2</span>), n, n)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_id =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(n), <span class="at">each =</span> n),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">row_id =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(n), <span class="at">times =</span> n),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> random <span class="sc">|&gt;</span> <span class="fu">as.vector</span>()</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> col_id, <span class="at">y =</span> row_id, <span class="at">color =</span> value),</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -281,9 +337,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> col_id, <span class="at">y =</span> row_id, <span class="at">color =</span> value )</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> col_id, <span class="at">y =</span> row_id, <span class="at">color =</span> value),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -294,6 +351,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p><a href="https://ambient.data-imaginist.com/index.html" class="uri">https://ambient.data-imaginist.com/index.html</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
