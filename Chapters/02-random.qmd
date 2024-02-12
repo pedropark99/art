@@ -94,36 +94,54 @@ which are:
 [^ambient-pkg]: <https://ambient.data-imaginist.com/index.html>.
 
 
-## About seeds and number generation
+## About random seeds and random number generation
 
-Computers are very precise machines, and as a result of that,
-they cannot generate "true random numbers". Instead, they use an
+Computers can not generate "true random numbers". Instead, they use an
 "initial state" as the basis for generating the random values.
 Having that in mind, we can say that computers generate
 "pseudo-random numbers".
 
-The computer can use multiple things as the "initial state" for this generation.
-A classical example is the current time stamp in the internal clock of the computer.
-Another example is to use a specific integer that represents this state. Or also,
-the current prediction of wheather in the day.
+For the most part, this "initial state", from which the random numbers
+are generated, is represented as an integer. This integer is called
+as the "seed for the random number generator", or simply, a "random seed".
+So, to generate random numbers in R, or in Python, or in JavaScript, or in any other language,
+we use an integer as the "seed" to represent the initial state for the random
+number generator.
 
-Despite this wide range of options, the majority of generators in the industry
-opted for using "seeds" as the main option for representing the state in
-random number generation. This means that, to generate random numbers
-in R, or in Python, or in JavaScript, or in any other technology
-you may use in the future, a "seed" is used as the initial state from
-which they will generate the random numbers.
+In the example below, we can see that every time I run the two calls to `runif()`,
+I get a different answer as result, or a different set of random values:
 
-R itself does the job of automatically choosing a random seed to use
-as the initial state for you. But if you need to, you can explicity
-set the seed you want to use, and by setting the seed/state you want to
-use, you become capable of producing the same. And when you do that, you can generate
-the same set of random numbers.
+```{r}
+runif(3)
+runif(3)
+```
 
-This "seed" is represented as an integer. Each integer represents
-a different seed that can be used.
+If I do not set any specific "seed" to be used, R will
+automatically, and "randomly", choose a seed for me.
+And because of that, the results in the example above are different between
+each call to `runif()`. Because the seeds used
+in each call are different.
 
-he values produced by the generators  
+By using the same "seed" as the initial state, we can produce
+the exact same set of random numbers. This means that,
+if we want to have reproducibility in random numbers generators,
+to reproduce the same set of random values, we need to use
+the same random seed that was used before.
+
+You can set the integer to be used as the random seed, by using the
+`set.seed()` function.
+In the example below, you can see that, by setting the random seed
+to 40, I get the exact same set of random values as a result
+in each call to `runif()`.
+
+```{r}
+set.seed(40)
+runif(3)
+set.seed(40)
+runif(3)
+```
+
+
 
 
 ## Generating one dimensional randomness
