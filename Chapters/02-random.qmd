@@ -141,6 +141,18 @@ set.seed(40)
 runif(3)
 ```
 
+This is really important, because randomness is an important aspect
+of generative art, and, if you do not set the random seed to be used
+when generating the randomness, then, you will never be able to easily
+reproduce this same set of random values. And by not reproducing the same set
+of random values, you will likely not be able to reproduce the same
+output in your generative art.
+
+You should always set the random seed you are using in your process.
+By not doing this, you are facing the risk of producing a very cool
+output in your code by completely accident, and not being able
+to save this output in time, or reproducing it later in the day,
+or improving it by adding more adjusts in configuration, colors, brightness, and positions.
 
 
 
