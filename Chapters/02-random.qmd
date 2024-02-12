@@ -39,14 +39,15 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 
 In this chapter, we will study more about how to produce chaos
 with randomness. We will learn about the different styles of
-randomness that are available in R, and we will also learn
-about producing randomness in one and two dimensional spaces.
+random number generators that are available in R, and we will also learn
+about producing random values in one and two dimensional spaces.
 
 Generative art is mostly a synergy between chaos and order.
 A big part of it comes from combining random patterns
 we find in nature with the order and logic of math.
 In other words, we use geometry and a lot of math to draw and mold shapes
-in the screen, and we combine that with randomness to
+in the screen, we use colors and color theory to make everything colorful and attractive,
+and we combine that with randomness to
 achieve random patterns that are interesting to look
 at.
 
@@ -61,54 +62,29 @@ to produce chaos. But you can achieve that, if you want to,
 by asking the computer to produce random values, and using
 these random values as factors to produce the chaos you want.
 
-## The different styles of randomness {#sec-random-styles}
-
-We have different generators of random values available in R.
-Each generator produces random values following a specific
-rule or target. And as a consequence of that, the
-randomness that each generator produces will be slightly different
-from the others.
-
-In base R, there at least three generators that you must known:
-
-- `runif()` produces random values that follow a uniform distribution;
-- `rnorm()` produces random values that follow a normal distribution;
-- `sample()` produces a random sample from a set of values;
-
-The functions `runif()` and `rnorm()` can be used to generate random numbers, and
-the function `sample()` can be used when you are trying to select a random sample
-from a known set of values. To some extent, you can say that `sample()` is used
-whenever you want to randomly select a value (or select a random sample of values)
-from a known set of values.
-
-There are other generators available in R that might be very useful,
-specially trough the `ambient` R package[^ambient-pkg],
-which is a R interface to the `FastNoise` C++ library.
-
-This `ambient` package offers two other generators that will be discussed here,
-which are:
-
-- `ambient::noise_perlin()`: produces random values using the Perlin Noise algorithm.
-- `ambient::noise_simplex()`: produces random values using the Simplex Noise algorithm.
-
-[^ambient-pkg]: <https://ambient.data-imaginist.com/index.html>.
 
 
 ## About random seeds and random number generation
 
 Computers can not generate "true random numbers". Instead, they use an
 "initial state" as the basis for generating the random values.
-Having that in mind, we can say that computers generate
+That is why we usually say that computers can generate
 "pseudo-random numbers".
 
-For the most part, this "initial state", from which the random numbers
-are generated, is represented as an integer. This integer is called
-as the "seed for the random number generator", or simply, a "random seed".
-So, to generate random numbers in R, or in Python, or in JavaScript, or in any other language,
-we use an integer as the "seed" to represent the initial state for the random
-number generator.
+They are "pseudo" in the sense that they are not truly random,
+because they are based in a state that can be reproduced, if
+we want to. But they are "random" still because they look
+random enough for us, mere humans, and they do have some
+component of randomness that are intrinsic to them.
 
-In the example below, we can see that every time I run the two calls to `runif()`,
+But what is this "initial state", from which the random numbers
+are generated? This "initial state" is represented as a single integer,
+and it is called as the "seed for the random number generation", or simply, a "random seed".
+So, to generate random numbers in R, or in Python, or in JavaScript, or in any other programming language,
+we use an integer as the "seed" to represent the initial state for the random
+number generation.
+
+In the example below, we can see that every time I run `runif()`,
 I get a different answer as result, or a different set of random values:
 
 ```{r}
@@ -118,12 +94,12 @@ runif(3)
 
 If I do not set any specific "seed" to be used, R will
 automatically, and "randomly", choose a seed for me.
-And because of that, the results in the example above are different between
+That is why the results in the example above are different between
 each call to `runif()`. Because the seeds used
 in each call are different.
 
 By using the same "seed" as the initial state, we can produce
-the exact same set of random numbers. This means that,
+the exact same set of random numbers. That is,
 if we want to have reproducibility in random numbers generators,
 to reproduce the same set of random values, we need to use
 the same random seed that was used before.
@@ -143,40 +119,249 @@ runif(3)
 
 This is really important, because randomness is an important aspect
 of generative art, and, if you do not set the random seed to be used
-when generating the randomness, then, you will never be able to easily
+when generating the randomness, then, you will never be able to
 reproduce this same set of random values. And by not reproducing the same set
-of random values, you will likely not be able to reproduce the same
-output in your generative art.
+of random values, you will likely **not be able to reproduce the same art**,
+or the same output in your generative art.
 
 You should always set the random seed you are using in your process.
-By not doing this, you are facing the risk of producing a very cool
-output in your code by completely accident, and not being able
-to save this output in time, or reproducing it later in the day,
-or improving it by adding more adjusts in configuration, colors, brightness, and positions.
+Because if do not, then, you are facing the risk of producing a very cool
+output in your code by completely accident, and you loose the chance
+to save this output in time, or to reproduce it later in the day,
+or to improve it by adding more adjusts in configuration, colors, brightness, and positions.
+
+Is like when Percy Jackson finds Calypso in the Ogygia island,
+in the novels of Percy Jackson & the Olympians. After a few days,
+he has to leave the island, knowing that he would never go back.
+He would never find the island again, and because of that,
+his experience with Calypso was left behind.
+He would never get this back.
 
 
 
-## Generating one dimensional randomness
+## The different generators of random values {#sec-random-styles}
 
-We begin our discussion by generating random values in one dimension.
-Since, these generators from the `ambient` R package are generators for 2 to 3 dimensions.
-Because of that, we will talk about them solely at @sec-two-dimensions-random.
+Different generators of random values are available in R.
+Each one produces random values following a specific
+rule or target, and as a consequence of that, one generator produces
+a different type of randomness, compared to the others.
 
-## Generating two dimensional randomness {#sec-two-dimensions-random}
+In base R, there are at least three generators that you must known for generative art:
+
+- `runif()` produces random values that follow a uniform distribution;
+- `rnorm()` produces random values that follow a normal distribution;
+- `sample()` produces a random sample from a set of values;
+
+Both `runif()` and `rnorm()` functions can be used to generate a sequence of random numbers,
+while the function `sample()` is used when you are trying to select a random sample
+from a known set of values.
+
+There are other generators available in R that will be very useful for you in generative art,
+specially trough the `ambient` R package[^ambient-pkg],
+which is a R interface to the `FastNoise` C++ library.
+
+This `ambient` package offers two other generators that will be discussed here,
+which are:
+
+- `ambient::noise_perlin()`: produces random values using the Perlin Noise algorithm.
+- `ambient::noise_simplex()`: produces random values using the Simplex Noise algorithm.
+
+[^ambient-pkg]: <https://ambient.data-imaginist.com/index.html>.
+
+Since these two generators from the `ambient` R package are generators exclusively
+for two to three dimensions, they will be discussed in details
+at @sec-two-dimensions-random.
+
+
+### Uniform distribution with `runif()`
+
+The `runif()` function generates a sequence of random values
+by following an uniform distribution. It basically means that
+no specific number is favored during the generation. Each
+number have an equal chance to be selected in the output.
+
+You could say that `runif()` produces an output
+that truly looks random in all aspects. Because nothing is unbalanced,
+nothing is favored in detriment of the other,
+and therefore, you cannot see any clear pattern in the result,
+everything just looks... completely random.
+
+By using a histogram, we can see this very balanced result.
+In the output below, we can see that each range of numbers described
+in the histogram appears in the output by an almost equal amount.
+That is why the distribution is called "uniform".
+
+```{r}
+set.seed(532)
+v <- runif(1000)
+hist(v)
+```
+
+The function `runif()` have three arguments: 1) `n` - the number
+of random values to be generated; 2) `min` - the minimum value that can be
+generated; 3) `max` - the minimum value that can be generated.
+
+You can use the `min` and `max` arguments to specify the range of values
+that will be generated. If you use for example, `runif(10, min = 0, max = 50)`,
+it means that R will generate 10 random values, ranging from 0 to 50.
+
+```{r}
+runif(10, min = 0, max = 50)
+```
+
+
+By default, the `min` and `max` arguments are configured to 0 and 1.
+As a consequence, instead of explicitly setting these arguments, to
+achieve a certain range of values, you can also use a factor to scale
+the random values generated to the scale you want to. This means that,
+the code `runif(10) * 50` is essentially the same thing that
+setting `min` and `max` to 0 and 50.
+
+
+
+### Normal distribution with `rnorm()`
+
+While `runif()` follows a uniform distribution of values,
+the `rnorm()` function generates a sequence of random values
+by following a normal distribution instead.
+
+This is a big difference, because it means that numbers that
+are closer to the mean of the distribution will be selected more
+often than others. This makes the output from `rnorm()` not so much
+random as it is in `runif()`, because now, we have a clear pattern
+(more numbers closer to the mean) present in the output.
+
+We can use a histogram again to
+see this pattern more clearly. You can
+see in the output below that, numbers that
+are closer to zero (which is the mean of the distribution)
+appears more often than numbers that are further
+apart, that are in the extremities of the distribution.
+
+```{r}
+set.seed(532)
+v <- rnorm(1000)
+hist(v)
+```
+
+The function `rnorm()` have three arguments: 1) `n` - the number
+of random values to be generated; 2) `mean` - the mean value of the
+distribution; 3) `sd` - the standard deviation of the value.
+
+
+```{r}
+rnorm(10, mean = 50, sd = 10)
+```
+
+
+You can use the `mean` argument to concentrate the random values around
+a specific value of your preference. For example, if `mean = 50`, then,
+the majority of random values generated will be close to 50.
+
+With the `sd` argument you control how much the values distance from
+the mean value of the distribution. If `sd` is very high, then
+the distribution will be more spread, meaning that the values
+will be, in general, more distant from the mean. If `sd` is low, then, the
+inverse will happen.
+
+
+
+### Taking a random sample with `sample()`
+
+When you have a known and finite set of values, and you want
+to randomly distribute them across your generative art, the function
+`sample()` is the perfect candidate to help you in this task.
+
+The function `sample()` have three arguments: 1) `x` -
+and object that contains the set of values from which you want
+to extract the sample; 2) `size` - the size of the sample,
+i.e. how many elements will have in the output sample;
+3) `replace` - the sample should be performed
+with replacement?
+
+The `replace` argument determines if each value in the object
+`x` can be selected more than once in the output. In others words,
+if a specific value is selected in the sample, can this value
+be selected again over the next elements of the sample?
+For the majority of cases, you will probably answer "yes"
+to this question. So I normally set this argument to `TRUE`.
+But this might not be your case, so you would have to set
+this argument to `FALSE`.
+
+I personally heavily use `sample()` to distribute
+my color pallete across the elements of my image. Take the
+code below as an example, I have 100 points in my plot, and
+I want to randomly select a color from the `pallete` object
+to each point. I can easily do that with `sample()`:
+
+```{r}
+library(ggplot2)
+pallete <- c(
+  "#8ecae6",
+  "#219ebc",
+  "#023047",
+  "#ffb703",
+  "#fb8500"
+)
+
+set.seed(50)
+df <- data.frame(
+  x = runif(100),
+  y = runif(100)
+)
+df$color <- sample(
+  pallete, size = 100, replace = TRUE
+)
+
+ggplot(df) +
+  geom_point(
+    aes(x, y, color = color),
+    size = 3
+  ) +
+  scale_color_identity()
+```
+
+
+
+## Generating random values across two dimensions {#sec-two-dimensions-random}
+
+On the previous sections, we were
+generating random values in only one dimension, because we had
+a single sequence of random values at hand. But you are not limited to that!
+You can generate random values, and spread them across any dimensions you
+want from the Cartesian plane.
+
+Here in this section, we will discuss how to generate random values in
+two dimensions (x and y axis) of the Cartesian plane.
+The famous Perlin noise algorithmn is a generator that is mostly used to generate
+random values in two dimensions.
+
+Also, another hacky way of producing
+random values in two dimensions is by using a sequence of
+random values that was produced in one dimension, and dividing this sequence in two parts,
+to get a smaller sequence for each dimension. In other words,
+you build a sequence with $2n$ random values, then, divide it into two separate sequences,
+each with $n$ random values. As a result, you get two sequences of random values,
+one for each of the two dimensions in the Cartesian plane (x and y axis).
+
+
 
 ### The true randomness of `runif()`
 
 ```{r}
 library(ggplot2)
+build_df <- function(random_values, n){
+  data.frame(
+    col_id = rep(seq_len(n), each = n),
+    row_id = rep(seq_len(n), times = n),
+    value = random_values |> as.vector()
+  )
+}
+
 n <- 100
 set.seed(40)
 random <- matrix(runif(n ^ 2), n, n)
-
-d <- data.frame(
-  col_id = rep(seq_len(n), each = n),
-  row_id = rep(seq_len(n), times = n),
-  value = random |> as.vector()
-)
+d <- build_df(random, n)
 
 
 ggplot(d) +
@@ -207,13 +392,7 @@ the black and blue gradient scale.
 ```{r}
 set.seed(40)
 random <- matrix(rnorm(n ^ 2), n, n)
-
-d <- data.frame(
-  col_id = rep(seq_len(n), each = n),
-  row_id = rep(seq_len(n), times = n),
-  value = random |> as.vector()
-)
-
+d <- build_df(random, n)
 
 ggplot(d) +
   geom_point(
@@ -228,13 +407,7 @@ ggplot(d) +
 ```{r}
 library(ambient)
 random <- noise_perlin(c(n, n))
-
-d <- data.frame(
-  col_id = rep(seq_len(n), each = n),
-  row_id = rep(seq_len(n), times = n),
-  value = random |> as.vector()
-)
-
+d <- build_df(random, n)
 
 ggplot(d) +
   geom_point(
