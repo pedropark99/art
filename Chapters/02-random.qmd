@@ -321,18 +321,6 @@ want from the Cartesian plane.
 
 Here in this section, we will discuss how to generate random values in
 two dimensions (x and y axis) of the Cartesian plane.
-The famous Perlin noise algorithmn is an example of generator that is mostly used to generate
-random values in two dimensions.
-
-Also, another hacky way of producing
-random values in two dimensions is by using a sequence of
-random values that was produced in one dimension, and dividing this sequence in two parts,
-to get a smaller sequence for each dimension. In other words,
-you build a sequence with $2n$ random values, then, divide it into two separate sequences,
-each with $n$ random values. As a result, you get two sequences of random values,
-one for each of the two dimensions in the Cartesian plane (x and y axis).
-
-
 
 ### The true randomness of `runif()`
 

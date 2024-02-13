@@ -102,35 +102,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -286,11 +257,11 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5236687 0.4364237 0.6564091</code></pre>
+<pre><code>[1] 0.5097185 0.4803431 0.5830470</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4764994 0.6727326 0.7304597</code></pre>
+<pre><code>[1] 0.5333862 0.0430221 0.4104171</code></pre>
 </div>
 </div>
 <p>This happens because the “initial state” is different in each call to <code>runif()</code>. Every time I run <code>runif()</code>, R automatically and randomly selects a seed for you. That is why the results in the example above are different between each call to <code>runif()</code>. Because the seeds used in each call are different.</p>
@@ -431,8 +402,7 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <section id="sec-two-dimensions-random" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="sec-two-dimensions-random"><span class="header-section-number">3.3</span> Generating random values across two dimensions</h2>
 <p>On the previous sections, we were generating random values in only one dimension, because we had a single sequence of random values at hand. But you are not limited to that! You can generate random values, and spread them across any dimensions you want from the Cartesian plane.</p>
-<p>Here in this section, we will discuss how to generate random values in two dimensions (x and y axis) of the Cartesian plane. The famous Perlin noise algorithmn is a generator that is mostly used to generate random values in two dimensions.</p>
-<p>Also, another hacky way of producing random values in two dimensions is by using a sequence of random values that was produced in one dimension, and dividing this sequence in two parts, to get a smaller sequence for each dimension. In other words, you build a sequence with <span class="math inline">\(2n\)</span> random values, then, divide it into two separate sequences, each with <span class="math inline">\(n\)</span> random values. As a result, you get two sequences of random values, one for each of the two dimensions in the Cartesian plane (x and y axis).</p>
+<p>Here in this section, we will discuss how to generate random values in two dimensions (x and y axis) of the Cartesian plane.</p>
 <section id="the-true-randomness-of-runif" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="the-true-randomness-of-runif"><span class="header-section-number">3.3.1</span> The true randomness of <code>runif()</code></h3>
 <div class="cell">
