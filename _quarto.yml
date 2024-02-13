@@ -12,6 +12,7 @@ book:
     - Chapters/01-angles.qmd
     - Chapters/01-transformations.qmd
     - Chapters/02-random.qmd
+    - Chapters/_references.qmd
 
 
 bibliography: references.bib

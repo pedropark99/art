@@ -213,6 +213,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos in an ordered manner</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/_references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -356,7 +362,7 @@ Figure&nbsp;1.2: The three coordinate systems available in ggplot2
 </div>
 </div>
 </div>
-<p>By changing the coordinate system of your image, you change the way the objects are drawn and positioned in your image space <span class="citation" data-cites="ggplot2_book">(<a href="#ref-ggplot2_book" role="doc-biblioref">Wickham 2016</a>)</span>. For example, a straight line will look straight in a Cartesian plane, but it will not look straight if we draw it in a non-linear coordinate system, such as the Polar coordinate system, which is a circular coordinate system.</p>
+<p>By changing the coordinate system of your image, you change the way the objects are drawn and positioned in your image space <span class="citation" data-cites="ggplot2_book">(<a href="_references.html#ref-ggplot2_book" role="doc-biblioref">Wickham 2016</a>)</span>. For example, a straight line will look straight in a Cartesian plane, but it will not look straight if we draw it in a non-linear coordinate system, such as the Polar coordinate system, which is a circular coordinate system.</p>
 <p>In more details, the coordinates of a Polar coordinate system form a circumference around a center point, and as a consequence, if you draw any object in this coordinate system, this object will likely assume a round or circular shape, even if you did not have the intention of drawing something with this shape.</p>
 <section id="the-cartesian-plane" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="the-cartesian-plane"><span class="header-section-number">1.2.1</span> The Cartesian plane</h3>
@@ -385,7 +391,7 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 <li>Limiting the scale.</li>
 <li>Limiting the coordinates.</li>
 </ul>
-<p>In ggplot2 we have scales. A scale control the details of how data values are translated to visual properties <span class="citation" data-cites="ggplot_docs">(<a href="#ref-ggplot_docs" role="doc-biblioref">Wickham et al. 2024</a>)</span>. They take your data and turn it into something that you can see, like size, color, position or shape, and they also provide the tools that let you interpret the plot: the axes and legends <span class="citation" data-cites="ggplot2_book">(<a href="#ref-ggplot2_book" role="doc-biblioref">Wickham 2016</a>)</span>.</p>
+<p>In ggplot2 we have scales. A scale control the details of how data values are translated to visual properties <span class="citation" data-cites="ggplot_docs">(<a href="_references.html#ref-ggplot_docs" role="doc-biblioref">Wickham et al. 2024</a>)</span>. They take your data and turn it into something that you can see, like size, color, position or shape, and they also provide the tools that let you interpret the plot: the axes and legends <span class="citation" data-cites="ggplot2_book">(<a href="_references.html#ref-ggplot2_book" role="doc-biblioref">Wickham 2016</a>)</span>.</p>
 <p>The x and y axis are a type of scale, so you can control the limits of the x and y scales in your image, by setting the <code>limits</code> argument in <code>scale_x_continuous()</code> and <code>scale_y_continuous()</code> functions in your plot composition. Another alternative is the <code>lims()</code> function which is made for this operation.</p>
 <p>If you set the limits of the x and y scales, what happens is that ggplot2 will zoom into that specific region you limited, but also, <strong>will omit (or ignore)</strong> any data that goes beyond these limits. Take the plot below as a start point, where we display three different lines, one above the other.</p>
 <div class="cell">
@@ -623,7 +629,7 @@ y' = Cy + (r \times \sin(A));
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-ggplot2_book" class="csl-entry" role="listitem">
 Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
 </div>

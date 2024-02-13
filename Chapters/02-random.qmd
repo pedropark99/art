@@ -425,7 +425,7 @@ ggplot(d) +
 
 ## Introducing Perlin noise
 
-
+Perlin noise is a type of gradient noise developed by Ken Perlin in 1983 [@perlinwiki]
 
 
 ```{r}
