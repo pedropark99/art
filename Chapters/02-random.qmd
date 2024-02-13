@@ -38,30 +38,27 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 # Producing chaos in an ordered manner
 
 In this chapter, we will study more about how to produce chaos
-with randomness. We will learn about the different styles of
+with randomness. We will learn about the different types of
 random number generators that are available in R, and we will also learn
-about producing random values in one and two dimensional spaces.
+about producing this randomness in one and two dimensions.
 
-Generative art is mostly a synergy between chaos and order.
+Chaos is, in general, a hard topic for us, programmers. Because
+our job is the complete opposite of that. We work with
+logic, precision, and computers. Chaos and randomness are not
+part of our essence.
+
+But a little taste of chaos is very essential to any generative art you may produce.
+You could say that, generative art is mostly a synergy between chaos and order.
 A big part of it comes from combining random patterns
 we find in nature with the order and logic of math.
-In other words, we use geometry and a lot of math to draw and mold shapes
+Because we use geometry and a lot of math to draw and mold shapes
 in the screen, we use colors and color theory to make everything colorful and attractive,
-and we combine that with randomness to
+and we also combine all of that with randomness to
 achieve random patterns that are interesting to look
 at.
 
-However, chaos is a hard topic in general for us, programmers. Because
-our job is the complete opposite of chaos. We work with
-logic, precision, and computers. Chaos and randomness is not
-a part of our essence.
-
-Furthermore, computers are, essentially, precision machines.
-As a result, it seems very wrong and unlikely to use them
-to produce chaos. But you can achieve that, if you want to,
-by asking the computer to produce random values, and using
-these random values as factors to produce the chaos you want.
-
+That is why, in this chapter, I want to focus on how random values can
+be generated in R, and what are the options available for you.
 
 
 ## About random seeds and random number generation
@@ -78,9 +75,9 @@ random enough for us, mere humans, and they do have some
 component of randomness that are intrinsic to them.
 
 But what is this "initial state", from which the random numbers
-are generated? This "initial state" is represented as a single integer,
+are generated? This "initial state" is usually represented as a single integer,
 and it is called as the "seed for the random number generation", or simply, a "random seed".
-So, to generate random numbers in R, or in Python, or in JavaScript, or in any other programming language,
+So, to generate random numbers in R,
 we use an integer as the "seed" to represent the initial state for the random
 number generation.
 
@@ -92,22 +89,22 @@ runif(3)
 runif(3)
 ```
 
-If I do not set any specific "seed" to be used, R will
-automatically, and "randomly", choose a seed for me.
+This happens because the "initial state" is different in each call to `runif()`.
+Every time I run `runif()`, R automatically and randomly selects a seed for you.
 That is why the results in the example above are different between
 each call to `runif()`. Because the seeds used
 in each call are different.
 
-By using the same "seed" as the initial state, we can produce
+If we use the same "seed" as the initial state, we can produce
 the exact same set of random numbers. That is,
-if we want to have reproducibility in random numbers generators,
-to reproduce the same set of random values, we need to use
+if we want to **have reproducibility** in this process
+of number generation, we need to use
 the same random seed that was used before.
 
 You can set the integer to be used as the random seed, by using the
 `set.seed()` function.
-In the example below, you can see that, by setting the random seed
-to 40, I get the exact same set of random values as a result
+In the example below, I am setting the random seed
+to 40. Because of that, I get the exact same set of random values
 in each call to `runif()`.
 
 ```{r}
@@ -117,43 +114,34 @@ set.seed(40)
 runif(3)
 ```
 
-This is really important, because randomness is an important aspect
-of generative art, and, if you do not set the random seed to be used
-when generating the randomness, then, you will never be able to
-reproduce this same set of random values. And by not reproducing the same set
-of random values, you will likely **not be able to reproduce the same art**,
+This is very important! If you do not set your random seed, then,
+you will never be able to reproduce the same set of random values, and,
+as consequence, you will **never be capable of reproducing the same art again**,
 or the same output in your generative art.
 
-You should always set the random seed you are using in your process.
+Let me repeat this. You should always explicitly set the random seed you are using in your process.
 Because if do not, then, you are facing the risk of producing a very cool
 output in your code by completely accident, and you loose the chance
 to save this output in time, or to reproduce it later in the day,
-or to improve it by adding more adjusts in configuration, colors, brightness, and positions.
-
-Is like when Percy Jackson finds Calypso in the Ogygia island,
-in the novels of Percy Jackson & the Olympians. After a few days,
-he has to leave the island, knowing that he would never go back.
-He would never find the island again, and because of that,
-his experience with Calypso was left behind.
-He would never get this back.
+or to improve it by adding more adjusts in configuration,
+colors, brightness, and positions.
 
 
+## Different types of generators {#sec-random-styles}
 
-## The different generators of random values {#sec-random-styles}
-
-Different generators of random values are available in R.
-Each one produces random values following a specific
-rule or target, and as a consequence of that, one generator produces
-a different type of randomness, compared to the others.
+There are different types of generators available in R.
+Each generator produces a sequence of random values following a specific
+rule or target, and as a consequence of that, each one produces
+a different type of randomness.
 
 In base R, there are at least three generators that you must known for generative art:
 
 - `runif()` produces random values that follow a uniform distribution;
 - `rnorm()` produces random values that follow a normal distribution;
-- `sample()` produces a random sample from a set of values;
+- `sample()` produces a random sample from a known set of values;
 
 Both `runif()` and `rnorm()` functions can be used to generate a sequence of random numbers,
-while the function `sample()` is used when you are trying to select a random sample
+while the function `sample()` is used when you are trying to generate a random sample
 from a known set of values.
 
 There are other generators available in R that will be very useful for you in generative art,
@@ -168,8 +156,8 @@ which are:
 
 [^ambient-pkg]: <https://ambient.data-imaginist.com/index.html>.
 
-Since these two generators from the `ambient` R package are generators exclusively
-for two to three dimensions, they will be discussed in details
+But these two generators from the `ambient` R package produces random values exclusively
+for two to three dimensions. Because of that, they will be discussed in details only
 at @sec-two-dimensions-random.
 
 
@@ -177,16 +165,16 @@ at @sec-two-dimensions-random.
 
 The `runif()` function generates a sequence of random values
 by following an uniform distribution. It basically means that
-no specific number is favored during the generation. Each
-number have an equal chance to be selected in the output.
+no specific number is favored during the generation process. Each
+number have an equal amount of chance to be selected in the output.
 
 You could say that `runif()` produces an output
-that truly looks random in all aspects. Because nothing is unbalanced,
+that truly looks "random" in all aspects. Because nothing is unbalanced,
 nothing is favored in detriment of the other,
 and therefore, you cannot see any clear pattern in the result,
 everything just looks... completely random.
 
-By using a histogram, we can see this very balanced result.
+By using a histogram, we can see this very balanced aspect of `runif()`.
 In the output below, we can see that each range of numbers described
 in the histogram appears in the output by an almost equal amount.
 That is why the distribution is called "uniform".
@@ -221,7 +209,7 @@ setting `min` and `max` to 0 and 50.
 
 ### Normal distribution with `rnorm()`
 
-While `runif()` follows a uniform distribution of values,
+While `runif()` follows a uniform distribution,
 the `rnorm()` function generates a sequence of random values
 by following a normal distribution instead.
 
@@ -236,7 +224,7 @@ see this pattern more clearly. You can
 see in the output below that, numbers that
 are closer to zero (which is the mean of the distribution)
 appears more often than numbers that are further
-apart, that are in the extremities of the distribution.
+apart, in the extremities of the distribution.
 
 ```{r}
 set.seed(532)
@@ -284,7 +272,7 @@ The `replace` argument determines if each value in the object
 if a specific value is selected in the sample, can this value
 be selected again over the next elements of the sample?
 For the majority of cases, you will probably answer "yes"
-to this question. So I normally set this argument to `TRUE`.
+to this question. So you normally set this argument to `TRUE`.
 But this might not be your case, so you would have to set
 this argument to `FALSE`.
 
@@ -333,7 +321,7 @@ want from the Cartesian plane.
 
 Here in this section, we will discuss how to generate random values in
 two dimensions (x and y axis) of the Cartesian plane.
-The famous Perlin noise algorithmn is a generator that is mostly used to generate
+The famous Perlin noise algorithmn is an example of generator that is mostly used to generate
 random values in two dimensions.
 
 Also, another hacky way of producing

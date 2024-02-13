@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.538">
+<meta name="generator" content="quarto-1.4.532">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -102,6 +102,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -174,16 +203,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#about-random-seeds-and-random-number-generation" id="toc-about-random-seeds-and-random-number-generation" class="nav-link active" data-scroll-target="#about-random-seeds-and-random-number-generation"><span class="header-section-number">3.1</span> About random seeds and random number generation</a></li>
-  <li><a href="#sec-random-styles" id="toc-sec-random-styles" class="nav-link" data-scroll-target="#sec-random-styles"><span class="header-section-number">3.2</span> The different generators of random values</a>
+  <li><a href="#sec-random-styles" id="toc-sec-random-styles" class="nav-link" data-scroll-target="#sec-random-styles"><span class="header-section-number">3.2</span> Different types of generators</a>
   <ul class="collapse">
   <li><a href="#uniform-distribution-with-runif" id="toc-uniform-distribution-with-runif" class="nav-link" data-scroll-target="#uniform-distribution-with-runif"><span class="header-section-number">3.2.1</span> Uniform distribution with <code>runif()</code></a></li>
   <li><a href="#normal-distribution-with-rnorm" id="toc-normal-distribution-with-rnorm" class="nav-link" data-scroll-target="#normal-distribution-with-rnorm"><span class="header-section-number">3.2.2</span> Normal distribution with <code>rnorm()</code></a></li>
   <li><a href="#taking-a-random-sample-with-sample" id="toc-taking-a-random-sample-with-sample" class="nav-link" data-scroll-target="#taking-a-random-sample-with-sample"><span class="header-section-number">3.2.3</span> Taking a random sample with <code>sample()</code></a></li>
   </ul></li>
-  <li><a href="#generating-one-dimensional-randomness" id="toc-generating-one-dimensional-randomness" class="nav-link" data-scroll-target="#generating-one-dimensional-randomness"><span class="header-section-number">3.3</span> Generating one dimensional randomness</a></li>
-  <li><a href="#sec-two-dimensions-random" id="toc-sec-two-dimensions-random" class="nav-link" data-scroll-target="#sec-two-dimensions-random"><span class="header-section-number">3.4</span> Generating two dimensional randomness</a>
+  <li><a href="#sec-two-dimensions-random" id="toc-sec-two-dimensions-random" class="nav-link" data-scroll-target="#sec-two-dimensions-random"><span class="header-section-number">3.3</span> Generating random values across two dimensions</a>
   <ul class="collapse">
-  <li><a href="#the-true-randomness-of-runif" id="toc-the-true-randomness-of-runif" class="nav-link" data-scroll-target="#the-true-randomness-of-runif"><span class="header-section-number">3.4.1</span> The true randomness of <code>runif()</code></a></li>
+  <li><a href="#the-true-randomness-of-runif" id="toc-the-true-randomness-of-runif" class="nav-link" data-scroll-target="#the-true-randomness-of-runif"><span class="header-section-number">3.3.1</span> The true randomness of <code>runif()</code></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -245,29 +273,29 @@ So when you are building your generative art, you want some degree of
 chaos and randomness. But you also want to balance this chaos with some
 degree of order. Hence the current chapter title (producing chaos in an ordered manner).
 -->
-<p>In this chapter, we will study more about how to produce chaos with randomness. We will learn about the different styles of random number generators that are available in R, and we will also learn about producing randomness in one and two dimensional spaces.</p>
-<p>Generative art is mostly a synergy between chaos and order. A big part of it comes from combining random patterns we find in nature with the order and logic of math. In other words, we use geometry and a lot of math to draw and mold shapes in the screen, we use colors and color theory to make everything colorful and attractive, and we combine that with randomness to achieve random patterns that are interesting to look at.</p>
-<p>However, chaos is a hard topic in general for us, programmers. Because our job is the complete opposite of chaos. We work with logic, precision, and computers. Chaos and randomness is not a part of our essence.</p>
-<p>Furthermore, computers are, essentially, precision machines. As a result, it seems very wrong and unlikely to use them to produce chaos. But you can achieve that, if you want to, by asking the computer to produce random values, and using these random values as factors to produce the chaos you want.</p>
+<p>In this chapter, we will study more about how to produce chaos with randomness. We will learn about the different types of random number generators that are available in R, and we will also learn about producing this randomness in one and two dimensions.</p>
+<p>Chaos is, in general, a hard topic for us, programmers. Because our job is the complete opposite of that. We work with logic, precision, and computers. Chaos and randomness are not part of our essence.</p>
+<p>But a little taste of chaos is very essential to any generative art you may produce. You could say that, generative art is mostly a synergy between chaos and order. A big part of it comes from combining random patterns we find in nature with the order and logic of math. Because we use geometry and a lot of math to draw and mold shapes in the screen, we use colors and color theory to make everything colorful and attractive, and we also combine all of that with randomness to achieve random patterns that are interesting to look at.</p>
+<p>That is why, in this chapter, I want to focus on how random values can be generated in R, and what are the options available for you.</p>
 <section id="about-random-seeds-and-random-number-generation" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="about-random-seeds-and-random-number-generation"><span class="header-section-number">3.1</span> About random seeds and random number generation</h2>
 <p>Computers can not generate “true random numbers”. Instead, they use an “initial state” as the basis for generating the random values. That is why we usually say that computers can generate “pseudo-random numbers”.</p>
 <p>They are “pseudo” in the sense that they are not truly random, because they are based in a state that can be reproduced, if we want to. But they are “random” still because they look random enough for us, mere humans, and they do have some component of randomness that are intrinsic to them.</p>
-<p>But what is this “initial state”, from which the random numbers are generated? This “initial state” is represented as a single integer, and it is called as the “seed for the random number generation”, or simply, a “random seed”. So, to generate random numbers in R, or in Python, or in JavaScript, or in any other programming language, we use an integer as the “seed” to represent the initial state for the random number generation.</p>
+<p>But what is this “initial state”, from which the random numbers are generated? This “initial state” is usually represented as a single integer, and it is called as the “seed for the random number generation”, or simply, a “random seed”. So, to generate random numbers in R, we use an integer as the “seed” to represent the initial state for the random number generation.</p>
 <p>In the example below, we can see that every time I run <code>runif()</code>, I get a different answer as result, or a different set of random values:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1552799 0.1837979 0.3034164</code></pre>
+<pre><code>[1] 0.5236687 0.4364237 0.6564091</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7101690 0.5537508 0.3925517</code></pre>
+<pre><code>[1] 0.4764994 0.6727326 0.7304597</code></pre>
 </div>
 </div>
-<p>If I do not set any specific “seed” to be used, R will automatically, and “randomly”, choose a seed for me. That is why the results in the example above are different between each call to <code>runif()</code>. Because the seeds used in each call are different.</p>
-<p>By using the same “seed” as the initial state, we can produce the exact same set of random numbers. That is, if we want to have reproducibility in random numbers generators, to reproduce the same set of random values, we need to use the same random seed that was used before.</p>
-<p>You can set the integer to be used as the random seed, by using the <code>set.seed()</code> function. In the example below, you can see that, by setting the random seed to 40, I get the exact same set of random values as a result in each call to <code>runif()</code>.</p>
+<p>This happens because the “initial state” is different in each call to <code>runif()</code>. Every time I run <code>runif()</code>, R automatically and randomly selects a seed for you. That is why the results in the example above are different between each call to <code>runif()</code>. Because the seeds used in each call are different.</p>
+<p>If we use the same “seed” as the initial state, we can produce the exact same set of random numbers. That is, if we want to <strong>have reproducibility</strong> in this process of number generation, we need to use the same random seed that was used before.</p>
+<p>You can set the integer to be used as the random seed, by using the <code>set.seed()</code> function. In the example below, I am setting the random seed to 40. Because of that, I get the exact same set of random values in each call to <code>runif()</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">40</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -280,32 +308,31 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <pre><code>[1] 0.6835820 0.8729038 0.6901173</code></pre>
 </div>
 </div>
-<p>This is really important, because randomness is an important aspect of generative art, and, if you do not set the random seed to be used when generating the randomness, then, you will never be able to reproduce this same set of random values. And by not reproducing the same set of random values, you will likely <strong>not be able to reproduce the same art</strong>, or the same output in your generative art.</p>
-<p>You should always set the random seed you are using in your process. Because if do not, then, you are facing the risk of producing a very cool output in your code by completely accident, and you loose the chance to save this output in time, or to reproduce it later in the day, or to improve it by adding more adjusts in configuration, colors, brightness, and positions.</p>
-<p>Is like when Percy Jackson finds Calypso in the Ogygia island, in the novels of Percy Jackson &amp; the Olympians. After a few days, he has to leave the island, knowing that he would never go back. He would never find the island again, and because of that, his experience with Calypso was left behind. He would never get this back.</p>
+<p>This is very important! If you do not set your random seed, then, you will never be able to reproduce the same set of random values, and, as consequence, you will <strong>never be capable of reproducing the same art again</strong>, or the same output in your generative art.</p>
+<p>Let me repeat this. You should always explicitly set the random seed you are using in your process. Because if do not, then, you are facing the risk of producing a very cool output in your code by completely accident, and you loose the chance to save this output in time, or to reproduce it later in the day, or to improve it by adding more adjusts in configuration, colors, brightness, and positions.</p>
 </section>
 <section id="sec-random-styles" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="sec-random-styles"><span class="header-section-number">3.2</span> The different generators of random values</h2>
-<p>Different generators of random values are available in R. Each one produces random values following a specific rule or target, and as a consequence of that, one generator produces a different type of randomness, compared to the others.</p>
+<h2 data-number="3.2" class="anchored" data-anchor-id="sec-random-styles"><span class="header-section-number">3.2</span> Different types of generators</h2>
+<p>There are different types of generators available in R. Each generator produces a sequence of random values following a specific rule or target, and as a consequence of that, each one produces a different type of randomness.</p>
 <p>In base R, there are at least three generators that you must known for generative art:</p>
 <ul>
 <li><code>runif()</code> produces random values that follow a uniform distribution;</li>
 <li><code>rnorm()</code> produces random values that follow a normal distribution;</li>
-<li><code>sample()</code> produces a random sample from a set of values;</li>
+<li><code>sample()</code> produces a random sample from a known set of values;</li>
 </ul>
-<p>Both <code>runif()</code> and <code>rnorm()</code> functions can be used to generate a sequence of random numbers, while the function <code>sample()</code> is used when you are trying to select a random sample from a known set of values.</p>
+<p>Both <code>runif()</code> and <code>rnorm()</code> functions can be used to generate a sequence of random numbers, while the function <code>sample()</code> is used when you are trying to generate a random sample from a known set of values.</p>
 <p>There are other generators available in R that will be very useful for you in generative art, specially trough the <code>ambient</code> R package<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, which is a R interface to the <code>FastNoise</code> C++ library.</p>
 <p>This <code>ambient</code> package offers two other generators that will be discussed here, which are:</p>
 <ul>
 <li><code>ambient::noise_perlin()</code>: produces random values using the Perlin Noise algorithm.</li>
 <li><code>ambient::noise_simplex()</code>: produces random values using the Simplex Noise algorithm.</li>
 </ul>
-<p>Since these two generators from the <code>ambient</code> R package are generators exclusively for two to three dimensions, they will be discussed in details at <a href="#sec-two-dimensions-random" class="quarto-xref"><span>Section 3.4</span></a>.</p>
+<p>But these two generators from the <code>ambient</code> R package produces random values exclusively for two to three dimensions. Because of that, they will be discussed in details only at <a href="#sec-two-dimensions-random" class="quarto-xref"><span>Section 3.3</span></a>.</p>
 <section id="uniform-distribution-with-runif" class="level3" data-number="3.2.1">
 <h3 data-number="3.2.1" class="anchored" data-anchor-id="uniform-distribution-with-runif"><span class="header-section-number">3.2.1</span> Uniform distribution with <code>runif()</code></h3>
-<p>The <code>runif()</code> function generates a sequence of random values by following an uniform distribution. It basically means that no specific number is favored during the generation. Each number have an equal chance to be selected in the output.</p>
-<p>You could say that <code>runif()</code> produces an output that truly looks random in all aspects. Because nothing is unbalanced, nothing is favored in detriment of the other, and therefore, you cannot see any clear pattern in the result, everything just looks… completely random.</p>
-<p>By using a histogram, we can see this very balanced result. In the output below, we can see that each range of numbers described in the histogram appears in the output by an almost equal amount. That is why the distribution is called “uniform”.</p>
+<p>The <code>runif()</code> function generates a sequence of random values by following an uniform distribution. It basically means that no specific number is favored during the generation process. Each number have an equal amount of chance to be selected in the output.</p>
+<p>You could say that <code>runif()</code> produces an output that truly looks “random” in all aspects. Because nothing is unbalanced, nothing is favored in detriment of the other, and therefore, you cannot see any clear pattern in the result, everything just looks… completely random.</p>
+<p>By using a histogram, we can see this very balanced aspect of <code>runif()</code>. In the output below, we can see that each range of numbers described in the histogram appears in the output by an almost equal amount. That is why the distribution is called “uniform”.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">532</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1000</span>)</span>
@@ -331,9 +358,9 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 </section>
 <section id="normal-distribution-with-rnorm" class="level3" data-number="3.2.2">
 <h3 data-number="3.2.2" class="anchored" data-anchor-id="normal-distribution-with-rnorm"><span class="header-section-number">3.2.2</span> Normal distribution with <code>rnorm()</code></h3>
-<p>While <code>runif()</code> follows a uniform distribution of values, the <code>rnorm()</code> function generates a sequence of random values by following a normal distribution instead.</p>
+<p>While <code>runif()</code> follows a uniform distribution, the <code>rnorm()</code> function generates a sequence of random values by following a normal distribution instead.</p>
 <p>This is a big difference, because it means that numbers that are closer to the mean of the distribution will be selected more often than others. This makes the output from <code>rnorm()</code> not so much random as it is in <code>runif()</code>, because now, we have a clear pattern (more numbers closer to the mean) present in the output.</p>
-<p>We can use a histogram again to see this pattern more clearly. You can see in the output below that, numbers that are closer to zero (which is the mean of the distribution) appears more often than numbers that are further apart, that are in the extremities of the distribution.</p>
+<p>We can use a histogram again to see this pattern more clearly. You can see in the output below that, numbers that are closer to zero (which is the mean of the distribution) appears more often than numbers that are further apart, in the extremities of the distribution.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">532</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
@@ -361,7 +388,7 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <h3 data-number="3.2.3" class="anchored" data-anchor-id="taking-a-random-sample-with-sample"><span class="header-section-number">3.2.3</span> Taking a random sample with <code>sample()</code></h3>
 <p>When you have a known and finite set of values, and you want to randomly distribute them across your generative art, the function <code>sample()</code> is the perfect candidate to help you in this task.</p>
 <p>The function <code>sample()</code> have three arguments: 1) <code>x</code> - and object that contains the set of values from which you want to extract the sample; 2) <code>size</code> - the size of the sample, i.e.&nbsp;how many elements will have in the output sample; 3) <code>replace</code> - the sample should be performed with replacement?</p>
-<p>The <code>replace</code> argument determines if each value in the object <code>x</code> can be selected more than once in the output. In others words, if a specific value is selected in the sample, can this value be selected again over the next elements of the sample? For the majority of cases, you will probably answer “yes” to this question. So I normally set this argument to <code>TRUE</code>. But this might not be your case, so you would have to set this argument to <code>FALSE</code>.</p>
+<p>The <code>replace</code> argument determines if each value in the object <code>x</code> can be selected more than once in the output. In others words, if a specific value is selected in the sample, can this value be selected again over the next elements of the sample? For the majority of cases, you will probably answer “yes” to this question. So you normally set this argument to <code>TRUE</code>. But this might not be your case, so you would have to set this argument to <code>FALSE</code>.</p>
 <p>I personally heavily use <code>sample()</code> to distribute my color pallete across the elements of my image. Take the code below as an example, I have 100 points in my plot, and I want to randomly select a color from the <code>pallete</code> object to each point. I can easily do that with <code>sample()</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -376,20 +403,21 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#fb8500"</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">runif</span>(<span class="dv">100</span>),</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">runif</span>(<span class="dv">100</span>)</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>color <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  pallete, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">color =</span> color),</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_identity</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">runif</span>(<span class="dv">100</span>),</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">runif</span>(<span class="dv">100</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>color <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  pallete, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df) <span class="sc">+</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">color =</span> color),</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_identity</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -400,16 +428,13 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 </div>
 </section>
 </section>
-<section id="generating-one-dimensional-randomness" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="generating-one-dimensional-randomness"><span class="header-section-number">3.3</span> Generating one dimensional randomness</h2>
-<p>You can generate random values, and spread them across any dimensions you want from the Cartesian plane. For example, if you are generating two dimensional randomness, them, it means that you are generating the random values and spreading them across the two dimensions of the Cartesian plane (x and y axis).</p>
-<p>In contrast, one dimensional randomness means that you are spreading these random values only in one dimension of the Cartesian plane (could be the x axis or the y axis).</p>
-</section>
-<section id="sec-two-dimensions-random" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="sec-two-dimensions-random"><span class="header-section-number">3.4</span> Generating two dimensional randomness</h2>
-<p>Generation two dimensional randomness is essentially the same as generating one dimensional randomness. The only difference is that we are going to spread the generated values across two dimensions instead of only one dimension.</p>
-<section id="the-true-randomness-of-runif" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="the-true-randomness-of-runif"><span class="header-section-number">3.4.1</span> The true randomness of <code>runif()</code></h3>
+<section id="sec-two-dimensions-random" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="sec-two-dimensions-random"><span class="header-section-number">3.3</span> Generating random values across two dimensions</h2>
+<p>On the previous sections, we were generating random values in only one dimension, because we had a single sequence of random values at hand. But you are not limited to that! You can generate random values, and spread them across any dimensions you want from the Cartesian plane.</p>
+<p>Here in this section, we will discuss how to generate random values in two dimensions (x and y axis) of the Cartesian plane. The famous Perlin noise algorithmn is a generator that is mostly used to generate random values in two dimensions.</p>
+<p>Also, another hacky way of producing random values in two dimensions is by using a sequence of random values that was produced in one dimension, and dividing this sequence in two parts, to get a smaller sequence for each dimension. In other words, you build a sequence with <span class="math inline">\(2n\)</span> random values, then, divide it into two separate sequences, each with <span class="math inline">\(n\)</span> random values. As a result, you get two sequences of random values, one for each of the two dimensions in the Cartesian plane (x and y axis).</p>
+<section id="the-true-randomness-of-runif" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="the-true-randomness-of-runif"><span class="header-section-number">3.3.1</span> The true randomness of <code>runif()</code></h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>build_df <span class="ot">&lt;-</span> <span class="cf">function</span>(random_values, n){</span>
