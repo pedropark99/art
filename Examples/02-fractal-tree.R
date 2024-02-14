@@ -4,44 +4,57 @@ deg2rad <- function(deg){
   return(deg * pi / 180)
 }
 
-x_start <- 5
-y_start <- 5
+
+trunk <- data.frame(
+  x = c(0, 0),
+  y = c(0, 150)
+)
+
+x_start <- 0
+y_start <- 150
 coords <- list(
   x = vector("double", 100),
   y = vector("double", 100)
 )
-coords$x[1] <- x_start
-coords$y[1] <- y_start
 
 
-tree <- function(coords, current_index, current_angle, current_distance){
-  if (current_distance < 5) {
+branch <- function(x, y, a, len, coords, index) {
+  if (len < 5) {
     return(coords)
   }
-
-  current_x <- coords$x[current_index]
-  current_y <- coords$y[current_index]
+  
   rotate_factor <- deg2rad(15)
-  new_distance <- current_distance - 15
+  new_len <- len - 15
   
   # The left side
-  new_angle <- current_angle + rotate_factor
-  new_x <- (current_distance * cos(new_angle)) + current_x
-  new_y <- (current_distance * sin(new_angle)) + current_y
+  new_angle <- a + rotate_factor
+  new_x <- (len * cos(new_angle)) + x
+  new_y <- (len * sin(new_angle)) + y
   
-  current_index <- current_index + 1
-  coords$x[current_index] <- new_x
-  coords$y[current_index] <- new_y
+  coords$x[index] <- new_x
+  coords$y[index] <- new_y
+  index <- index + 1
   
-  tree(coords, current_index, new_angle, new_distance)
+  branch(new_x, new_y, new_angle, new_len, coords, index)
+  
+  # The right side
+  new_angle <- a - rotate_factor
+  new_x <- (len * cos(new_angle)) + x
+  new_y <- (len * sin(new_angle)) + y
+  
+  coords$x[index] <- new_x
+  coords$y[index] <- new_y
+  index <- index + 1
+  
+  branch(new_x, new_y, new_angle, new_len, coords, index)
 }
 
 
-t <- tree(coords, 1, deg2rad(90), 100)
-df <- data.frame(
-  x = t$x,
-  y = t$y
-)
+
+
+t <- branch(x_start, y_start, deg2rad(90), 100, coords, 1)
+df <- as_tibble(t) |>
+  filter(x != 0)
 
 
 
