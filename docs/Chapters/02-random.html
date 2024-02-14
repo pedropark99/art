@@ -311,11 +311,11 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3757506 0.7624408 0.1190523</code></pre>
+<pre><code>[1] 0.07536508 0.33689879 0.89258322</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.38963393 0.01074569 0.96113361</code></pre>
+<pre><code>[1] 0.2801469 0.1769302 0.1547300</code></pre>
 </div>
 </div>
 <p>This happens because the “initial state” is different in each call to <code>runif()</code>. Every time I run <code>runif()</code>, R automatically and randomly selects a seed for you. That is why the results in the example above are different between each call to <code>runif()</code>. Because the seeds used in each call are different.</p>
@@ -529,9 +529,9 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <h2 data-number="3.4" class="anchored" data-anchor-id="introducing-perlin-noise"><span class="header-section-number">3.4</span> Introducing Perlin noise</h2>
 <p>Perlin noise is a type of gradient noise developed by Ken Perlin in 1983 <span class="citation" data-cites="perlinwiki">(<a href="_references.html#ref-perlinwiki" role="doc-biblioref">Wikipedia 2024</a>)</span>. I think there are two ways of describing what Perlin noise is. One approach is to answer “why it was developed?”. And the other approach is to explain what the output of the algorithm looks like.</p>
 <p>In essence, the Perlin noise algorithm was developed by Ken, after his experience working at the Disney’s film called “Tron”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The main idea behind it, was to develop an algorithm that produced more natural appearing textures on the computer screen. In other words, Perlin noise was developed to improve the quality of textures used in computer graphics.</p>
-<p>This algorithm produces as output a sequence of random values, as any other random number generator we have seen so far. But one key feature of this algorithm, is that each random value produced is very close (or “similar”) to it’s neighbors.</p>
-<p>For example, if you produce a sequence of, let’s say, 100 random values with Perlin noise, then, the 12th value in this sequence will be a value that is very close to the values in the 10th and 13th position in the sequence. This logic repeats to all values in the sequence.</p>
-<p>The main consequence of this characteristic, is that you get a very smooth transition between each random value in the sequence. The sequence of random values produced by the algorithm have a less erratic, or drastic behavior, compared to the others generators, such as <code>runif()</code>.</p>
+<p>This algorithm produces as output a sequence of random values, as any other random number generator we have seen so far. But the key feature of this algorithm, is that <strong>each random value in the sequence is very close (or “similar”) to it’s neighbors</strong>.</p>
+<p>For example, if you produce a sequence of, let’s say, 100 random values with Perlin noise, the 12th value in this sequence will be a value that is very close to the values in the 10th and 13th position in the sequence. This logic repeats to all values in the sequence.</p>
+<p>The main consequence of this characteristic, is that you get a very smooth transition between each random value in the sequence. These values have a less erratic, or drastic behavior, compared to the values produced by others generators, such as <code>runif()</code>.</p>
 <p>We can visualize this pattern of the algorithm by using the same visualization we were using in the previous section. You can see in the output below that, the color variation is very smooth compared to the output of <code>runif()</code> or <code>rnorm()</code>.</p>
 <p>In fact, the color variation is so smooth that you can actually see patterns or shapes in the output.</p>
 <div class="cell">

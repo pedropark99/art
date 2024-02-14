@@ -8,6 +8,12 @@ you follow along. The idea of this chapter is to be a really simple and
 quick introduction to the most essential math concepts that we use while
 drawing things in a computer screen.
 
+```{r}
+#| include: false
+knitr::opts_chunk$set(dev = "ragg_png")
+```
+
+
 First, I explain and establish some jargon's used across this book, for
 those readers that are not very familiar with the world of computer
 graphics. Second, I talk about coordinate systems, and the Cartesian
@@ -542,7 +548,127 @@ the Cartesian plane, i.e. coordinate $(0, 0)$, then, $Cx = 0$ and
 $Cy = 0$, and, as a result, you can simplify the above formulas to
 $y'=r\times \sin(A)$ and $x'=r\times \cos(A)$.
 
-As a first example, let's suppose you wanted to calculate the
+As a first example, let's use a circle with 5 points of radius,
+and that is centered at the origin point. If you want to
+calculate the coordinates of the circumference at angles 35 degrees,
+and 68 degrees for example, you would get approximately the
+coordinates $(4.10, 2.87)$ and $(1.87, 4.64)$, as you can see below:
+
+```{r}
+x <- 5 * cos(deg2rad( c(35, 68) ))
+y <- 5 * sin(deg2rad( c(35, 68) ))
+print(x)
+print(y)
+```
+
+
+At @fig-circle-coordinates you can see visualize what these coordinates are,
+and how they relate back to the circle in the Cartesian plane:
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-cap: "Calculating coordinates in the circumference of a circle"
+#| fig-width: 7.5
+#| fig-height: 7
+#| fig-dpi: 200
+#| label: "fig-circle-coordinates"
+
+library(tidyverse)
+
+# A function to convert degrees into radians
+deg2rad <- function(deg){
+  return(deg * pi / 180)
+}
+
+xr <- function(r, a){
+  return(r * cos(a))
+}
+
+yr <- function(r, a){
+  return(r * sin(a))
+}
+
+
+df <- tibble(
+  x = xr(5, deg2rad(c(35, 68))),
+  y = yr(5, deg2rad(c(35, 68))),
+)
+
+canvas <- ggplot() +
+  theme_minimal() +
+  lims(y = c(-1, 5), x = c(-1, 5)) +
+  geom_vline(aes(xintercept = 0), color = "#222222") +
+  geom_hline(aes(yintercept = 0), color = "#222222")
+
+main_circle <- tibble(
+  x = xr(5, deg2rad(seq(0, 90, by = 1))),
+  y = yr(5, deg2rad(seq(0, 90, by = 1)))
+)
+
+
+circle1 <- tibble(
+  x = xr(1, deg2rad(seq(0, 68, by = 1))),
+  y = yr(1, deg2rad(seq(0, 68, by = 1)))
+)
+
+circle2 <- tibble(
+  x = xr(1.6, deg2rad(seq(0, 35, by = 1))),
+  y = yr(1.6, deg2rad(seq(0, 35, by = 1)))
+)
+
+
+annos <- tibble(
+  x = c(1.5, 3, 0.85, 2, 4.10, 2.5),
+  y = c(2.8, 1.75, 1.25, 0.75, 3.1, 4.64),
+  a = c(58, 28, 58, 26, 0, 0),
+  c = c("black", "black", "#804016", "#102e0e", "black", "black"),
+  t = c("Length 5", "Length 5", "Angle of\n68 degrees", "Angle of\n35 degrees",
+        "(4.10, 2.87)", "(1.87, 4.64)")
+)
+
+
+
+
+canvas +
+  geom_path(
+    aes(x, y),
+    data = main_circle,
+    color = "#fcb6b6"
+  ) +
+  geom_point(
+    aes(x, y),
+    data = df,
+    size = 2
+  ) +
+  geom_segment(
+    aes(x = 0, y = 0, xend = x, yend = y),
+    data = df,
+    size = 1.5
+  ) +
+  geom_path(
+    aes(x, y),
+    data = circle1,
+    color = "#804016"
+  ) +
+  geom_path(
+    aes(x, y),
+    data = circle2,
+    color = "#102e0e"
+  ) +
+  geom_text(
+    aes(x, y, label = t, angle = a, colour = c),
+    data = annos,
+    size = 14/.pt,
+    family = "Inconsolata"
+  ) +
+  scale_color_identity()
+
+```
+
+
+As a second example, let's suppose you wanted to calculate the
 coordinates of the very top of the circle, i.e. the highest point in the
 circle. If that is the case, then, the angle $A$ should be $\pi/2$,
 which is 90 degrees counter-clockwise, or $-3\pi/2$, which is 270

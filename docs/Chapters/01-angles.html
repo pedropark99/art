@@ -321,7 +321,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-angles_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01-angles_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -406,7 +406,7 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-angles_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01-angles_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -423,7 +423,7 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-angles_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01-angles_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -441,7 +441,7 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-angles_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01-angles_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -475,7 +475,7 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-angles_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01-angles_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -493,7 +493,7 @@ Figure&nbsp;1.3: Cartesian Plane. Source: Wikipedia, By K. Bolino - Made by K. B
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-angles_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01-angles_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -597,12 +597,40 @@ x' = Cx + (r \times \cos(A));
 y' = Cy + (r \times \sin(A));
 \tag{1.4}\]</span></span></p>
 <p>If the circle you are trying to draw is centered at the origin point of the Cartesian plane, i.e.&nbsp;coordinate <span class="math inline">\((0, 0)\)</span>, then, <span class="math inline">\(Cx = 0\)</span> and <span class="math inline">\(Cy = 0\)</span>, and, as a result, you can simplify the above formulas to <span class="math inline">\(y'=r\times \sin(A)\)</span> and <span class="math inline">\(x'=r\times \cos(A)\)</span>.</p>
-<p>As a first example, let’s suppose you wanted to calculate the coordinates of the very top of the circle, i.e.&nbsp;the highest point in the circle. If that is the case, then, the angle <span class="math inline">\(A\)</span> should be <span class="math inline">\(\pi/2\)</span>, which is 90 degrees counter-clockwise, or <span class="math inline">\(-3\pi/2\)</span>, which is 270 degrees clockwise. Both angles represents the highest point in the circle as shown in <a href="#fig-clockwise" class="quarto-xref">Figure&nbsp;<span>1.4</span></a>.</p>
+<p>As a first example, let’s use a circle with 5 points of radius, and that is centered at the origin point. If you want to calculate the coordinates of the circumference at angles 35 degrees, and 68 degrees for example, you would get approximately the coordinates <span class="math inline">\((4.10, 2.87)\)</span> and <span class="math inline">\((1.87, 4.64)\)</span>, as you can see below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(<span class="fu">deg2rad</span>( <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">68</span>) ))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="fu">deg2rad</span>( <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">68</span>) ))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.095760 1.873033</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.867882 4.635919</code></pre>
+</div>
+</div>
+<p>At <a href="#fig-circle-coordinates" class="quarto-xref">Figure&nbsp;<span>1.5</span></a> you can see visualize what these coordinates are, and how they relate back to the circle in the Cartesian plane:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-circle-coordinates" class="quarto-figure quarto-figure-center quarto-float anchored" width="720">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-circle-coordinates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-angles_files/figure-html/fig-circle-coordinates-1.png" class="img-fluid figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-circle-coordinates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.5: Calculating coordinates in the circumference of a circle
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As a second example, let’s suppose you wanted to calculate the coordinates of the very top of the circle, i.e.&nbsp;the highest point in the circle. If that is the case, then, the angle <span class="math inline">\(A\)</span> should be <span class="math inline">\(\pi/2\)</span>, which is 90 degrees counter-clockwise, or <span class="math inline">\(-3\pi/2\)</span>, which is 270 degrees clockwise. Both angles represents the highest point in the circle as shown in <a href="#fig-clockwise" class="quarto-xref">Figure&nbsp;<span>1.4</span></a>.</p>
 <p>Let’s also suppose that our circle have 5 units of radius, and that it is centered in the origin point, so that we can use the simplified versions of <a href="#eq-rotation3" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> and <a href="#eq-rotation4" class="quarto-xref">Equation&nbsp;<span>1.4</span></a>. The code below calculates the coordinates of the “highest point” in this circle.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">2</span>), <span class="dv">5</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">2</span>), <span class="dv">5</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"x: {x}, y: {y}"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">2</span>), <span class="dv">5</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">2</span>), <span class="dv">5</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"x: {x}, y: {y}"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>x: 0, y: 5</code></pre>
 </div>
@@ -611,18 +639,18 @@ y' = Cy + (r \times \sin(A));
 <p>The code below demonstrates this idea. It starts by getting a sequence of angles (0, 10, 20, 30, … until 360). Then, it calculates the coordinates of the points in the circumference that are identified by each one of these angles in the sequence. Finally, we plot the calculated coordinates as points in the plane.</p>
 <p>You can see in the plot below that, the points follow the shape of a circle. If you change the geom from <code>geom_point()</code> to <code>geom_path()</code>, then, you get an actual circle.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">360</span>, <span class="at">by =</span> <span class="dv">10</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(angles)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>circle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(angles),</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(angles)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(circle) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">360</span>, <span class="at">by =</span> <span class="dv">10</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">deg2rad</span>(angles)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>circle <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">cos</span>(angles),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(angles)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(circle) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01-angles_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="336"></p>
+<p><img src="01-angles_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="336"></p>
 </figure>
 </div>
 </div>
