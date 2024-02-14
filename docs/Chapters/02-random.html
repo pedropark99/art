@@ -236,10 +236,7 @@ window.Quarto = {
   <li><a href="#sec-rnorm1" id="toc-sec-rnorm1" class="nav-link" data-scroll-target="#sec-rnorm1"><span class="header-section-number">3.2.2</span> Normal distribution with <code>rnorm()</code></a></li>
   <li><a href="#taking-a-random-sample-with-sample" id="toc-taking-a-random-sample-with-sample" class="nav-link" data-scroll-target="#taking-a-random-sample-with-sample"><span class="header-section-number">3.2.3</span> Taking a random sample with <code>sample()</code></a></li>
   </ul></li>
-  <li><a href="#sec-two-dimensions-random" id="toc-sec-two-dimensions-random" class="nav-link" data-scroll-target="#sec-two-dimensions-random"><span class="header-section-number">3.3</span> Generating random values across two dimensions</a>
-  <ul class="collapse">
-  <li><a href="#runif-and-rnorm-in-two-dimensions" id="toc-runif-and-rnorm-in-two-dimensions" class="nav-link" data-scroll-target="#runif-and-rnorm-in-two-dimensions"><span class="header-section-number">3.3.1</span> <code>runif()</code> and <code>rnorm()</code> in two dimensions</a></li>
-  </ul></li>
+  <li><a href="#sec-two-dimensions-random" id="toc-sec-two-dimensions-random" class="nav-link" data-scroll-target="#sec-two-dimensions-random"><span class="header-section-number">3.3</span> Generating random values across two dimensions</a></li>
   <li><a href="#introducing-perlin-noise" id="toc-introducing-perlin-noise" class="nav-link" data-scroll-target="#introducing-perlin-noise"><span class="header-section-number">3.4</span> Introducing Perlin noise</a></li>
   </ul>
 </nav>
@@ -314,11 +311,11 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5388681 0.2329725 0.4520737</code></pre>
+<pre><code>[1] 0.3757506 0.7624408 0.1190523</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6670682 0.6021172 0.5943788</code></pre>
+<pre><code>[1] 0.38963393 0.01074569 0.96113361</code></pre>
 </div>
 </div>
 <p>This happens because the “initial state” is different in each call to <code>runif()</code>. Every time I run <code>runif()</code>, R automatically and randomly selects a seed for you. That is why the results in the example above are different between each call to <code>runif()</code>. Because the seeds used in each call are different.</p>
@@ -459,17 +456,15 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <section id="sec-two-dimensions-random" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="sec-two-dimensions-random"><span class="header-section-number">3.3</span> Generating random values across two dimensions</h2>
 <p>On this section, we will discuss how to generate random values in two dimensions (x and y axis) of the Cartesian plane. Previously, we were generating random values in only one dimension, because we had a single sequence of random values at hand. But you are not limited to that!</p>
-<section id="runif-and-rnorm-in-two-dimensions" class="level3" data-number="3.3.1">
-<h3 data-number="3.3.1" class="anchored" data-anchor-id="runif-and-rnorm-in-two-dimensions"><span class="header-section-number">3.3.1</span> <code>runif()</code> and <code>rnorm()</code> in two dimensions</h3>
 <p>Even though <code>runif()</code> and <code>rnorm()</code> are functions that generates a single sequence of random values, in theory, there is nothing stopping you from spreading this sequence of random values across any dimensions you want in the Cartesian plane.</p>
 <p>In other words, there is hacky way of producing two dimensional randomness from a single sequence of random values. The basic idea is to generate a single sequence of random values, that is big enough to fill a matrix of dimensions <span class="math inline">\((x, y)\)</span>. Then you simply spread the values of this sequence through the elements of this matrix. Because this matrix have two dimensions (x and y), it behaves as the two dimensions in the Cartesian plane.</p>
-<p>For example, let’s suppose you are building a generative art inside an image with 100x100 area. That is, an image with 100 pixels of with and 100 pixels of height. If you want to add some randomness to all pixels in this image, then, you need to generate <span class="math inline">\(100^2\)</span> random values, and spread these values across each coordinate in this 100x100 area.</p>
-<p>Having that in mind, you could produce a sequence of <span class="math inline">\(100^2\)</span> random values, and then, store these values in a matrix of 100 rows and 100 columns. This way, each element in the matrix represents a spot/pixel in your image.</p>
+<p>For example, let’s suppose you are building a generative art inside an image with 100x100 area. That is, an image with 100 pixels of width and 100 pixels of height. If you want to add some randomness to all pixels in this image, then, you need to generate <span class="math inline">\(100^2\)</span> random values, and spread these values across each coordinate in this 100x100 area.</p>
+<p>Having that in mind, you could produce a sequence of <span class="math inline">\(100^2\)</span> random values, and then, store these values in a matrix of 100 rows and 100 columns. This way, each element in the matrix represents a specific spot/pixel in your image.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">100</span><span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(v, <span class="at">ncol =</span> <span class="dv">100</span>, <span class="at">nrow =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You could also, store this sequence of random values inside a <code>data.frame</code>, and then, you add two new columns in this <code>data.frame</code> to store the x and y coordinates that represents each spot/pixel in your image. This is also a valid strategy to map each random value to a specific spot/pixel in your image.</p>
+<p>You could also, store this sequence of random values inside a <code>data.frame</code>. You just add two new columns in this <code>data.frame</code> to store the x and y coordinates for each random value in the sequence. This is also a valid strategy to map each random value to a specific spot/pixel in your image.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(<span class="dv">100</span>), <span class="at">each =</span> <span class="dv">100</span>),</span>
@@ -530,28 +525,53 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 </div>
 </div>
 </section>
-</section>
 <section id="introducing-perlin-noise" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="introducing-perlin-noise"><span class="header-section-number">3.4</span> Introducing Perlin noise</h2>
-<p>Perlin noise is a type of gradient noise developed by Ken Perlin in 1983 <span class="citation" data-cites="perlinwiki">(<a href="_references.html#ref-perlinwiki" role="doc-biblioref">Wikipedia 2024</a>)</span></p>
+<p>Perlin noise is a type of gradient noise developed by Ken Perlin in 1983 <span class="citation" data-cites="perlinwiki">(<a href="_references.html#ref-perlinwiki" role="doc-biblioref">Wikipedia 2024</a>)</span>. I think there are two ways of describing what Perlin noise is. One approach is to answer “why it was developed?”. And the other approach is to explain what the output of the algorithm looks like.</p>
+<p>In essence, the Perlin noise algorithm was developed by Ken, after his experience working at the Disney’s film called “Tron”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The main idea behind it, was to develop an algorithm that produced more natural appearing textures on the computer screen. In other words, Perlin noise was developed to improve the quality of textures used in computer graphics.</p>
+<p>This algorithm produces as output a sequence of random values, as any other random number generator we have seen so far. But one key feature of this algorithm, is that each random value produced is very close (or “similar”) to it’s neighbors.</p>
+<p>For example, if you produce a sequence of, let’s say, 100 random values with Perlin noise, then, the 12th value in this sequence will be a value that is very close to the values in the 10th and 13th position in the sequence. This logic repeats to all values in the sequence.</p>
+<p>The main consequence of this characteristic, is that you get a very smooth transition between each random value in the sequence. The sequence of random values produced by the algorithm have a less erratic, or drastic behavior, compared to the others generators, such as <code>runif()</code>.</p>
+<p>We can visualize this pattern of the algorithm by using the same visualization we were using in the previous section. You can see in the output below that, the color variation is very smooth compared to the output of <code>runif()</code> or <code>rnorm()</code>.</p>
+<p>In fact, the color variation is so smooth that you can actually see patterns or shapes in the output.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ambient)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'ambient' was built under R version 4.3.2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>random <span class="ot">&lt;-</span> <span class="fu">noise_perlin</span>(<span class="fu">c</span>(n, n))</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">build_df</span>(random, n)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> value),</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">40</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>random <span class="ot">&lt;-</span> <span class="fu">noise_perlin</span>(<span class="fu">c</span>(n, n))</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">build_df</span>(random, n)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> value),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="02-random_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">40</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>random <span class="ot">&lt;-</span> <span class="fu">noise_simplex</span>(<span class="fu">c</span>(n, n))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">build_df</span>(random, n)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d) <span class="sc">+</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> value),</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02-random_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -568,6 +588,7 @@ Wikipedia, The Free Encyclopedia. 2024. <span>“Perlin Noise.”</span> <a href
 <hr>
 <ol>
 <li id="fn1"><p><a href="https://ambient.data-imaginist.com/index.html" class="uri">https://ambient.data-imaginist.com/index.html</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://en.wikipedia.org/wiki/Tron" class="uri">https://en.wikipedia.org/wiki/Tron</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

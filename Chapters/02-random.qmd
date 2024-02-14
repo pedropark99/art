@@ -320,8 +320,6 @@ because we had a single sequence of random values at hand.
 But you are not limited to that! 
 
 
-### `runif()` and `rnorm()` in two dimensions
-
 Even though `runif()` and `rnorm()` are functions that generates
 a single sequence of random values, in theory, there is nothing
 stopping you from spreading this sequence of random values across any dimensions you
@@ -335,23 +333,23 @@ through the elements of this matrix. Because this matrix have two dimensions (x 
 it behaves as the two dimensions in the Cartesian plane.
 
 For example, let's suppose you are building a generative art inside an image
-with 100x100 area. That is, an image with 100 pixels of with and 100 pixels of height.
+with 100x100 area. That is, an image with 100 pixels of width and 100 pixels of height.
 If you want to add some randomness to all pixels in this image, then, you need
 to generate $100^2$ random values, and spread these values across each coordinate
 in this 100x100 area.
 
 Having that in mind, you could produce a sequence of $100^2$ random values,
 and then, store these values in a matrix of 100 rows and 100 columns. This
-way, each element in the matrix represents a spot/pixel in your image.
+way, each element in the matrix represents a specific spot/pixel in your image.
 
 ```{r}
 v <- runif(100^2)
 m <- matrix(v, ncol = 100, nrow = 100)
 ```
 
-You could also, store this sequence of random values inside a `data.frame`,
-and then, you add two new columns in this `data.frame` to store the x and y coordinates
-that represents each spot/pixel in your image. This is also
+You could also, store this sequence of random values inside a `data.frame`.
+You just add two new columns in this `data.frame` to store the x and y coordinates
+for each random value in the sequence. This is also
 a valid strategy to map each random value to a specific spot/pixel in your image.
 
 ```{r}
@@ -425,11 +423,47 @@ ggplot(d) +
 
 ## Introducing Perlin noise
 
-Perlin noise is a type of gradient noise developed by Ken Perlin in 1983 [@perlinwiki]
+Perlin noise is a type of gradient noise developed by Ken Perlin in 1983 [@perlinwiki].
+I think there are two ways of describing what Perlin noise is. One approach
+is to answer "why it was developed?". And the other approach is to explain what the output
+of the algorithm looks like.
+
+In essence, the Perlin noise algorithm was developed by Ken, after his experience
+working at the Disney's film called "Tron"[^tron-film]. The main idea behind it, was to
+develop an algorithm that produced more natural appearing textures
+on the computer screen. In other words, Perlin noise was developed to
+improve the quality of textures used in computer graphics.
+
+[^tron-film]: <https://en.wikipedia.org/wiki/Tron>.
+
+This algorithm produces as output a sequence of random values,
+as any other random number generator we have seen so far.
+But the key feature of this algorithm, is that
+**each random value in the sequence is very close (or "similar") to it's neighbors**.
+
+For example, if you produce a sequence of, let's say, 100 random values with Perlin noise,
+the 12th value in this sequence will be a value that is very close to the values
+in the 10th and 13th position in the sequence. This logic repeats to all
+values in the sequence.
+
+The main consequence
+of this characteristic, is that you get a very smooth transition between each random value in the
+sequence. These values have a less erratic, or drastic behavior, compared to the
+values produced by others generators, such as `runif()`.
+
+
+We can visualize this pattern of the algorithm by
+using the same visualization we were using in the previous section.
+You can see in the output below that, the color variation is very
+smooth compared to the output of `runif()` or `rnorm()`.
+
+In fact, the color variation is so smooth that you can actually
+see patterns or shapes in the output.
 
 
 ```{r}
 library(ambient)
+set.seed(40)
 random <- noise_perlin(c(n, n))
 d <- build_df(random, n)
 
@@ -440,6 +474,24 @@ ggplot(d) +
   ) +
   theme_void()
 ```
+
+
+```{r}
+set.seed(40)
+random <- noise_simplex(c(n, n))
+d <- build_df(random, n)
+
+ggplot(d) +
+  geom_point(
+    aes(x = x, y = y, color = value),
+    size = 3
+  ) +
+  theme_void()
+```
+
+
+
+
 
 
 
