@@ -562,7 +562,7 @@ print(y)
 ```
 
 
-At @fig-circle-coordinates you can see visualize what these coordinates are,
+At @fig-circle-coordinates you can visualize what these coordinates are,
 and how they relate back to the circle in the Cartesian plane:
 
 
