@@ -311,11 +311,11 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9766178 0.6681356 0.2424230</code></pre>
+<pre><code>[1] 0.1698792 0.8078796 0.6246506</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7523809 0.9732064 0.5455121</code></pre>
+<pre><code>[1] 0.1982879 0.5444863 0.8296774</code></pre>
 </div>
 </div>
 <p>This happens because the “initial state” is different in each call to <code>runif()</code>. Every time I run <code>runif()</code>, R automatically and randomly selects a seed for you. That is why the results in the example above are different between each call to <code>runif()</code>. Because the seeds used in each call are different.</p>
@@ -564,7 +564,7 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <p>That is why, Ken Perlin developed a new algorithm, called the Simplex noise. Simplex noise is an algorithm that produces similar results as the Perlin noise. But it is much faster to compute at larger scales, and the noise values produced by it also have some different features.</p>
 <p>The Simplex noise algorithm normally produces “stronger” results compared to the original Perlin noise. In other words, the random values produced by the algorithm vary more rapidly.</p>
 <p>You can see this fact in the output below. Because you have more patterns in the result image, or, a more detailed image in general. You can also describe it as: the transitions between blue and black are faster (or, less smooth), compared to the output of Perlin noise.</p>
-<p>We use again the <code>ambient</code> R package to generate the random values sequence. But this time, we use the <code>noise_simplex()</code> function instead, that uses the Simplex noise algorithm. The idea is exactly the same as it was in <code>noise_perlin()</code>. In the first and main argument of the function, you give the dimensions of the output matrix you want, as a vector of 2 elements.</p>
+<p>We use again the <code>ambient</code> R package to generate Simplex noise values. But this time, we use the <code>noise_simplex()</code> function instead, that uses the Simplex noise algorithm. The idea is exactly the same as it was in <code>noise_perlin()</code>. In the first and main argument of the function, you give the dimensions of the output matrix you want, as a vector of 2 elements.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">40</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>random <span class="ot">&lt;-</span> <span class="fu">noise_simplex</span>(<span class="fu">c</span>(n, n))</span>
