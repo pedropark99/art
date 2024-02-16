@@ -158,7 +158,7 @@ which are:
 
 But these two generators from the `ambient` R package produces random values exclusively
 for two to three dimensions. Because of that, they will be discussed in details only
-at @sec-two-dimensions-random.
+at @sec-perlin-noise.
 
 
 ### Uniform distribution with `runif()`
@@ -421,7 +421,7 @@ ggplot(d) +
 ```
 
 
-## Introducing Perlin noise
+## Introducing Perlin noise {#sec-perlin-noise}
 
 Perlin noise is a type of gradient noise developed by Ken Perlin in 1983 [@perlinwiki].
 I think there are two ways of describing what Perlin noise is. One approach
@@ -447,22 +447,30 @@ in the 10th and 13th position in the sequence. This logic repeats to all
 values in the sequence.
 
 The main consequence
-of this characteristic, is that you get a very smooth transition between each random value in the
+of this characteristic, is that you get a very smooth transition
+between each random value in the
 sequence. These values have a less erratic, or drastic behavior, compared to the
 values produced by others generators, such as `runif()`.
-
 
 We can visualize this pattern of the algorithm by
 using the same visualization we were using in the previous section.
 You can see in the output below that, the color variation is very
 smooth compared to the output of `runif()` or `rnorm()`.
-
 In fact, the color variation is so smooth that you can actually
 see patterns or shapes in the output.
 
+To generate random values with Perlin noise in R, we use the `noise_perlin()` function
+from the `ambient` R package. The first and main argument of this function,
+is the dimensions
+of the matrix of random values you want to produce. If you want, let's say, a
+matrix with 50 columns and 50 rows (that is $50 \times 50 = 2500$ random values),
+then, you give the vector `c(50, 50)` as input to this function.
+In the example below, we are creating $100 \times 100 = 10000$ random values.
 
 ```{r}
 library(ambient)
+
+n <- 100
 set.seed(40)
 random <- noise_perlin(c(n, n))
 d <- build_df(random, n)
@@ -474,6 +482,41 @@ ggplot(d) +
   ) +
   theme_void()
 ```
+
+
+The Perlin noise is one of the most used algorithms
+in the computer graphics industry. It is used everywhere, and it is
+massively used in generative art as well.
+
+This algorithm is so powerful that it's author, Ken Perlin, won
+one of the highest prizes in computer science for creating it.
+
+But despite it's popularity, the original Perlin noise algorithm
+have some important limitations regarding the features of the
+noise produced, and also, the big amount of computational resources required
+to compute the noises at larger scales.
+
+That is why, Ken Perlin developed a new algorithm, called the Simplex noise.
+Simplex noise is an algorithm that produces similar results as the Perlin
+noise. But it is much faster to compute at larger scales, and the noise values
+produced by it also have some different features.
+
+The Simplex noise algorithm normally produces "stronger" results compared
+to the original Perlin noise. In other words, the random values produced
+by the algorithm vary more rapidly.
+
+You can see this fact in the output below.
+Because you have more patterns in the result image, or, a more detailed image
+in general. You can also describe it as:
+the transitions between blue and black are faster (or, less smooth), compared
+to the output of Perlin noise.
+
+We use again the `ambient` R package to generate Simplex noise values.
+But this time, we use the `noise_simplex()` function instead,
+that uses the Simplex noise algorithm. The idea is exactly the same
+as it was in `noise_perlin()`. In the first and main argument of the function,
+you give the dimensions of the output matrix you want,
+as a vector of 2 elements.
 
 
 ```{r}
