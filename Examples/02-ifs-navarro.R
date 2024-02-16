@@ -1,3 +1,6 @@
+# Iterated Function Systems by Danielle Navarro
+# https://art-from-code.netlify.app/day-2/session-1/
+###################
 library(Rcpp)
 library(ggplot2)
 library(tibble)
@@ -176,6 +179,6 @@ unbox_art <- function(data, seed = NULL, size = 1) {
 
 
 mil <- 1000000
-tic()
+
 unboxer_base(3 * mil, layers = 3, seed = 66) |> 
   unbox_art(seed = 66, size = .1)

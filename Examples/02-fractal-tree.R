@@ -1,3 +1,5 @@
+# A implementation of the famous fractal binary tree
+#####################
 library(tidyverse)
 
 # Function to convert degrees into radians

@@ -1,6 +1,8 @@
-library(tidyverse)
-# A implementation of the chaos game that produces
+# A implementation of the chaos game that produces 
 # the Sierpiński triangle
+#####################
+library(tidyverse)
+
 initial_triangle <- tibble(
   x = c(10, 15, 5),
   y = c(10, 5, 5)
