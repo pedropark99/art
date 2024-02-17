@@ -67,15 +67,16 @@ a different object or entity.
 
 ```{r}
 library(ggplot2)
-rectangle <- data.frame(
+library(tibble)
+rectangle <- tibble(
   x = c(0, 8, 8, 0),
   y = c(0, 0, 2, 2)
 )
-line <- data.frame(
+line <- tibble(
   x = c(0.67,12.3),
   y = c(0.67,12.3)
 )
-star <- data.frame(
+star <- tibble(
   x = c(3, 4, 7, 4, 3, 2, -1, 2),
   y = c(3, 6, 7, 8, 11, 8, 7, 6) + 1
 )
@@ -253,7 +254,7 @@ the plot below as a start point, where we display three different lines,
 one above the other.
 
 ```{r}
-df <- data.frame(
+df <- tibble(
   x = c(9, 10.5, 9.25, 10.75, 9.5, 11),
   y = c(9, 10.5, 9.5, 11, 10, 11.5),
   id = factor(c(1, 1, 2, 2, 3, 3))
@@ -374,7 +375,7 @@ most of the things that you drawn in this system end up looking like
 circles.
 
 ```{r}
-df <- data.frame(
+df <- tibble(
   angle = c(0, pi/2),
   radius = c(5, 5)
 )
@@ -707,7 +708,7 @@ then, you get an actual circle.
 #| fig-height: 3.5
 angles <- seq(0, 360, by = 10)
 angles <- deg2rad(angles)
-circle <- data.frame(
+circle <- tibble(
   x = 5 * cos(angles),
   y = 5 * sin(angles)
 )

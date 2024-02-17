@@ -12,6 +12,11 @@ book:
     - Chapters/01-angles.qmd
     - Chapters/01-transformations.qmd
     - Chapters/02-random.qmd
+    - Chapters/03-flow-fields.qmd
+    - Chapters/04-subdivisions.qmd
+    - Chapters/05-fractal.qmd
+    - Chapters/05-ifs.qmd
+    - Chapters/06-filters.qmd
     - Chapters/_references.qmd
 
 

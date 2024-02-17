@@ -74,14 +74,16 @@ positions, respectively.
 
 ```{r}
 library(ggplot2)
-triangle <- data.frame(
+library(tibble)
+
+triangle <- tibble(
   x = c(-1, 1, 0),
   y = c(0, 0, 2)
 )
 
 x_offset <- 3
 y_offset <- 2
-translated_triangle <- data.frame(
+translated_triangle <- tibble(
   x = triangle$x + x_offset,
   y = triangle$y + y_offset
 )
@@ -131,7 +133,7 @@ instead, then, all you need to do is to translate a single coordinate,
 which is the center point of the rectangle.
 
 ```{r}
-r <- data.frame(
+r <- tibble(
   center_x = 0.5,
   center_y = 0.25,
   width = 1,
@@ -140,7 +142,7 @@ r <- data.frame(
 
 x_offset <- 3
 y_offset <- 2
-translated_r <- data.frame(
+translated_r <- tibble(
   center_x = r$center_x + 3,
   center_y = r$center_y + 2,
   width = 1,
@@ -183,11 +185,11 @@ $(0,0), (1,0), (0,2)$. We can get a triangle that is twice bigger by
 multiplying each coordinate by a factor of two.
 
 ```{r}
-triangle <- data.frame(
+triangle <- tibble(
   x = c(0, 1, 0),
   y = c(0, 0, 2)
 )
-twice_triangle <- data.frame(
+twice_triangle <- tibble(
   x = triangle$x * 2,
   y = triangle$y * 2
 )
@@ -212,11 +214,11 @@ same center position as the original object. Take this case as an
 example:
 
 ```{r}
-triangle <- data.frame(
+triangle <- tibble(
   x = c(0.25, 1.5, 0.5),
   y = c(0.5, 0.5, 2)
 )
-twice_triangle <- data.frame(
+twice_triangle <- tibble(
   x = (triangle$x * 2) - (max(triangle$x) / 2),
   y = (triangle$y * 2) - (max(triangle$y) / 2)
 )
@@ -298,19 +300,19 @@ rotations over this triangle. The first, we rotate it to 30 degrees
 clockwise, and in the second, 90 degrees clockwise.
 
 ```{r}
-triangle <- data.frame(
+triangle <- tibble(
   x = c(0, 1, 0),
   y = c(0, 0, 2)
 )
 
 angle <- deg2rad(-30)
-first_rotated_triangle <- data.frame(
+first_rotated_triangle <- tibble(
   x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),
   y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))
 )
 
 angle <- deg2rad(-90)
-second_rotated_triangle <- data.frame(
+second_rotated_triangle <- tibble(
   x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),
   y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))
 )
@@ -358,24 +360,24 @@ rotated triangles follows the circumference of that circle.
 #| echo: false
 #| fig-cap: "Rotating a triangle around the origin point"
 #| label: "fig-rotation-origin-point"
-triangle <- data.frame(
+triangle <- tibble(
   x = c(0, 1, 0),
   y = c(3, 3, 5)
 )
 
 angle <- deg2rad(-30)
-first_rotated_triangle <- data.frame(
+first_rotated_triangle <- tibble(
   x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),
   y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))
 )
 
 angle <- deg2rad(-90)
-second_rotated_triangle <- data.frame(
+second_rotated_triangle <- tibble(
   x = (triangle$x * cos(angle)) + (triangle$y * -1 * sin(angle)),
   y = (triangle$x * sin(angle)) + (triangle$y * cos(angle))
 )
 
-circle <- data.frame(
+circle <- tibble(
   x = 3 * cos(deg2rad(1:361 - 1)),
   y = 3 * sin(deg2rad(1:361 - 1))
 )
@@ -472,7 +474,7 @@ As the example in this section, let's use the line described in the plot below.
 Which have the coordinates $(1.5, 0.6)$ and $(3.7, 2.7)$:
 
 ```{r}
-line <- data.frame(
+line <- tibble(
   x = c(1.5, 3.7),
   y = c(0.6, 2.7)
 )

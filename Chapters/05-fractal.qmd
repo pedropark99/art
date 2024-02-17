@@ -1,0 +1,2 @@
+
+# Introducing Fractal Patterns {#sec-fractal}

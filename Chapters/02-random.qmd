@@ -286,6 +286,7 @@ to each point. I can easily do that with `sample()`:
 
 ```{r}
 library(ggplot2)
+library(tibble)
 pallete <- c(
   "#8ecae6",
   "#219ebc",
@@ -295,7 +296,7 @@ pallete <- c(
 )
 
 set.seed(50)
-df <- data.frame(
+df <- tibble(
   x = runif(100),
   y = runif(100)
 )
@@ -349,13 +350,13 @@ v <- runif(100^2)
 m <- matrix(v, ncol = 100, nrow = 100)
 ```
 
-You could also, store this sequence of random values inside a `data.frame`.
-You just add two new columns in this `data.frame` to store the x and y coordinates
+You could also, store this sequence of random values inside a `tibble`.
+You just add two new columns in this `tibble` to store the x and y coordinates
 for each random value in the sequence. This is also
 a valid strategy to map each random value to a specific spot/pixel in your image.
 
 ```{r}
-df <- data.frame(
+df <- tibble(
   x = rep(seq_len(100), each = 100),
   y = rep(seq_len(100), times = 100),
   random_value = runif(100^2)
@@ -379,7 +380,7 @@ looks like a complete mess of colors.
 ```{r}
 library(ggplot2)
 build_df <- function(random_values, n){
-  data.frame(
+  tibble(
     x = rep(seq_len(n), each = n),
     y = rep(seq_len(n), times = n),
     value = random_values |> as.vector()

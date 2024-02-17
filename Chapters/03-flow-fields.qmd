@@ -1,0 +1,123 @@
+
+# Introducing Flow Fields {#sec-flow-fields}
+
+Flow fields are one of the most iconic and powerful techniques used
+in generative art. The essential idea behind a flow field
+is to create a grid of angles. When a object moves through
+this grid, it follows the direction of the angle that
+is stored in the current position that this object is
+on the grid [@hobbsflow].
+
+In other words, by having a grid of angles as the basis,
+we basically pick a starting point somewhere
+in this grid, then, we start walking through this grid, by taking
+small steps in the direction of the angle that we are currently
+seeing. We walk as much as we much as we want/need to.
+
+
+You could also understand flow fields as a very powerful way
+of creating interesting curves and paths.
+If your art involves these types of elements, you might want to use
+a flow field.
+
+
+## Building the grid
+
+Let's start by creating the grid of angles. Since we are talking
+about a 2D grid, with x and y coordinates, we want to store
+this grid either as a 2D matrix, or, as a `tibble` with
+x and y columns. To do that, you
+could use the exact same techniques as we used at
+@sec-two-dimensions-random, to build a 2D matrix or a `tibble`
+to store two dimensional random values.
+
+In essence, if you prefer to build the 2D matrix, you could simply pass the vector
+with all the angles values in the grid to the `matrix()`,
+and specifying the number of columns and rows that you want to use.
+
+In the other hand, if you prefer the `tibble` instead, 
+which was to use `rep()` in conjunction with `seq_len()` to
+build the x and y coordinates columns in the `tibble`.
+The function `build_grid_df()` below summarizes this technique:
+
+```{r}
+library(tibble)
+build_grid_df <- function(angles, n) {
+  tibble(
+    x = rep(seq_len(n), each = n),
+    y = rep(seq_len(n), times = n),
+    value = angles |> as.vector()
+  )
+}
+```
+
+
+### Building a fixed angle grid
+
+Let's start by building a grid with a fixed angle.
+This means that all coordinates in the grid will
+have the exact same angle value. So the angle is
+"fixed", or "constant" across the grid.
+
+To build such a grid, simply use a constant value
+across your matrix or `tibble`. In the example
+below, we are creating a 100x100 grid filled
+with the angle $\pi/4$.
+
+```{r}
+n <- 100
+fixed_angle <- pi / 4
+grid <- build_grid_df(fixed_angle, n)
+grid
+```
+
+
+We can visualize this grid, by drawing $100^2$ small lines
+with this particular angle, and spreading all these lines
+across the grid.
+
+All you have to do, is to draw $100^2$ lines that are identical,
+same length, same angle, and then, you apply a translation
+to move each individual line to a particular point in the grid.
+Like that:
+
+```{r}
+library(tidyverse)
+
+grid <- grid %>% 
+  mutate(
+    x_line = map(value, \(x) c(0, cos(x))),
+    y_line = map(value, \(y) c(0, sin(y))),
+  ) %>% 
+  unnest(c(x_line, y_line)) %>% 
+  mutate(
+    x = x + x_line,
+    y = y + y_line
+  )
+
+grid <- grid %>% 
+  mutate(
+    line_id = rep(seq_len(nrow(grid) / 2), each = 2)
+  )
+
+ggplot(grid) +
+  geom_path(
+    aes(x, y, group = line_id)
+  )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
