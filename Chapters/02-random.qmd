@@ -35,27 +35,29 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 -->
 
 
-# Producing chaos in an ordered manner
+# Producing chaos and randomness
 
-In this chapter, we will study more about how to produce chaos
-with randomness. We will learn about the different types of
+In this chapter, we will study more about how to create randomness in R.
+We will learn about the different types of
 random number generators that are available in R, and we will also learn
-about producing this randomness in one and two dimensions.
+about producing this randomness both in one and two dimensions.
 
-Chaos is, in general, a hard topic for us, programmers. Because
+Randomness is, in general, a hard topic for us, programmers. Because
 our job is the complete opposite of that. We work with
-logic, precision, and computers. Chaos and randomness are not
+logic, precision, and computers. Randomness are not
 part of our essence.
 
-But a little taste of chaos is very essential to any generative art you may produce.
+But creating random values is very essential to any generative art you may produce.
+Because is by using random values that you can introduce a little bit of chaos
+in your art.
+
 You could say that, generative art is mostly a synergy between chaos and order.
 A big part of it comes from combining random patterns
-we find in nature with the order and logic of math.
+with the order and logic of math.
 Because we use geometry and a lot of math to draw and mold shapes
 in the screen, we use colors and color theory to make everything colorful and attractive,
 and we also combine all of that with randomness to
-achieve random patterns that are interesting to look
-at.
+achieve random patterns that are interesting to look at.
 
 That is why, in this chapter, I want to focus on how random values can
 be generated in R, and what are the options available for you.
