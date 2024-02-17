@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.532">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -123,6 +123,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -233,6 +262,8 @@ div.csl-indent {
   <li><a href="#building-the-grid" id="toc-building-the-grid" class="nav-link active" data-scroll-target="#building-the-grid"><span class="header-section-number">4.1</span> Building the grid</a>
   <ul class="collapse">
   <li><a href="#building-a-fixed-angle-grid" id="toc-building-a-fixed-angle-grid" class="nav-link" data-scroll-target="#building-a-fixed-angle-grid"><span class="header-section-number">4.1.1</span> Building a fixed angle grid</a></li>
+  <li><a href="#building-a-random-angle-grid" id="toc-building-a-random-angle-grid" class="nav-link" data-scroll-target="#building-a-random-angle-grid"><span class="header-section-number">4.1.2</span> Building a random angle grid</a></li>
+  <li><a href="#building-an-actual-flow-field-with-perlin-noise" id="toc-building-an-actual-flow-field-with-perlin-noise" class="nav-link" data-scroll-target="#building-an-actual-flow-field-with-perlin-noise"><span class="header-section-number">4.1.3</span> Building an actual flow field with Perlin Noise</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -280,6 +311,7 @@ div.csl-indent {
 <section id="building-a-fixed-angle-grid" class="level3" data-number="4.1.1">
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="building-a-fixed-angle-grid"><span class="header-section-number">4.1.1</span> Building a fixed angle grid</h3>
 <p>Let’s start by building a grid with a fixed angle. This means that all coordinates in the grid will have the exact same angle value. So the angle is “fixed”, or “constant” across the grid.</p>
+<p>To build such a grid, simply use a constant value across your matrix or <code>tibble</code>. In the example below, we are creating a 100x100 grid filled with the angle <span class="math inline">\(\pi/4\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>fixed_angle <span class="ot">&lt;-</span> pi <span class="sc">/</span> <span class="dv">4</span></span>
@@ -300,6 +332,91 @@ div.csl-indent {
  9     1     9 0.785
 10     1    10 0.785
 # ℹ 9,990 more rows</code></pre>
+</div>
+</div>
+<p>But how can we can visualize this grid of angles? Well… we can draw <span class="math inline">\(100^2\)</span> small lines with this same particular angle, and then, we spread all of these lines across the grid, using a translation operation as we presented at <a href="01-transformations.html#sec-translation" class="quarto-xref"><span>Section 2.1</span></a>.</p>
+<p>So, all we have to do, is to draw <span class="math inline">\(100^2\)</span> lines that are identical (same length, same angle), and then, you apply a translation to move each individual line to a particular point in the grid. Like that:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>visualize_grid <span class="ot">&lt;-</span> <span class="cf">function</span>(grid, n){</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the n^2 lines</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  grid <span class="ot">&lt;-</span> grid <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">line_id =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(grid)),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">x_line =</span> <span class="fu">map</span>(value, \(x) <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cos</span>(x))),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">y_line =</span> <span class="fu">map</span>(value, \(y) <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">sin</span>(y))),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unnest</span>(<span class="fu">c</span>(x_line, y_line))</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Spread the lines across the grid</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  grid <span class="ot">&lt;-</span> grid <span class="sc">%&gt;%</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x <span class="sc">+</span> x_line,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y <span class="sc">+</span> y_line</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot these lines</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  pl <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(grid) <span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_path</span>(<span class="fu">aes</span>(x, y, <span class="at">group =</span> line_id)) <span class="sc">+</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_cartesian</span>(</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,n), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,n)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_void</span>()</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(pl)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>You can see in the output above, that all lines are in the same angle. But a flow field with constant angle values is kind of useless. So let’s level up this game.</p>
+</section>
+<section id="building-a-random-angle-grid" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="building-a-random-angle-grid"><span class="header-section-number">4.1.2</span> Building a random angle grid</h3>
+<p>Now, we can add a little bit of randomness to this field, by using random angle values. First, we generate <span class="math inline">\(100^2\)</span> random values with <code>runif()</code>.</p>
+<p>However, we need to scale these random values. By default, <code>runif()</code> generates random values that are between 0 and 1. As a consequence, you can use these values as percentages (from 0% to 100%) to transport these values into a different scale.</p>
+<p>The radians scale goes from <span class="math inline">\(-2\pi\)</span> to <span class="math inline">\(2\pi\)</span>, but let’s consider solely counter-clockwise movements, which limits the scale to positive values (from zero to <span class="math inline">\(2\pi\)</span>). So we can multiply the random values from <code>runif()</code> with <span class="math inline">\(2\pi\)</span>, to transport these random values into the radians scale.</p>
+<p>After that, we spread these random angle values into a grid with the <code>build_grid_df()</code> function we created before:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">runif</span>(n <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we have</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="building-an-actual-flow-field-with-perlin-noise" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="building-an-actual-flow-field-with-perlin-noise"><span class="header-section-number">4.1.3</span> Building an actual flow field with Perlin Noise</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ambient)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">noise_perlin</span>(<span class="fu">c</span>(n, n)) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 
@@ -474,7 +591,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      return note.innerHTML;
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {

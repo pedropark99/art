@@ -34,7 +34,7 @@ Each of these three basic transformations uses simple math operations
 over the coordinates of the vertices that compose your object to achieve
 a specific visual effect/transformation.
 
-## Translation
+## Translation {#sec-translation}
 
 Lets begin with the easiest and simplest of all transformations, which
 is translation. A translation is used to move your object to a different

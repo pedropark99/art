@@ -8,6 +8,12 @@ this grid, it follows the direction of the angle that
 is stored in the current position that this object is
 on the grid [@hobbsflow].
 
+```{r}
+#| include: false
+library(tidyverse)
+```
+
+
 In other words, by having a grid of angles as the basis,
 we basically pick a starting point somewhere
 in this grid, then, we start walking through this grid, by taking
@@ -71,44 +77,114 @@ grid <- build_grid_df(fixed_angle, n)
 grid
 ```
 
+But how can we can visualize this grid of angles? Well...
+we can draw $100^2$ small lines with this same particular angle,
+and then, we spread all of these lines
+across the grid, using a translation operation
+as we presented at @sec-translation.
 
-We can visualize this grid, by drawing $100^2$ small lines
-with this particular angle, and spreading all these lines
-across the grid.
-
-All you have to do, is to draw $100^2$ lines that are identical,
-same length, same angle, and then, you apply a translation
+So, all we have to do, is to draw $100^2$ lines that are identical
+(same length, same angle), and then, you apply a translation
 to move each individual line to a particular point in the grid.
 Like that:
 
 ```{r}
 library(tidyverse)
 
-grid <- grid %>% 
-  mutate(
-    x_line = map(value, \(x) c(0, cos(x))),
-    y_line = map(value, \(y) c(0, sin(y))),
-  ) %>% 
-  unnest(c(x_line, y_line)) %>% 
-  mutate(
-    x = x + x_line,
-    y = y + y_line
-  )
+visualize_grid <- function(grid, n){
+  # Calculate the n^2 lines
+  grid <- grid %>% 
+    mutate(
+      line_id = seq_len(nrow(grid)),
+      x_line = map(value, \(x) c(0, cos(x))),
+      y_line = map(value, \(y) c(0, sin(y))),
+    ) %>% 
+    unnest(c(x_line, y_line))
+  
+  # Spread the lines across the grid
+  grid <- grid %>% 
+    mutate(
+      x = x + x_line,
+      y = y + y_line
+    )
+  
+  # Plot these lines
+  pl <- ggplot(grid) +
+    geom_path(aes(x, y, group = line_id)) +
+    coord_cartesian(
+      xlim = c(0,n), ylim = c(0,n)
+    ) +
+    theme_void()
+  
+  print(pl)
+}
 
-grid <- grid %>% 
-  mutate(
-    line_id = rep(seq_len(nrow(grid) / 2), each = 2)
-  )
 
-ggplot(grid) +
-  geom_path(
-    aes(x, y, group = line_id)
-  )
+visualize_grid(grid, n)
+```
+
+You can see in the output above, that all lines are in the same angle.
+But a flow field with constant angle values is kind of useless.
+So let's level up this game.
+
+
+
+
+### Building a random angle grid
+
+Now, we can add a little bit of randomness to this field,
+by using random angle values. First, we generate $100^2$
+random values with `runif()`.
+
+However, we need to scale these random values. By default,
+`runif()` generates random values that are between 0 and 1.
+As a consequence, you can use these values as percentages
+(from 0% to 100%) to transport these values into a different
+scale.
+
+The radians scale goes from $-2\pi$ to $2\pi$, but let's
+consider solely counter-clockwise movements, which
+limits the scale to positive values (from zero to $2\pi$).
+So we can multiply the random values from `runif()` with
+$2\pi$, to transport these random values into the radians scale.
+
+After that, we spread these random angle values into a grid
+with the `build_grid_df()` function we created before:
+
+```{r}
+set.seed(50)
+angles <- runif(n ^ 2) * 2 * pi
+grid <- build_grid_df(angles, n)
+```
+
+Now that we have the grid of angles, all we have to do is to visualize it,
+with the `visualize_grid()` function that we created in the previous section.
+
+And yeah... this field is a mess, because we now have $100²$ lines with
+completely random angles. This field might be interesting to
+be a soft pattern in the background of your image. But nothing
+much more than that.
+
+```{r}
+visualize_grid(grid, n)
 ```
 
 
 
 
+
+### Building an actual flow field with Perlin Noise
+
+Ok, now lets take this 
+
+```{r}
+library(ambient)
+
+set.seed(50)
+angles <- noise_perlin(c(n, n)) * 2 * pi
+grid <- build_grid_df(angles, n)
+visualize_grid(grid, n)
+```
 
 
 
