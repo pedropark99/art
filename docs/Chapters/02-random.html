@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Practical Generative Art with R and ggplot2: drawing with data - 3&nbsp; Producing chaos in an ordered manner</title>
+<title>Practical Generative Art with R and ggplot2: drawing with data - 3&nbsp; Producing chaos and randomness</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -164,7 +164,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Chapters/02-random.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos in an ordered manner</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Chapters/02-random.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos and randomness</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -210,7 +210,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../Chapters/02-random.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos in an ordered manner</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos and randomness</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -246,7 +246,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos in an ordered manner</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Producing chaos and randomness</span></h1>
 </div>
 
 
@@ -298,9 +298,10 @@ So when you are building your generative art, you want some degree of
 chaos and randomness. But you also want to balance this chaos with some
 degree of order. Hence the current chapter title (producing chaos in an ordered manner).
 -->
-<p>In this chapter, we will study more about how to produce chaos with randomness. We will learn about the different types of random number generators that are available in R, and we will also learn about producing this randomness in one and two dimensions.</p>
-<p>Chaos is, in general, a hard topic for us, programmers. Because our job is the complete opposite of that. We work with logic, precision, and computers. Chaos and randomness are not part of our essence.</p>
-<p>But a little taste of chaos is very essential to any generative art you may produce. You could say that, generative art is mostly a synergy between chaos and order. A big part of it comes from combining random patterns we find in nature with the order and logic of math. Because we use geometry and a lot of math to draw and mold shapes in the screen, we use colors and color theory to make everything colorful and attractive, and we also combine all of that with randomness to achieve random patterns that are interesting to look at.</p>
+<p>In this chapter, we will study more about how to create randomness in R. We will learn about the different types of random number generators that are available in R, and we will also learn about producing this randomness both in one and two dimensions.</p>
+<p>Randomness is, in general, a hard topic for us, programmers. Because our job is the complete opposite of that. We work with logic, precision, and computers. Randomness are not part of our essence.</p>
+<p>But creating random values is very essential to any generative art you may produce. Because is by using random values that you can introduce a little bit of chaos in your art.</p>
+<p>You could say that, generative art is mostly a synergy between chaos and order. A big part of it comes from combining random patterns with the order and logic of math. Because we use geometry and a lot of math to draw and mold shapes in the screen, we use colors and color theory to make everything colorful and attractive, and we also combine all of that with randomness to achieve random patterns that are interesting to look at.</p>
 <p>That is why, in this chapter, I want to focus on how random values can be generated in R, and what are the options available for you.</p>
 <section id="about-random-seeds-and-random-number-generation" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="about-random-seeds-and-random-number-generation"><span class="header-section-number">3.1</span> About random seeds and random number generation</h2>
@@ -311,11 +312,11 @@ degree of order. Hence the current chapter title (producing chaos in an ordered 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5106885 0.2365593 0.2381214</code></pre>
+<pre><code>[1] 0.5088718 0.9702226 0.2953879</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">runif</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2753667 0.8018795 0.7353780</code></pre>
+<pre><code>[1] 0.7190521 0.4904656 0.7393523</code></pre>
 </div>
 </div>
 <p>This happens because the “initial state” is different in each call to <code>runif()</code>. Every time I run <code>runif()</code>, R automatically and randomly selects a seed for you. That is why the results in the example above are different between each call to <code>runif()</code>. Because the seeds used in each call are different.</p>
