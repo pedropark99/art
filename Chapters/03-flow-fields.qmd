@@ -274,7 +274,7 @@ instead of the classic Perlin Noise. However, as we described at @sec-perlin-noi
 the Simplex Noise algorithmn produces "stronger" results, with random values
 that vary more rapidly across the grid. As a result, a flow field created
 from Simplex Noise is less smooth compared to a flow field created
-from Perlin Noise. You can see that in the example below:
+from classic Perlin Noise. You can see this fact in the example below:
 
 ```{r}
 set.seed(50)
