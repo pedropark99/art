@@ -10,6 +10,11 @@ it into a different angle.
 
 ```{r}
 #| include: false
+knitr::opts_chunk$set(dev = "ragg_png")
+```
+
+```{r}
+#| include: false
 # A function to convert degrees into radians
 deg2rad <- function(deg){
   return(deg * pi / 180)

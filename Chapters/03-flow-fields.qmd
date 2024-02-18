@@ -13,6 +13,10 @@ on the grid [@hobbsflow].
 library(tidyverse)
 ```
 
+```{r}
+#| include: false
+knitr::opts_chunk$set(dev = "ragg_png")
+```
 
 In other words, by having a grid of angles as the basis,
 we basically pick a starting point somewhere
@@ -23,13 +27,13 @@ seeing. We walk as much as we much as we want/need to.
 
 You could also understand flow fields as a very powerful way
 of creating interesting curves and paths.
-If your art involves these types of elements, you might want to use
-a flow field.
+If your art involves these types of elements, a flow
+field might be the perfect technique for you.
 
 
-## Building the grid
+## Building a grid of angles
 
-Let's start by creating the grid of angles. Since we are talking
+Let's start with "how to create a grid of angles?". Since we are talking
 about a 2D grid, with x and y coordinates, we want to store
 this grid either as a 2D matrix, or, as a `tibble` with
 x and y columns. To do that, you
@@ -41,8 +45,8 @@ In essence, if you prefer to build the 2D matrix, you could simply pass the vect
 with all the angles values in the grid to the `matrix()`,
 and specifying the number of columns and rows that you want to use.
 
-In the other hand, if you prefer the `tibble` instead, 
-which was to use `rep()` in conjunction with `seq_len()` to
+In the other hand, if you prefer the `tibble` instead, we
+used the `rep()` function in conjunction with `seq_len()` to
 build the x and y coordinates columns in the `tibble`.
 The function `build_grid_df()` below summarizes this technique:
 
@@ -84,7 +88,7 @@ across the grid, using a translation operation
 as we presented at @sec-translation.
 
 So, all we have to do, is to draw $100^2$ lines that are identical
-(same length, same angle), and then, you apply a translation
+(same length, same angle), and then, we apply a translation
 to move each individual line to a particular point in the grid.
 Like that:
 
@@ -109,14 +113,12 @@ visualize_grid <- function(grid, n){
     )
   
   # Plot these lines
-  pl <- ggplot(grid) +
+  ggplot(grid) +
     geom_path(aes(x, y, group = line_id)) +
     coord_cartesian(
       xlim = c(0,n), ylim = c(0,n)
     ) +
     theme_void()
-  
-  print(pl)
 }
 
 
@@ -124,13 +126,14 @@ visualize_grid(grid, n)
 ```
 
 You can see in the output above, that all lines are in the same angle.
+Because the angle value is constant across the grid.
 But a flow field with constant angle values is kind of useless.
-So let's level up this game.
+So let's level up this game by introducing some randomness.
 
 
 
 
-### Building a random angle grid
+### Building a random angle grid {#sec-grid-random-angle}
 
 Now, we can add a little bit of randomness to this field,
 by using random angle values. First, we generate $100^2$
@@ -138,14 +141,15 @@ random values with `runif()`.
 
 However, we need to scale these random values. By default,
 `runif()` generates random values that are between 0 and 1.
-As a consequence, you can use these values as percentages
-(from 0% to 100%) to transport these values into a different
+You can use these values as percentages
+(from 0% to 100%) to transport them into a different
 scale.
 
-The radians scale goes from $-2\pi$ to $2\pi$, but let's
+The radians scale goes from $-2\pi$ to $2\pi$, when both clockwise, and counter-clockwise
+movements are considered. But for this example, let's
 consider solely counter-clockwise movements, which
 limits the scale to positive values (from zero to $2\pi$).
-So we can multiply the random values from `runif()` with
+So we can multiply the random values produced by `runif()` with
 $2\pi$, to transport these random values into the radians scale.
 
 After that, we spread these random angle values into a grid
@@ -159,23 +163,81 @@ grid <- build_grid_df(angles, n)
 
 Now that we have the grid of angles, all we have to do is to visualize it,
 with the `visualize_grid()` function that we created in the previous section.
-
-And yeah... this field is a mess, because we now have $100²$ lines with
-completely random angles. This field might be interesting to
-be a soft pattern in the background of your image. But nothing
-much more than that.
+And yeah... this field is a mess, because we now have $100^2$ lines that are
+in completely random angles:
 
 ```{r}
 visualize_grid(grid, n)
 ```
 
+In other words, this field is simply too much random! We do need to use random
+values to create an actual flow field.
+But these random values need to have some minimal level of resemblance with each other.
+
+But despite this being a very messy field, you may find a new utility for it.
+Everything depends of your creativity. For example, this field as is, might be 
+an interesting candidate to be a soft pattern in the background of your art.
+In other words, this flow field might not be the main character in your art,
+but he might be an element to support the rest of your idea.
+
+
+```{r}
+#| echo: false
+teste <- function(grid, n){
+  # Calculate the n^2 lines
+  grid <- grid %>% 
+    mutate(
+      line_id = seq_len(nrow(grid)),
+      x_line = map(value, \(x) c(0, cos(x))),
+      y_line = map(value, \(y) c(0, sin(y))),
+    ) %>% 
+    unnest(c(x_line, y_line))
+  
+  # Spread the lines across the grid
+  grid <- grid %>% 
+    mutate(
+      x = x + x_line,
+      y = y + y_line
+    )
+  
+  # Plot these lines
+  ggplot(grid) +
+    geom_path(aes(x, y, group = line_id), color = "#5f6b5f") +
+    coord_cartesian(
+      xlim = c(0,n), ylim = c(0,n)
+    ) +
+    theme_void() +
+    theme(
+      plot.background = element_rect(fill = "#263F30")
+    )
+}
+
+teste(grid, n)
+```
 
 
 
 
-### Building an actual flow field with Perlin Noise
+## Building an actual flow field with Perlin Noise
 
-Ok, now lets take this 
+At @sec-grid-random-angle, we produced a field that was just too much random.
+We could hardly call that a "flow field", because there was nothing fluid about it.
+The lines across the grid had no connection with each other, like
+a machine gun that was desperately shooting to all directions at
+the same time.
+
+So now, let's produce an actual flow field. A field of angles that actually makes sense.
+And for that, we are going to use the Perlin Noise algorithm (that was presented at @sec-perlin-noise)
+in our favor.
+
+First thing we need to do, is to generate the grid of random values. With Perlin Noise,
+that is extremely easy to make, because we can easily get a 2D matrix
+of random values with the `noise_perlin()` function from the
+`ambient` R package, as we described at @sec-perlin-noise.
+
+But this time, we need, once again, to scale these random values produced by Perlin Noise,
+so that they represent actual angle values, using the radians scale. To that,
+we simply multiply these values by $2\pi$, in the same way as we did at @sec-grid-random-angle.
 
 ```{r}
 library(ambient)
@@ -183,14 +245,34 @@ library(ambient)
 set.seed(50)
 angles <- noise_perlin(c(n, n)) * 2 * pi
 grid <- build_grid_df(angles, n)
+grid
+```
+
+
+After that, we now have a grid of angles that represents a functional flow field.
+We can visualize this field in the same way as we did before:
+
+```{r}
 visualize_grid(grid, n)
 ```
 
 
+That looks much more natural compared to the previous grids! It also feels much more fluid.
+Like winds flowing and doing smooth curves around this grid.
 
+You could also use the Simplex Noise algorithm to generate the random values,
+instead of the classic Perlin Noise. As we described at @sec-perlin-noise,
+the Simplex Noise algorithmn produces "stronger" results, with random values
+that vary more rapidly across the grid. As a result, a flow field created
+from Simplex Noise is less smooth compared to a flow field created
+from Perlin Noise. You can see that in the example below:
 
-
-
+```{r}
+set.seed(50)
+angles <- noise_simplex(c(n, n)) * 2 * pi
+grid <- build_grid_df(angles, n)
+visualize_grid(grid, n)
+```
 
 
 

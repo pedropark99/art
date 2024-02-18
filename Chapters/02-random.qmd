@@ -42,6 +42,11 @@ We will learn about the different types of
 random number generators that are available in R, and we will also learn
 about producing this randomness both in one and two dimensions.
 
+```{r}
+#| include: false
+knitr::opts_chunk$set(dev = "ragg_png")
+```
+
 Randomness is, in general, a hard topic for us, programmers. Because
 our job is the complete opposite of that. We work with
 logic, precision, and computers. Randomness are not
