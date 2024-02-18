@@ -5,6 +5,7 @@ project:
 book:
   title: "Practical Generative Art with R and ggplot2: drawing with data"
   author: "Pedro Duarte Faria"
+  cover-image: "Cover/cover.png"
   date: "today"
   edition: "First edition"
   chapters:
