@@ -265,6 +265,7 @@ window.Quarto = {
   <li><a href="#sec-grid-random-angle" id="toc-sec-grid-random-angle" class="nav-link" data-scroll-target="#sec-grid-random-angle"><span class="header-section-number">4.1.2</span> Building a random angle grid</a></li>
   </ul></li>
   <li><a href="#building-an-actual-flow-field-with-perlin-noise" id="toc-building-an-actual-flow-field-with-perlin-noise" class="nav-link" data-scroll-target="#building-an-actual-flow-field-with-perlin-noise"><span class="header-section-number">4.2</span> Building an actual flow field with Perlin Noise</a></li>
+  <li><a href="#drawing-curves-around-the-grid" id="toc-drawing-curves-around-the-grid" class="nav-link" data-scroll-target="#drawing-curves-around-the-grid"><span class="header-section-number">4.3</span> Drawing curves around the grid</a></li>
   </ul>
 </nav>
     </div>
@@ -311,14 +312,14 @@ window.Quarto = {
 <section id="building-a-fixed-angle-grid" class="level3" data-number="4.1.1">
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="building-a-fixed-angle-grid"><span class="header-section-number">4.1.1</span> Building a fixed angle grid</h3>
 <p>Let’s start by building a grid with a fixed angle. This means that all coordinates in the grid will have the exact same angle value. So the angle is “fixed”, or “constant” across the grid.</p>
-<p>To build such a grid, simply use a constant value across your matrix or <code>tibble</code>. In the example below, we are creating a 100x100 grid filled with the angle <span class="math inline">\(\pi/4\)</span>.</p>
+<p>To build such a grid, simply use a constant value across your matrix or <code>tibble</code>. In the example below, we are creating a 50x50 grid filled with the angle <span class="math inline">\(\pi/4\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">50</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>fixed_angle <span class="ot">&lt;-</span> pi <span class="sc">/</span> <span class="dv">4</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(fixed_angle, n)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>grid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10,000 × 3
+<pre><code># A tibble: 2,500 × 3
        x     y value
    &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
  1     1     1 0.785
@@ -331,11 +332,11 @@ window.Quarto = {
  8     1     8 0.785
  9     1     9 0.785
 10     1    10 0.785
-# ℹ 9,990 more rows</code></pre>
+# ℹ 2,490 more rows</code></pre>
 </div>
 </div>
-<p>But how can we can visualize this grid of angles? Well… we can draw <span class="math inline">\(100^2\)</span> small lines with this same particular angle, and then, we spread all of these lines across the grid, using a translation operation as we presented at <a href="01-transformations.html#sec-translation" class="quarto-xref"><span>Section 2.1</span></a>.</p>
-<p>So, all we have to do, is to draw <span class="math inline">\(100^2\)</span> lines that are identical (same length, same angle), and then, we apply a translation to move each individual line to a particular point in the grid. Like that:</p>
+<p>But how can we can visualize this grid of angles? Well… we can draw <span class="math inline">\(50^2\)</span> small lines with this same particular angle, and then, we spread all of these lines across the grid, using a translation operation as we presented at <a href="01-transformations.html#sec-translation" class="quarto-xref"><span>Section 2.1</span></a>.</p>
+<p>So, all we have to do, is to draw <span class="math inline">\(50^2\)</span> lines that are identical (same length, same angle), and then, we apply a translation to move each individual line to a particular point in the grid. Like that:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -379,7 +380,7 @@ window.Quarto = {
 </section>
 <section id="sec-grid-random-angle" class="level3" data-number="4.1.2">
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="sec-grid-random-angle"><span class="header-section-number">4.1.2</span> Building a random angle grid</h3>
-<p>Now, we can add a little bit of randomness to this field, by using random angle values. First, we generate <span class="math inline">\(100^2\)</span> random values with <code>runif()</code>.</p>
+<p>Now, we can add a little bit of randomness to this field, by using random angle values. First, we generate <span class="math inline">\(50^2\)</span> random values with <code>runif()</code>.</p>
 <p>However, we need to scale these random values. By default, <code>runif()</code> generates random values that are between 0 and 1. You can use these values as percentages (from 0% to 100%) to transport them into a different scale.</p>
 <p>The radians scale goes from <span class="math inline">\(-2\pi\)</span> to <span class="math inline">\(2\pi\)</span>, when both clockwise, and counter-clockwise movements are considered. But for this example, let’s consider solely counter-clockwise movements, which limits the scale to positive values (from zero to <span class="math inline">\(2\pi\)</span>). So we can multiply the random values produced by <code>runif()</code> with <span class="math inline">\(2\pi\)</span>, to transport these random values into the radians scale.</p>
 <p>After that, we spread these random angle values into a grid with the <code>build_grid_df()</code> function we created before:</p>
@@ -388,7 +389,7 @@ window.Quarto = {
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">runif</span>(n <span class="sc">^</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now that we have the grid of angles, all we have to do is to visualize it, with the <code>visualize_grid()</code> function that we created in the previous section. And yeah… this field is a mess, because we now have <span class="math inline">\(100^2\)</span> lines that are in completely random angles:</p>
+<p>Now that we have the grid of angles, all we have to do is to visualize it, with the <code>visualize_grid()</code> function that we created in the previous section. And yeah… this field is a mess, because we now have <span class="math inline">\(50^2\)</span> lines that are in completely random angles:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -399,8 +400,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>In other words, this field is simply too much random! We do need to use random values to create an actual flow field. But these random values need to have some minimal level of resemblance with each other.</p>
-<p>But despite this being a very messy field, you may find a new utility for it. Everything depends of your creativity. For example, this field as is, might be an interesting candidate to be a soft pattern in the background of your art. In other words, this flow field might not be the main character in your art, but he might be an element to support the rest of your idea.</p>
+<p>In other words, this field is simply too much random! We do need to use random values to create an actual flow field. But these random values need to have some minimal level of resemblance with each other. That is why, <code>runif()</code> is not the best tool for generating a flow field.</p>
+<p>But despite this being a very messy field, you may find a new utility for it. Everything depends of your creativity! For example, this field as is, might be an interesting candidate to be a soft pattern in the background of your art. In other words, this flow field might not be the main character in your art, but he might be an element to support the rest of your idea.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -428,7 +429,7 @@ window.Quarto = {
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>grid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10,000 × 3
+<pre><code># A tibble: 2,500 × 3
        x     y  value
    &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
  1     1     1 0     
@@ -441,7 +442,7 @@ window.Quarto = {
  8     1     8 0.384 
  9     1     9 0.465 
 10     1    10 0.550 
-# ℹ 9,990 more rows</code></pre>
+# ℹ 2,490 more rows</code></pre>
 </div>
 </div>
 <p>After that, we now have a grid of angles that represents a functional flow field. We can visualize this field in the same way as we did before:</p>
@@ -456,7 +457,7 @@ window.Quarto = {
 </div>
 </div>
 <p>That looks much more natural compared to the previous grids! It also feels much more fluid. Like winds flowing and doing smooth curves around this grid.</p>
-<p>You could also use the Simplex Noise algorithm to generate the random values, instead of the classic Perlin Noise. As we described at <a href="02-random.html#sec-perlin-noise" class="quarto-xref"><span>Section 3.4</span></a>, the Simplex Noise algorithmn produces “stronger” results, with random values that vary more rapidly across the grid. As a result, a flow field created from Simplex Noise is less smooth compared to a flow field created from Perlin Noise. You can see that in the example below:</p>
+<p>You could also use the Simplex Noise algorithm to generate the random values, instead of the classic Perlin Noise. However, as we described at <a href="02-random.html#sec-perlin-noise" class="quarto-xref"><span>Section 3.4</span></a>, the Simplex Noise algorithmn produces “stronger” results, with random values that vary more rapidly across the grid. As a result, a flow field created from Simplex Noise is less smooth compared to a flow field created from Perlin Noise. You can see that in the example below:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">noise_simplex</span>(<span class="fu">c</span>(n, n)) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span>
@@ -470,6 +471,11 @@ window.Quarto = {
 </div>
 </div>
 </div>
+</section>
+<section id="drawing-curves-around-the-grid" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="drawing-curves-around-the-grid"><span class="header-section-number">4.3</span> Drawing curves around the grid</h2>
+<p>Now that we have a functional flow field, we want to use it to actually draw things in the screen, specially curves.</p>
+<p>To do that, we need to walk across the grid. We choose a point in the grid as our starting point, and then, we start to walk in the grid by following the direction of the angles we encounter in the grid.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">

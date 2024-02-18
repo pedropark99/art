@@ -106,7 +106,8 @@ Because of this polymorphism of the word, I will avoid to use the term
 "vertex" in this book. But if you do see this term anywhere in this
 book, you should know that I am using the meaning of vertex in the world
 of geometry. So a vertex, in the context of this book, is essentially
-the singular form of the word "vertices", i.e. a vertex is a single edge
+the singular form of the word "vertices". It is a point where two lines meet and form an angle,
+or, you could also say that a vertex is a single edge
 point of an object.
 
 ![The vertices of a rectangle. A set of vertex's form the vertices of an object](./../Figures/00-vertex.svg){#fig-vertex}
@@ -402,29 +403,28 @@ followed by the character **°** (which is the degree symbol).
 ### The direction of the rotation {#sec-angle-direction}
 
 But one thing that not many people remember from math class, is that
-angles can also be negative. That is, an angle does not have to be a
-positive number, you can also have negative numbers, like an angle of
--35 degrees. But when you change the signal of the number, you change
+angles can also be negative. That is, an angle can also be a negative number, like an angle of
+-35 degrees. But when you change the sign of the number, you change
 the "direction" of the angle.
 
-In more details, the signal of the angle (if it is a positive or
+In more details, the sign of the angle (if it is a positive or
 negative number) defines the direction of the movement, or, the
 direction of the rotation that the angle performs. A negative angle
 makes a clockwise movement, while a positive angle, makes a
 counter-clockwise movement. @fig-clockwise presents this idea visually:
 
-![The rotation direction in positive angles vs negative angles, values in degrees.](./../Figures/00-clockwise.svg){#fig-clockwise}
+![The rotation direction in positive angles vs negative angles. Values in degrees.](./../Figures/00-clockwise.svg){#fig-clockwise}
 
 ### Trigonometry and the Radians measure
 
 Although we are used to talk about angles using the degrees measure,
 **in trigonometry, angles are measured in radians**. As
 consequence, every function used in trigonometry (like tangent or
-cosine) uses radians values as input, instead of degrees values.
+cosine) uses values in radians as input, instead of values in degrees.
 
-Using radians instead of degrees to measure angles changes nothing about
+Using radians instead of degrees to measure an angle changes nothing about
 what the angle actually is, and it also changes nothing about how the
-signal of the angle changes the direction of the rotation made by that
+sign of the angle changes the direction of the rotation made by that
 angle, as I showed at @sec-angle-direction.
 
 Radians is just a different scale, with a different range of values.

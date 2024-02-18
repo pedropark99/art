@@ -71,23 +71,23 @@ have the exact same angle value. So the angle is
 
 To build such a grid, simply use a constant value
 across your matrix or `tibble`. In the example
-below, we are creating a 100x100 grid filled
+below, we are creating a 50x50 grid filled
 with the angle $\pi/4$.
 
 ```{r}
-n <- 100
+n <- 50
 fixed_angle <- pi / 4
 grid <- build_grid_df(fixed_angle, n)
 grid
 ```
 
 But how can we can visualize this grid of angles? Well...
-we can draw $100^2$ small lines with this same particular angle,
+we can draw $50^2$ small lines with this same particular angle,
 and then, we spread all of these lines
 across the grid, using a translation operation
 as we presented at @sec-translation.
 
-So, all we have to do, is to draw $100^2$ lines that are identical
+So, all we have to do, is to draw $50^2$ lines that are identical
 (same length, same angle), and then, we apply a translation
 to move each individual line to a particular point in the grid.
 Like that:
@@ -136,7 +136,7 @@ So let's level up this game by introducing some randomness.
 ### Building a random angle grid {#sec-grid-random-angle}
 
 Now, we can add a little bit of randomness to this field,
-by using random angle values. First, we generate $100^2$
+by using random angle values. First, we generate $50^2$
 random values with `runif()`.
 
 However, we need to scale these random values. By default,
@@ -163,7 +163,7 @@ grid <- build_grid_df(angles, n)
 
 Now that we have the grid of angles, all we have to do is to visualize it,
 with the `visualize_grid()` function that we created in the previous section.
-And yeah... this field is a mess, because we now have $100^2$ lines that are
+And yeah... this field is a mess, because we now have $50^2$ lines that are
 in completely random angles:
 
 ```{r}
@@ -173,13 +173,13 @@ visualize_grid(grid, n)
 In other words, this field is simply too much random! We do need to use random
 values to create an actual flow field.
 But these random values need to have some minimal level of resemblance with each other.
+That is why, `runif()` is not the best tool for generating a flow field.
 
 But despite this being a very messy field, you may find a new utility for it.
-Everything depends of your creativity. For example, this field as is, might be 
+Everything depends of your creativity! For example, this field as is, might be 
 an interesting candidate to be a soft pattern in the background of your art.
 In other words, this flow field might not be the main character in your art,
 but he might be an element to support the rest of your idea.
-
 
 ```{r}
 #| echo: false
@@ -261,7 +261,7 @@ That looks much more natural compared to the previous grids! It also feels much 
 Like winds flowing and doing smooth curves around this grid.
 
 You could also use the Simplex Noise algorithm to generate the random values,
-instead of the classic Perlin Noise. As we described at @sec-perlin-noise,
+instead of the classic Perlin Noise. However, as we described at @sec-perlin-noise,
 the Simplex Noise algorithmn produces "stronger" results, with random values
 that vary more rapidly across the grid. As a result, a flow field created
 from Simplex Noise is less smooth compared to a flow field created
@@ -273,6 +273,22 @@ angles <- noise_simplex(c(n, n)) * 2 * pi
 grid <- build_grid_df(angles, n)
 visualize_grid(grid, n)
 ```
+
+
+## Drawing curves around the grid
+
+Now that we have a functional flow field, we want to use it
+to actually draw things in the screen, specially curves.
+
+To do that, we need to walk across the grid.
+We choose a point in the grid as our starting point, and then,
+we start to walk in the grid by following the direction of
+the angles we encounter in the grid.
+
+
+
+
+
 
 
 

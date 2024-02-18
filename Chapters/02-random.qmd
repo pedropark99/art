@@ -72,7 +72,7 @@ be generated in R, and what are the options available for you.
 
 Computers can not generate "true random numbers". Instead, they use an
 "initial state" as the basis for generating the random values.
-That is why we usually say that computers can generate
+That is why, we usually say that computers can only generate
 "pseudo-random numbers".
 
 They are "pseudo" in the sense that they are not truly random,
@@ -89,7 +89,7 @@ we use an integer as the "seed" to represent the initial state for the random
 number generation.
 
 In the example below, we can see that every time I run `runif()`,
-I get a different answer as result, or a different set of random values:
+I get a different answer, or a different set of random values, as result:
 
 ```{r}
 runif(3)
@@ -97,7 +97,7 @@ runif(3)
 ```
 
 This happens because the "initial state" is different in each call to `runif()`.
-Every time I run `runif()`, R automatically and randomly selects a seed for you.
+Every time I run `runif()`, R automatically and randomly selects a seed for me.
 That is why the results in the example above are different between
 each call to `runif()`. Because the seeds used
 in each call are different.
@@ -105,13 +105,13 @@ in each call are different.
 If we use the same "seed" as the initial state, we can produce
 the exact same set of random numbers. That is,
 if we want to **have reproducibility** in this process
-of number generation, we need to use
+of number generation, we must use
 the same random seed that was used before.
 
 You can set the integer to be used as the random seed, by using the
 `set.seed()` function.
 In the example below, I am setting the random seed
-to 40. Because of that, I get the exact same set of random values
+to 40, and, because of that, you can see that I get the exact same set of random values
 in each call to `runif()`.
 
 ```{r}
@@ -130,7 +130,7 @@ Let me repeat this. You should always explicitly set the random seed you are usi
 Because if do not, then, you are facing the risk of producing a very cool
 output in your code by completely accident, and you loose the chance
 to save this output in time, or to reproduce it later in the day,
-or to improve it by adding more adjusts in configuration,
+or to improve it by adding some adjustments in configuration,
 colors, brightness, and positions.
 
 
@@ -300,6 +300,7 @@ pallete <- c(
   "#fb8500"
 )
 
+
 set.seed(50)
 df <- tibble(
   x = runif(100),
@@ -317,6 +318,53 @@ ggplot(df) +
   scale_color_identity()
 ```
 
+
+If you want to favor a specific value in your sample (i.e. if you want
+that specific value to appear more in the sample), you can use
+the `prob` argument of `sample()` to assign a higher probability
+to that specific value in detriment of the other values.
+
+In essence, the `prob` argument receives a vector of probabilities
+for obtaining the elements of the vector that is being sampled.
+The sum of this vector of probabilities does not need to be
+equal to one.
+
+But I think you should create this vector of probabilities
+with the "sum equal to one" in mind. Because it makes
+easier for you to think about how much weight, or how
+much value you want to give to a specific value
+in detriment of the others.
+
+In our previous example, the `pallete` vector contains
+5 different colors. So the initial probability of choosing
+each color is $1/5=0.2$, or, 20%.
+
+But let's suppose
+I want to use the dark blue (`#023047`) more in the plot.
+If that is my case, then, I want to assign a higher probability
+for this color. As an example, let's use 60% for this specific
+color. You can see in the result below that the dark blue
+color is much more present now:
+
+```{r}
+p_other_elements <- (1 - 0.6) / 4
+p_dark_blue <- 0.6
+
+probs <- rep(p_other_elements, 5)
+probs[3] <- p_dark_blue
+set.seed(60)
+df$color <- sample(
+  pallete, size = 100, replace = TRUE,
+  prob = probs
+)
+
+ggplot(df) +
+  geom_point(
+    aes(x, y, color = color),
+    size = 3
+  ) +
+  scale_color_identity()
+```
 
 
 ## Generating random values across two dimensions {#sec-two-dimensions-random}

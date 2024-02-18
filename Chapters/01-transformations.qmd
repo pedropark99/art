@@ -561,8 +561,8 @@ Maybe, you have noticed in the previous two examples, that the rotated
 line got a little smaller in length compared to the original line. This
 happened because of the way @eq-rotation1 and @eq-rotation2 works.
 
-But what if you do not want to have this effect? What you should do
-to avoid a reduction/increase in the length of the line. If that is
+But what if you do not want to have this effect? What should you do
+to avoid a reduction/increase in the length of the line? If that is
 your case, then, the best solution is to change completely the
 strategy we are using to rotate the line.
 
@@ -579,13 +579,13 @@ to a specific angle.
 In this context, we want to use the simplified versions
 of @eq-rotation3 and @eq-rotation4,
 which uses a circle that is centered at the origin point
-of the Cartesian plane. Besides that, in this context,
-the variable $r$ that is present both at
-@eq-rotation3 and @eq-rotation4 becomes the length of the line
-we want to calculate.
+of the Cartesian plane. Besides that, both equations have
+a variable $r$, which initially represents the radius
+of the circle. But in the context here, this variable $r$
+becomes the length of the line we want to calculate.
 
 Having that in mind, given that $x'$ and $y'$ are the x and y
-positions of the line, that $l$ is the line's length, and
+coordinates of the line endpoint, that $l$ is the line's length, and
 that $A$ is the angle of the line, we get the following formulas:
 
 $$
@@ -623,10 +623,11 @@ $$
 l = \sqrt{[(x_2 - x_1)^2 + (y_2 - y_1)^2]}
 $${#eq-linelength}
 
-Is important to emphasize, that you can choose whatever endpoint
+By looking at this formula, you might quest yourself: "but which of the two endpoints of the line
+should I use in $x_1$ and $y_1$?". Is important to emphasize, that you can choose whatever endpoint
 you want for $x_1$ and $y_1$. It can be the leftmost point of the line,
-or the rightmost. Once you choose the endpoint for $x_1$ and $y_1$,
-the endpoint for $x_2$ and $y_2$ automatically becomes the other
+or the rightmost. Once you choose an endpoint for $x_1$ and $y_1$,
+$x_2$ and $y_2$ automatically becomes the other
 endpoint of the line.
 
 In our example, lets use $(1.5, 0.6)$ as our endpoint 1, and $(3.7, 2.7)$
@@ -663,7 +664,7 @@ the arc-tangent function with two arguments, also known as the
 However, before you use this function, you have to move/translate
 your line to the origin point of the Cartesian plane. This way, you will
 get a single $(x, y)$ coordinate that is capable of identifying the line,
-because the other coordinate will always be the origin point - $(0, 0)$.
+because the other coordinate will always be the origin point $(0, 0)$.
 
 We can see in the result below, that the new coordinate of the endpoint
 of the line after we translated it to the origin point is $(2.2, 2.1)$.
@@ -679,9 +680,8 @@ translated_line
 ```
 
 So this is the coordinate we need to use in the `atan2()` function.
-For some reason, in `atan2()` you need to provide the y position first,
-and the x position second. A little and odd detail about this function.
-
+Note that, for some reason, in `atan2()` you need to provide the y position first,
+and the x position second.
 Anyway, the code below demonstrates that the current angle of our line is
 approximately 43.6 degrees.
 
@@ -704,7 +704,7 @@ Because both vectors starts at the origin point ($(0, 0)$) and goes to $(x, y)$ 
 
 Given that $x_1$ and $y_1$ are the x and y positions of vector 1,
 and that $x_2$ and $y_2$ are the x and y positions
-of the other vector, you can calculate the angle (in radians)
+of vector 2, you can calculate the angle (in radians)
 between these two vectors by following the formula below.
 In this formula, $\arccos$ represents the arc-cosine function,
 which is the inverse function for cosine.
@@ -733,10 +733,10 @@ line_angle <- function(x1, y1, x2, y2){
 }
 ```
 
-The $x_2$ and $y_2$ coordinates should represent the x axis. So, you
-can set these variables to $x_2 = 4$ and $y_2 = 0$ for example.
-In the other hand, $x_2$ and $y_2$ coordinates are the same as
-we used in `atan2()`, that is, $x_1 = 2.2$ and $y_1 = 2.1$.
+The `x2` and `y2` coordinates should represent the x axis. So, you
+can set these variables to `x2 = 4` and `y2 = 0` for example.
+In the other hand, `x1` and `y1` coordinates are the same as
+we used in `atan2()`, that is, `x1 = 2.2` and `y1 = 2.1`.
 
 You can see below that, by using the `line_angle()` function
 we got the exact same results as the `atan2()` function.
