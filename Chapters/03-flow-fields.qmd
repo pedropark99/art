@@ -254,7 +254,6 @@ library(ambient)
 set.seed(50)
 angles <- noise_perlin(c(n, n)) * 2 * pi
 grid <- build_grid_df(angles, n)
-grid
 ```
 
 
@@ -284,75 +283,349 @@ visualize_grid(grid, n)
 ```
 
 
-## Drawing curves around the grid
+## Drawing curves in the flow field
 
 Now that we have a functional flow field, we want to use it
 to actually draw things in the screen, specially curves.
 
-To do that, we need to walk across the grid.
-We choose a point in the grid as our starting point, and then,
+In order to do do that, we need to walk across the grid.
+First, we choose a point in the grid as our starting point, and then,
 we start to walk in the grid by following the direction of
 the angles we encounter in the grid. As we walk trough the grid,
-we collect the x and y coordinates of our position.
+we record the x and y coordinates of our positions.
 When we finish walking, we can
-draw the line, or the curve by "connecting
-the dots", i.e. connecting the x and y coordinates that we passed through.
+draw a curve by "connecting
+the dots", i.e. connecting the points (x and y coordinates) that we passed through.
 
 So, in essence, the steps for drawing a curve in a flow field are:
 
 1. Choose a starting point in the grid.
 1. Look at the angle that is stored in the position of the grid that you are currently in.
 1. Take a step in the direction of that angle.
-1. Recalculate your current position in the grid.
+1. Recalculate your current position in the grid, and record/store this position for later use.
 1. Comeback to step 2.
 
 You can see in the bullet points above that, we begin a loop at step 5.
-So we are repeatedly taking a step in the direction of an angle, recalculating
-our current position in the grid, and taking another step in the direction of an angle,
-and, as long as we stay inside the boundaries of the grid, we
+We are repeatedly taking a step in the direction of an angle, recalculating
+our current position in the grid, and taking another step in the direction of another angle.
+As long as we stay inside the boundaries of the grid, we
 can repeat this pattern as much as we want to.
 
-As you walking trough the grid, the angle that you currently using might lead you
-to walk off the boundaries of the grid. In that you case, you should stop walking,
-before you go off the grid. Because if you pass trough the boundaries of the grid,
+As you walk trough the grid, the angle that you currently using might lead you
+to a position that is off the boundaries of the grid. In that case, you should stop walking,
+before you go off the grid. Because if you pass the boundaries of the grid,
 then, the lookup process we perform to take an angle in the grid, will fail.
 
 
-We have the first dot, which is the starting
-point. Then we look at 
+### A first example
+
+Now, as a first example, let's actually draw a curve into this flow field. We are going
+to use specifically the flow field created from the Perlin Noise algorithm, that we exposed
+in the previous example.
+
+But instead of using the grid of angles as a `tibble` object, in this particular case,
+is better to represent the grid of angles as a 2D matrix. That is why in the example
+below, we are recreating the flow field again, but this time, we are not using the `build_grid_df()` function
+that we used before, to convert the 2D matrix into a `tibble` object.
 
 ```{r}
-#| eval: false
-# Set some variables
-n_steps <- 15
-step_length <- 0.1
-grid_width <- 50
-# Pre allocate space for the x and y
-# coordinates of the curve we are drawing
-x_coords <- vector("double", length = n_steps)
-y_coords <- vector("double", length = n_steps)
+n <- 50
+set.seed(50)
+angles <- noise_perlin(c(n, n)) * 2 * pi
+```
 
-for (i in seq_len(n_steps)) {
-  column_index <- as.integer(x_pos)
-  row_index <- as.integer(y_pos)
-    
-  if (column_index <= 0
-      || row_index <= 0
-      || column_index >= grid_width
-      || row_index >= grid_height) {
-    break
-  }
-  grid_angle <- noise_as_angle[row_index, column_index]
-  x_step <- step_length * cos(grid_angle)
-  y_step <- step_length * sin(grid_angle)
-  x_pos <- x_pos + x_step
-  y_pos <- y_pos + y_step
-    
-  line_xs[i] <- x_pos
-  line_ys[i] <- y_pos
+Using a 2D matrix instead of a `tibble` object, is better in this case,
+because we can easily get the angle value in any position in the grid,
+by using the R subsetting function (`[`). In the example below,
+we are looking at the angle value that is stored at position $x = 14$ and $y = 38$
+of the grid:
+
+```{r}
+angles[14, 38]
+```
+
+
+First, we need to decide our starting point in the grid, and this will be the coordinate
+$(5, 10)$. Second, we need to decide the values for two essential variables to this process,
+which is the number of steps we want to take in the grid (which is essentially "how much we want to walk"),
+and also, the length of each step (which is "how far we want to go in each step").
+
+The number of steps taken affects the length of the curve that is drawn. If you
+take few steps, the curve will be short. But if you raise the number of steps, the curve
+will be longer.
+
+In contrast, the step length generally affects how "sharp" the curve looks. You could also say that,
+the step length affects how much your curve will look like an actual curve.
+
+If this step length is very large relative to the grid size,
+your curve will probably not look like a curve,
+and more like scattered points that are connected
+to each other by straight lines.
+
+In the other hand, if the step length is too small, then, you might not get a nice and long curve.
+Because this will also affect the length of the line. If the step length is too small,
+you will probably get a curve that is too much small in length, even if the number of steps you are taking is
+very high.
+
+So you need to balance these two variables together (specially the step length) to achieve a nice
+and long curve. According to @hobbsflow, a nice step length is normally around 0.1% and 0.5%
+of the image/grid width. Given that our grid is 50x50, the step length that we are going
+to use in this example is $0.01 \times 50 = 0.5$. Also, the number of steps taken will be 45.
+
+Let's declare these variables in our R script:
+
+```{r}
+# Set some variables
+n_steps <- 45
+grid_width <- 50
+grid_height <- 50
+step_length <- 0.01 * grid_width
+```
+
+
+Now that we have taken these decisions, we can proceed with our drawing process.
+One thing that we will constantly need to do in each individual step is to check
+if we are within the boundaries of the grid.
+
+For this specific task, we can create a function called `off_boundaries()`.
+This function returns `TRUE` if our current position is off the boundaries
+of the grid.
+
+```{r}
+off_boundaries <- function(x, y, limit = grid_width){
+  x <= 0 ||
+    y <= 0 ||
+    x >= limit ||
+    y >= limit
 }
 ```
 
+
+A for loop will be used to take each individual step across the grid.
+In this context, the number of steps is the number of iterations that this for loop will
+attempt to perform. The number of iterations might be lower than the number
+of steps, if we hit the the boundaries of the grid, in the middle of
+our walking. Because in this case, we want to stop walking right away,
+by using a `break` statement.
+
+Inside the for loop, we will use @eq-line-rotation1 and @eq-line-rotation2 (that were presented at Chapter 2) to
+calculate the new x and y coordinates (`x_step` and `y_step` variables) after we taken the step in the direction
+of the current angle that we are using. Then, we effectively take this new step,
+by adding these new x and y coordinates that we calculated to our current x and y coordinates (`x` and `y` variables).
+The end result, is that we move our current position in the direction of the current angle.
+
+Now, after we take the step, and move ourselves into a new position, we need
+to understand where exactly in the grid we are. In other words,
+we need to map our current x and y coordinates in the Cartesian plane,
+with a specific position in the 50x50 grid. This specific position
+is identified by the column and row index in a 2D matrix.
+
+To do that, we can
+simply get our current x and y coordinates (`x` and `y` variables), and convert them
+into integers. For example, if our current position in the Cartesian plane
+is $(35.612, 20.981)$, we can use the built-in function `as.integer()` to
+map this position in the Cartesian plane to the coordinate $(35, 20)$ in the grid of angles.
+
+If you want to, you can use other techniques to map your current
+position in the Cartesian plane to a specific spot in the grid.
+For example, instead of using `as.integer()`, you might want to use `floor()`,
+or `ceiling()` to change how the coordinates are transformed into an integer
+that can be mapped to a position in the grid.
+But in this particular example, we will stick with `as.integer()`.
+
+After we map our current position in the Cartesian plane to
+a specific location in the 50x50 grid, we can look at the angle
+value in this specific location in the grid. This angle
+value is the new angle that we need to use in our next step
+that we take in the grid.
+
+Having this workflow in mind, the for loop
+below resumes all steps that we described:
+
+
+```{r}
+#| eval: true
+# Pre allocate space for the x and y
+# coordinates of the curve that we are drawing
+x_coords <- vector("double", length = n_steps)
+y_coords <- vector("double", length = n_steps)
+
+# Set our starting point
+x <- 5
+y <- 10
+
+# Start walking
+for (i in seq_len(n_steps)) {
+  column_index <- as.integer(x)
+  row_index <- as.integer(y)
+  
+  if (off_boundaries(column_index, row_index)) {
+    break
+  }
+  
+  angle <- angles[row_index, column_index]
+  x_step <- step_length * cos(angle)
+  y_step <- step_length * sin(angle)
+  x <- x + x_step
+  y <- y + y_step
+  
+  x_coords[i] <- x
+  y_coords[i] <- y
+}
+```
+
+When this for loop ends, it means that we have finished walking trough the grid.
+Now, the `x_coords` and `y_coords` vectors contains the x and y coordinates
+of all the points in the Cartesian plane that we passed through,
+during our walk.
+
+These points together, form the curve that we want to visualize.
+We can draw and visualize this curve by
+connecting these points together. In the example below,
+we are drawing the curve in red, over the flow field.
+You can see that the curve follows the angles in the flow field,
+like it was a fluid or a winter that is passing through.
+
+```{r}
+curve <- tibble(
+  x = x_coords,
+  y = y_coords
+)
+
+grid <- build_grid_df(angles, n)
+visualize_grid(grid, n) +
+  geom_path(
+    aes(x, y),
+    data = curve,
+    color = "red",
+    linewidth = 1
+  )
+```
+
+
+### Encapsulating this process into a function
+
+Is a good idea to encapsulate all of this process into a nice R function
+that we can reuse later. This will help you to organize your code,
+specially if you are planning to draw multiple lines into this flow field.
+
+As a result, we got the `draw_curve()` function below. The argument
+`angles` corresponds to the 2D matrix of angle values, and
+the argument `start_position` corresponds to a vector of 2 elements,
+with the x and y coordinates of the start position in the grid.
+
+```{r}
+draw_curve <- function(start_position,
+                       angles,
+                       n_steps,
+                       step_length) {
+  
+  x_coords <- vector("double", length = n_steps)
+  y_coords <- vector("double", length = n_steps)
+  
+  x <- start_position[1]
+  y <- start_position[2]
+  for (i in seq_len(n_steps)) {
+    column_index <- as.integer(x)
+    row_index <- as.integer(y)
+    
+    if (off_boundaries(column_index, row_index)) {
+      break
+    }
+    
+    angle <- angles[row_index, column_index]
+    x_step <- step_length * cos(angle)
+    y_step <- step_length * sin(angle)
+    x <- x + x_step
+    y <- y + y_step
+    
+    x_coords[i] <- x
+    y_coords[i] <- y
+  }
+  
+  # This eliminates potential empty values
+  # if the for loop ends before the number
+  # of steps
+  x_coords <- x_coords[seq_len(i - 1)]
+  y_coords <- y_coords[seq_len(i - 1)]
+  return(tibble(x = x_coords, y = y_coords))
+}
+```
+
+
+
+## Drawing multiple curves in the flow field
+
+In the previous section, we drawn a single curve in the field.
+We definitely can draw multiple curves at once in the field.
+
+In this situation, we want to use functional programming in our
+favor, to help us expand our drawing process to multiple locations in
+the image at once. The family of `map_*()` functions from the `purrr` package
+are excellent for this task.
+
+In the code below, we are using `runif()` to generate random
+starting points for 300 different lines.
+
+```{r}
+library(purrr)
+set.seed(421)
+xs <- as.integer(runif(300) * grid_width)
+ys <- as.integer(runif(300) * grid_height)
+
+starts <- map2(xs, ys, \(x, y) c(x, y))
+```
+
+
+Now that we have the starting points for each curve, we can start to calculate
+the x and y coordinates of these curves, by calling the `draw_curve()` function for each
+starting point. This function will output a different `tibble` object for each starting
+point.
+
+But it would be much better, if we combined all these 300 outputs into
+a single `tibble` object. There are different strategies to do this in R.
+
+First, you could collect all the 300 `tibble` objects inside a list object, and then,
+you would merge them together, by calling the `bind_rows()`
+function[^bind-rows] from `dplyr` R package over this list object.
+
+[^bind-rows]: <https://dplyr.tidyverse.org/reference/bind_rows.html>.
+
+But there is another alternative, which is to use the `map_dfr()` function[^map-dfr] from `purrr`.
+This function is a better alternative, because it will automatically collect and merge
+all of these 300 outputs for you.
+
+[^map-dfr]: <https://purrr.tidyverse.org/reference/map_dfr.html>. 
+
+In this function, we use the `.id` argument to create an index column in the output `tibble`.
+This new column (called `line_id`) will contain
+an index that identifies the lines from each one of the 300 objects that were created and merged
+during the process of applying `draw_curve()` to each of the 300 starting points.
+
+
+```{r}
+curves <- map_dfr(
+  .x = starts,
+  .f= draw_curve,
+  angles = angles,
+  n_steps = n_steps,
+  step_length = step_length,
+  .id = "line_id"
+)
+
+curves
+```
+
+Now that we have the data (x and y coordinates) for each one of the 300 curves,
+we can effectively draw them, by using `geom_path()`. Like this:
+
+```{r}
+ggplot(curves) +
+  geom_path(
+    aes(x, y, group = line_id)
+  ) +
+  theme_void()
+```
 
 
 

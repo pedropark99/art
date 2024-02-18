@@ -265,7 +265,12 @@ window.Quarto = {
   <li><a href="#sec-grid-random-angle" id="toc-sec-grid-random-angle" class="nav-link" data-scroll-target="#sec-grid-random-angle"><span class="header-section-number">4.1.2</span> Building a random angle grid</a></li>
   </ul></li>
   <li><a href="#building-an-actual-flow-field-with-perlin-noise" id="toc-building-an-actual-flow-field-with-perlin-noise" class="nav-link" data-scroll-target="#building-an-actual-flow-field-with-perlin-noise"><span class="header-section-number">4.2</span> Building an actual flow field with Perlin Noise</a></li>
-  <li><a href="#drawing-curves-around-the-grid" id="toc-drawing-curves-around-the-grid" class="nav-link" data-scroll-target="#drawing-curves-around-the-grid"><span class="header-section-number">4.3</span> Drawing curves around the grid</a></li>
+  <li><a href="#drawing-curves-in-the-flow-field" id="toc-drawing-curves-in-the-flow-field" class="nav-link" data-scroll-target="#drawing-curves-in-the-flow-field"><span class="header-section-number">4.3</span> Drawing curves in the flow field</a>
+  <ul class="collapse">
+  <li><a href="#a-first-example" id="toc-a-first-example" class="nav-link" data-scroll-target="#a-first-example"><span class="header-section-number">4.3.1</span> A first example</a></li>
+  <li><a href="#encapsulating-this-process-into-a-function" id="toc-encapsulating-this-process-into-a-function" class="nav-link" data-scroll-target="#encapsulating-this-process-into-a-function"><span class="header-section-number">4.3.2</span> Encapsulating this process into a function</a></li>
+  </ul></li>
+  <li><a href="#drawing-multiple-curves-in-the-flow-field" id="toc-drawing-multiple-curves-in-the-flow-field" class="nav-link" data-scroll-target="#drawing-multiple-curves-in-the-flow-field"><span class="header-section-number">4.4</span> Drawing multiple curves in the flow field</a></li>
   </ul>
 </nav>
     </div>
@@ -425,28 +430,11 @@ window.Quarto = {
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">noise_perlin</span>(<span class="fu">c</span>(n, n)) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>grid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2,500 × 3
-       x     y  value
-   &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
- 1     1     1 0     
- 2     1     2 0.0366
- 3     1     3 0.0769
- 4     1     4 0.123 
- 5     1     5 0.177 
- 6     1     6 0.239 
- 7     1     7 0.308 
- 8     1     8 0.384 
- 9     1     9 0.465 
-10     1    10 0.550 
-# ℹ 2,490 more rows</code></pre>
-</div>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After that, we now have a grid of angles that represents a functional flow field. We can visualize this field in the same way as we did before:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -456,12 +444,12 @@ window.Quarto = {
 </div>
 </div>
 <p>That looks much more natural compared to the previous grids! It also feels much more fluid. Like winds flowing and doing smooth curves around this grid.</p>
-<p>You could also use the Simplex Noise algorithm to generate the random values, instead of the classic Perlin Noise. However, as we described at <a href="02-random.html#sec-perlin-noise" class="quarto-xref"><span>Section 3.4</span></a>, the Simplex Noise algorithmn produces “stronger” results, with random values that vary more rapidly across the grid. As a result, a flow field created from Simplex Noise is less smooth compared to a flow field created from Perlin Noise. You can see that in the example below:</p>
+<p>You could also use the Simplex Noise algorithm to generate the random values, instead of the classic Perlin Noise. However, as we described at <a href="02-random.html#sec-perlin-noise" class="quarto-xref"><span>Section 3.4</span></a>, the Simplex Noise algorithmn produces “stronger” results, with random values that vary more rapidly across the grid. As a result, a flow field created from Simplex Noise is less smooth compared to a flow field created from classic Perlin Noise. You can see this fact in the example below:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">noise_simplex</span>(<span class="fu">c</span>(n, n)) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">noise_simplex</span>(<span class="fu">c</span>(n, n)) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -471,50 +459,224 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="drawing-curves-around-the-grid" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="drawing-curves-around-the-grid"><span class="header-section-number">4.3</span> Drawing curves around the grid</h2>
+<section id="drawing-curves-in-the-flow-field" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="drawing-curves-in-the-flow-field"><span class="header-section-number">4.3</span> Drawing curves in the flow field</h2>
 <p>Now that we have a functional flow field, we want to use it to actually draw things in the screen, specially curves.</p>
-<p>To do that, we need to walk across the grid. We choose a point in the grid as our starting point, and then, we start to walk in the grid by following the direction of the angles we encounter in the grid. As we walk trough the grid, we collect the x and y coordinates of our position. When we finish walking, we can draw the line, or the curve by “connecting the dots”, i.e.&nbsp;connecting the x and y coordinates that we passed through.</p>
+<p>In order to do do that, we need to walk across the grid. First, we choose a point in the grid as our starting point, and then, we start to walk in the grid by following the direction of the angles we encounter in the grid. As we walk trough the grid, we record the x and y coordinates of our positions. When we finish walking, we can draw a curve by “connecting the dots”, i.e.&nbsp;connecting the points (x and y coordinates) that we passed through.</p>
 <p>So, in essence, the steps for drawing a curve in a flow field are:</p>
 <ol type="1">
 <li>Choose a starting point in the grid.</li>
 <li>Look at the angle that is stored in the position of the grid that you are currently in.</li>
 <li>Take a step in the direction of that angle.</li>
-<li>Recalculate your current position in the grid.</li>
+<li>Recalculate your current position in the grid, and record/store this position for later use.</li>
 <li>Comeback to step 2.</li>
 </ol>
-<p>You can see in the bullet points above that, we begin a loop at step 5. So we are repeatedly taking a step in the direction of an angle, recalculating our current position in the grid, and taking another step in the direction of an angle, and, as long as we stay inside the boundaries of the grid, we can repeat this pattern as much as we want to.</p>
-<p>As you walking trough the grid, the angle that you currently using might lead you to walk off the boundaries of the grid. In that you case, you should stop walking, before you go off the grid. Because if you pass trough the boundaries of the grid, then, the lookup process we perform to take an angle in the grid, will fail.</p>
-<p>We have the first dot, which is the starting point. Then we look at</p>
+<p>You can see in the bullet points above that, we begin a loop at step 5. We are repeatedly taking a step in the direction of an angle, recalculating our current position in the grid, and taking another step in the direction of another angle. As long as we stay inside the boundaries of the grid, we can repeat this pattern as much as we want to.</p>
+<p>As you walk trough the grid, the angle that you currently using might lead you to a position that is off the boundaries of the grid. In that case, you should stop walking, before you go off the grid. Because if you pass the boundaries of the grid, then, the lookup process we perform to take an angle in the grid, will fail.</p>
+<section id="a-first-example" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="a-first-example"><span class="header-section-number">4.3.1</span> A first example</h3>
+<p>Now, as a first example, let’s actually draw a curve into this flow field. We are going to use specifically the flow field created from the Perlin Noise algorithm, that we exposed in the previous example.</p>
+<p>But instead of using the grid of angles as a <code>tibble</code> object, in this particular case, is better to represent the grid of angles as a 2D matrix. That is why in the example below, we are recreating the flow field again, but this time, we are not using the <code>build_grid_df()</code> function that we used before, to convert the 2D matrix into a <code>tibble</code> object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set some variables</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>n_steps <span class="ot">&lt;-</span> <span class="dv">15</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>step_length <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>grid_width <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pre allocate space for the x and y</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># coordinates of the curve we are drawing</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>x_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>y_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_steps)) {</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  column_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(x_pos)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  row_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(y_pos)</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (column_index <span class="sc">&lt;=</span> <span class="dv">0</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>      <span class="sc">||</span> row_index <span class="sc">&lt;=</span> <span class="dv">0</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>      <span class="sc">||</span> column_index <span class="sc">&gt;=</span> grid_width</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>      <span class="sc">||</span> row_index <span class="sc">&gt;=</span> grid_height) {</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  grid_angle <span class="ot">&lt;-</span> noise_as_angle[row_index, column_index]</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  x_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">cos</span>(grid_angle)</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  y_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">sin</span>(grid_angle)</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  x_pos <span class="ot">&lt;-</span> x_pos <span class="sc">+</span> x_step</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  y_pos <span class="ot">&lt;-</span> y_pos <span class="sc">+</span> y_step</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  line_xs[i] <span class="ot">&lt;-</span> x_pos</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  line_ys[i] <span class="ot">&lt;-</span> y_pos</span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">noise_perlin</span>(<span class="fu">c</span>(n, n)) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using a 2D matrix instead of a <code>tibble</code> object, is better in this case, because we can easily get the angle value in any position in the grid, by using the R subsetting function (<code>[</code>). In the example below, we are looking at the angle value that is stored at position <span class="math inline">\(x = 14\)</span> and <span class="math inline">\(y = 38\)</span> of the grid:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>angles[<span class="dv">14</span>, <span class="dv">38</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.06698327</code></pre>
+</div>
+</div>
+<p>First, we need to decide our starting point in the grid, and this will be the coordinate <span class="math inline">\((5, 10)\)</span>. Second, we need to decide the values for two essential variables to this process, which is the number of steps we want to take in the grid (which is essentially “how much we want to walk”), and also, the length of each step (which is “how far we want to go in each step”).</p>
+<p>The number of steps taken affects the length of the curve that is drawn. If you take few steps, the curve will be short. But if you raise the number of steps, the curve will be longer.</p>
+<p>In contrast, the step length generally affects how “sharp” the curve looks. You could also say that, the step length affects how much your curve will look like an actual curve.</p>
+<p>If this step length is very large relative to the grid size, your curve will probably not look like a curve, and more like scattered points that are connected to each other by straight lines.</p>
+<p>In the other hand, if the step length is too small, then, you might not get a nice and long curve. Because this will also affect the length of the line. If the step length is too small, you will probably get a curve that is too much small in length, even if the number of steps you are taking is very high.</p>
+<p>So you need to balance these two variables together (specially the step length) to achieve a nice and long curve. According to <span class="citation" data-cites="hobbsflow">Hobbs (<a href="_references.html#ref-hobbsflow" role="doc-biblioref">2024</a>)</span>, a nice step length is normally around 0.1% and 0.5% of the image/grid width. Given that our grid is 50x50, the step length that we are going to use in this example is <span class="math inline">\(0.01 \times 50 = 0.5\)</span>. Also, the number of steps taken will be 45.</p>
+<p>Let’s declare these variables in our R script:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set some variables</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>n_steps <span class="ot">&lt;-</span> <span class="dv">45</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>grid_width <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>grid_height <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>step_length <span class="ot">&lt;-</span> <span class="fl">0.01</span> <span class="sc">*</span> grid_width</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we have taken these decisions, we can proceed with our drawing process. One thing that we will constantly need to do in each individual step is to check if we are within the boundaries of the grid.</p>
+<p>For this specific task, we can create a function called <code>off_boundaries()</code>. This function returns <code>TRUE</code> if our current position is off the boundaries of the grid.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>off_boundaries <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">limit =</span> grid_width){</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">||</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">||</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">&gt;=</span> limit <span class="sc">||</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">&gt;=</span> limit</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A for loop will be used to take each individual step across the grid. In this context, the number of steps is the number of iterations that this for loop will attempt to perform. The number of iterations might be lower than the number of steps, if we hit the the boundaries of the grid, in the middle of our walking. Because in this case, we want to stop walking right away, by using a <code>break</code> statement.</p>
+<p>Inside the for loop, we will use <a href="01-transformations.html#eq-line-rotation1" class="quarto-xref">Equation&nbsp;<span>2.3</span></a> and <a href="01-transformations.html#eq-line-rotation2" class="quarto-xref">Equation&nbsp;<span>2.4</span></a> (that were presented at Chapter 2) to calculate the new x and y coordinates (<code>x_step</code> and <code>y_step</code> variables) after we taken the step in the direction of the current angle that we are using. Then, we effectively take this new step, by adding these new x and y coordinates that we calculated to our current x and y coordinates (<code>x</code> and <code>y</code> variables). The end result, is that we move our current position in the direction of the current angle.</p>
+<p>Now, after we take the step, and move ourselves into a new position, we need to understand where exactly in the grid we are. In other words, we need to map our current x and y coordinates in the Cartesian plane, with a specific position in the 50x50 grid. This specific position is identified by the column and row index in a 2D matrix.</p>
+<p>To do that, we can simply get our current x and y coordinates (<code>x</code> and <code>y</code> variables), and convert them into integers. For example, if our current position in the Cartesian plane is <span class="math inline">\((35.612, 20.981)\)</span>, we can use the built-in function <code>as.integer()</code> to map this position in the Cartesian plane to the coordinate <span class="math inline">\((35, 20)\)</span> in the grid of angles.</p>
+<p>If you want to, you can use other techniques to map your current position in the Cartesian plane to a specific spot in the grid. For example, instead of using <code>as.integer()</code>, you might want to use <code>floor()</code>, or <code>ceiling()</code> to change how the coordinates are transformed into an integer that can be mapped to a position in the grid. But in this particular example, we will stick with <code>as.integer()</code>.</p>
+<p>After we map our current position in the Cartesian plane to a specific location in the 50x50 grid, we can look at the angle value in this specific location in the grid. This angle value is the new angle that we need to use in our next step that we take in the grid.</p>
+<p>Having this workflow in mind, the for loop below resumes all steps that we described:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pre allocate space for the x and y</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># coordinates of the curve that we are drawing</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>x_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>y_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set our starting point</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Start walking</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_steps)) {</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  column_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(x)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  row_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(y)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">off_boundaries</span>(column_index, row_index)) {</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  angle <span class="ot">&lt;-</span> angles[row_index, column_index]</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  x_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">cos</span>(angle)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  y_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">sin</span>(angle)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> x_step</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> y <span class="sc">+</span> y_step</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  x_coords[i] <span class="ot">&lt;-</span> x</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>  y_coords[i] <span class="ot">&lt;-</span> y</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>When this for loop ends, it means that we have finished walking trough the grid. Now, the <code>x_coords</code> and <code>y_coords</code> vectors contains the x and y coordinates of all the points in the Cartesian plane that we passed through, during our walk.</p>
+<p>These points together, form the curve that we want to visualize. We can draw and visualize this curve by connecting these points together. In the example below, we are drawing the curve in red, over the flow field. You can see that the curve follows the angles in the flow field, like it was a fluid or a winter that is passing through.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>curve <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> x_coords,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> y_coords</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y),</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> curve,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="encapsulating-this-process-into-a-function" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="encapsulating-this-process-into-a-function"><span class="header-section-number">4.3.2</span> Encapsulating this process into a function</h3>
+<p>Is a good idea to encapsulate all of this process into a nice R function that we can reuse later. This will help you to organize your code, specially if you are planning to draw multiple lines into this flow field.</p>
+<p>As a result, we got the <code>draw_curve()</code> function below. The argument <code>angles</code> corresponds to the 2D matrix of angle values, and the argument <code>start_position</code> corresponds to a vector of 2 elements, with the x and y coordinates of the start position in the grid.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>draw_curve <span class="ot">&lt;-</span> <span class="cf">function</span>(start_position,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                       angles,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                       n_steps,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                       step_length) {</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  x_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  y_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> start_position[<span class="dv">1</span>]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> start_position[<span class="dv">2</span>]</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_steps)) {</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    column_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(x)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    row_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(y)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">off_boundaries</span>(column_index, row_index)) {</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    angle <span class="ot">&lt;-</span> angles[row_index, column_index]</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    x_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">cos</span>(angle)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    y_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">sin</span>(angle)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">+</span> x_step</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> y <span class="sc">+</span> y_step</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    x_coords[i] <span class="ot">&lt;-</span> x</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    y_coords[i] <span class="ot">&lt;-</span> y</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This eliminates potential empty values</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if the for loop ends before the number</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># of steps</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>  x_coords <span class="ot">&lt;-</span> x_coords[<span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>  y_coords <span class="ot">&lt;-</span> y_coords[<span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">tibble</span>(<span class="at">x =</span> x_coords, <span class="at">y =</span> y_coords))</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="drawing-multiple-curves-in-the-flow-field" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="drawing-multiple-curves-in-the-flow-field"><span class="header-section-number">4.4</span> Drawing multiple curves in the flow field</h2>
+<p>In the previous section, we drawn a single curve in the field. We definitely can draw multiple curves at once in the field.</p>
+<p>In this situation, we want to use functional programming in our favor, to help us expand our drawing process to multiple locations in the image at once. The family of <code>map_*()</code> functions from the <code>purrr</code> package are excellent for this task.</p>
+<p>In the code below, we are using <code>runif()</code> to generate random starting points for 300 different lines.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">421</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_width)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>ys <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_height)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>starts <span class="ot">&lt;-</span> <span class="fu">map2</span>(xs, ys, \(x, y) <span class="fu">c</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we have the starting points for each curve, we can start to calculate the x and y coordinates of these curves, by calling the <code>draw_curve()</code> function for each starting point. This function will output a different <code>tibble</code> object for each starting point.</p>
+<p>But it would be much better, if we combined all these 300 outputs into a single <code>tibble</code> object. There are different strategies to do this in R.</p>
+<p>First, you could collect all the 300 <code>tibble</code> objects inside a list object, and then, you would merge them together, by calling the <code>bind_rows()</code> function<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> from <code>dplyr</code> R package over this list object.</p>
+<p>But there is another alternative, which is to use the <code>map_dfr()</code> function<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> from <code>purrr</code>. This function is a better alternative, because it will automatically collect and merge all of these 300 outputs for you.</p>
+<p>In this function, we use the <code>.id</code> argument to create an index column in the output <code>tibble</code>. This new column (called <code>line_id</code>) will contain an index that identifies the lines from each one of the 300 objects that were created and merged during the process of applying <code>draw_curve()</code> to each of the 300 starting points.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>curves <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> starts,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f=</span> draw_curve,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">angles =</span> angles,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> n_steps,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_length =</span> step_length,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"line_id"</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>curves</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8,101 × 3
+   line_id     x     y
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1 1       39.2   48.5
+ 2 1       39.4   48.9
+ 3 1       39.6   49.4
+ 4 1       39.8   49.8
+ 5 1       40.0   50.3
+ 6 2        6.78  45.5
+ 7 2        6.59  45.9
+ 8 2        6.40  46.4
+ 9 2        6.19  46.8
+10 2        5.98  47.3
+# ℹ 8,091 more rows</code></pre>
+</div>
+</div>
+<p>Now that we have the data (x and y coordinates) for each one of the 300 curves, we can effectively draw them, by using <code>geom_path()</code>. Like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(curves) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">group =</span> line_id)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 
 
@@ -523,6 +685,13 @@ window.Quarto = {
 Hobbs, Tyler. 2024. <span>“Flow Fields.”</span> <a href="https://tylerxhobbs.com/essays/2020/flow-fields">https://tylerxhobbs.com/essays/2020/flow-fields</a>.
 </div>
 </div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="uri">https://dplyr.tidyverse.org/reference/bind_rows.html</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://purrr.tidyverse.org/reference/map_dfr.html" class="uri">https://purrr.tidyverse.org/reference/map_dfr.html</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
