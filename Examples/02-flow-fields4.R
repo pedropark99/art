@@ -144,7 +144,7 @@ pl <- curves_df %>%
   ggplot() +
   geom_path(
     aes(x, y, group = curve_id, color = color),
-    size = 1
+    linewidth = 1
   ) +
   cartesian +
   theme_void() +
@@ -155,6 +155,6 @@ pl <- curves_df %>%
   )
 
 
-ragg::agg_png("flow_field.png", width = 3000, height = 2000, res = 300)
+ragg::agg_png("flow_field.png", width = 2000, height = 1200, res = 200)
 print(pl)
 dev.off()
