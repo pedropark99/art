@@ -6,7 +6,8 @@ grid_height <- n
 grid_width <- n
 cartesian <- coord_cartesian(
   xlim = c(0, grid_width),
-  ylim = c(0, grid_height)
+  ylim = c(0, grid_height),
+  expand = FALSE
 )
 set.seed(50)
 angles <- noise_perlin(c(n, n)) * 4 * pi
