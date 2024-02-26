@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.532">
+<meta name="generator" content="quarto-1.4.538">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -264,13 +264,21 @@ window.Quarto = {
   <li><a href="#building-a-fixed-angle-grid" id="toc-building-a-fixed-angle-grid" class="nav-link" data-scroll-target="#building-a-fixed-angle-grid"><span class="header-section-number">4.1.1</span> Building a fixed angle grid</a></li>
   <li><a href="#sec-grid-random-angle" id="toc-sec-grid-random-angle" class="nav-link" data-scroll-target="#sec-grid-random-angle"><span class="header-section-number">4.1.2</span> Building a random angle grid</a></li>
   </ul></li>
-  <li><a href="#building-an-actual-flow-field-with-perlin-noise" id="toc-building-an-actual-flow-field-with-perlin-noise" class="nav-link" data-scroll-target="#building-an-actual-flow-field-with-perlin-noise"><span class="header-section-number">4.2</span> Building an actual flow field with Perlin Noise</a></li>
-  <li><a href="#drawing-curves-in-the-flow-field" id="toc-drawing-curves-in-the-flow-field" class="nav-link" data-scroll-target="#drawing-curves-in-the-flow-field"><span class="header-section-number">4.3</span> Drawing curves in the flow field</a>
+  <li><a href="#building-an-actual-flow-field-with-perlin-noise" id="toc-building-an-actual-flow-field-with-perlin-noise" class="nav-link" data-scroll-target="#building-an-actual-flow-field-with-perlin-noise"><span class="header-section-number">4.2</span> Building an actual flow field with Perlin Noise</a>
+  <ul class="collapse">
+  <li><a href="#getting-a-stronger-field-by-multiplying-it" id="toc-getting-a-stronger-field-by-multiplying-it" class="nav-link" data-scroll-target="#getting-a-stronger-field-by-multiplying-it"><span class="header-section-number">4.2.1</span> Getting a stronger field by multiplying it</a></li>
+  </ul></li>
+  <li><a href="#drawing-curves-into-the-flow-field" id="toc-drawing-curves-into-the-flow-field" class="nav-link" data-scroll-target="#drawing-curves-into-the-flow-field"><span class="header-section-number">4.3</span> Drawing curves into the flow field</a>
   <ul class="collapse">
   <li><a href="#a-first-example" id="toc-a-first-example" class="nav-link" data-scroll-target="#a-first-example"><span class="header-section-number">4.3.1</span> A first example</a></li>
   <li><a href="#encapsulating-this-process-into-a-function" id="toc-encapsulating-this-process-into-a-function" class="nav-link" data-scroll-target="#encapsulating-this-process-into-a-function"><span class="header-section-number">4.3.2</span> Encapsulating this process into a function</a></li>
   </ul></li>
   <li><a href="#drawing-multiple-curves-in-the-flow-field" id="toc-drawing-multiple-curves-in-the-flow-field" class="nav-link" data-scroll-target="#drawing-multiple-curves-in-the-flow-field"><span class="header-section-number">4.4</span> Drawing multiple curves in the flow field</a></li>
+  <li><a href="#drawing-curves-in-both-directions" id="toc-drawing-curves-in-both-directions" class="nav-link" data-scroll-target="#drawing-curves-in-both-directions"><span class="header-section-number">4.5</span> Drawing curves in both directions</a>
+  <ul class="collapse">
+  <li><a href="#drawing-the-curve-in-the-opposite-direction" id="toc-drawing-the-curve-in-the-opposite-direction" class="nav-link" data-scroll-target="#drawing-the-curve-in-the-opposite-direction"><span class="header-section-number">4.5.1</span> Drawing the curve in the opposite direction</a></li>
+  <li><a href="#merging-the-two-directions-together" id="toc-merging-the-two-directions-together" class="nav-link" data-scroll-target="#merging-the-two-directions-together"><span class="header-section-number">4.5.2</span> Merging the two directions together</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -458,9 +466,28 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<section id="getting-a-stronger-field-by-multiplying-it" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="getting-a-stronger-field-by-multiplying-it"><span class="header-section-number">4.2.1</span> Getting a stronger field by multiplying it</h3>
+<p>You can multiply your current field by a factor, in order to get a stronger flow field. That is, you can get a flow field where the angles changes more rapidly across the grid, by multiplying the entire field by a constant factor.</p>
+<p>To some degree, by multiplying these values, you are essentially changing their scale. Just like we did in the previous section where we multiplied the entire field by <span class="math inline">\(2\pi\)</span>.</p>
+<p>If you take the exact same flow field as the previous example, where we used the Perlin Noise algorithm, but you multiply it by <span class="math inline">\(10\pi\)</span>, instead of just <span class="math inline">\(2\pi\)</span>, you a get a completely different result.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>stronger <span class="ot">&lt;-</span> <span class="fu">noise_perlin</span>(<span class="fu">c</span>(n, n)) <span class="sc">*</span> <span class="dv">10</span> <span class="sc">*</span> pi</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>stronger <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(stronger, n)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(stronger, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="drawing-curves-in-the-flow-field" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="drawing-curves-in-the-flow-field"><span class="header-section-number">4.3</span> Drawing curves in the flow field</h2>
+</section>
+<section id="drawing-curves-into-the-flow-field" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="drawing-curves-into-the-flow-field"><span class="header-section-number">4.3</span> Drawing curves into the flow field</h2>
 <p>Now that we have a functional flow field, we want to use it to actually draw things in the screen, specially curves.</p>
 <p>In order to do do that, we need to walk across the grid. First, we choose a point in the grid as our starting point, and then, we start to walk in the grid by following the direction of the angles we encounter in the grid. As we walk trough the grid, we record the x and y coordinates of our positions. When we finish walking, we can draw a curve by “connecting the dots”, i.e.&nbsp;connecting the points (x and y coordinates) that we passed through.</p>
 <p>So, in essence, the steps for drawing a curve in a flow field are:</p>
@@ -478,97 +505,99 @@ window.Quarto = {
 <p>Now, as a first example, let’s actually draw a curve into this flow field. We are going to use specifically the flow field created from the Perlin Noise algorithm, that we exposed in the previous example.</p>
 <p>But instead of using the grid of angles as a <code>tibble</code> object, in this particular case, is better to represent the grid of angles as a 2D matrix. That is why in the example below, we are recreating the flow field again, but this time, we are not using the <code>build_grid_df()</code> function that we used before, to convert the 2D matrix into a <code>tibble</code> object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">noise_perlin</span>(<span class="fu">c</span>(n, n)) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">50</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>angles <span class="ot">&lt;-</span> <span class="fu">noise_perlin</span>(<span class="fu">c</span>(n, n)) <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> pi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Using a 2D matrix instead of a <code>tibble</code> object, is better in this case, because we can easily get the angle value in any position in the grid, by using the R subsetting function (<code>[</code>). In the example below, we are looking at the angle value that is stored at position <span class="math inline">\(x = 14\)</span> and <span class="math inline">\(y = 38\)</span> of the grid:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>angles[<span class="dv">14</span>, <span class="dv">38</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>angles[<span class="dv">14</span>, <span class="dv">38</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.06698327</code></pre>
 </div>
 </div>
 <p>First, we need to decide our starting point in the grid, and this will be the coordinate <span class="math inline">\((5, 10)\)</span>. Second, we need to decide the values for two essential variables to this process, which is the number of steps we want to take in the grid (which is essentially “how much we want to walk”), and also, the length of each step (which is “how far we want to go in each step”).</p>
 <p>The number of steps taken affects the length of the curve that is drawn. If you take few steps, the curve will be short. But if you raise the number of steps, the curve will be longer.</p>
-<p>In contrast, the step length generally affects how “sharp” the curve looks. You could also say that, the step length affects how much your curve will look like an actual curve.</p>
-<p>If this step length is very large relative to the grid size, your curve will probably not look like a curve, and more like scattered points that are connected to each other by straight lines.</p>
-<p>In the other hand, if the step length is too small, then, you might not get a nice and long curve. Because this will also affect the length of the line. If the step length is too small, you will probably get a curve that is too much small in length, even if the number of steps you are taking is very high.</p>
+<p>In contrast, the step length generally affects how “sharp” the curve looks. You could also say that, the step length affects how much your curve will look like an actual curve. You should always set this step length as a specific proportion of your grid size.</p>
+<p>If this step length is too large, your curve will probably not look like a curve, and more like scattered points that are connected to each other by straight lines.</p>
+<p>In the other hand, if the step length is too small, then, you might end up with a very short curve. Because if the length of each step is too small, then, even if you take many steps, you will probably walk a very short distance, and, as a consequence, you will get a very short curve as a result, even if the number of steps you are taking is very high.</p>
 <p>So you need to balance these two variables together (specially the step length) to achieve a nice and long curve. According to <span class="citation" data-cites="hobbsflow">Hobbs (<a href="_references.html#ref-hobbsflow" role="doc-biblioref">2024</a>)</span>, a nice step length is normally around 0.1% and 0.5% of the image/grid width. Given that our grid is 50x50, the step length that we are going to use in this example is <span class="math inline">\(0.01 \times 50 = 0.5\)</span>. Also, the number of steps taken will be 45.</p>
 <p>Let’s declare these variables in our R script:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set some variables</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>n_steps <span class="ot">&lt;-</span> <span class="dv">45</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>grid_width <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>grid_height <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>step_length <span class="ot">&lt;-</span> <span class="fl">0.01</span> <span class="sc">*</span> grid_width</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set some variables</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>n_steps <span class="ot">&lt;-</span> <span class="dv">45</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>grid_width <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>grid_height <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>step_length <span class="ot">&lt;-</span> <span class="fl">0.01</span> <span class="sc">*</span> grid_width</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now that we have taken these decisions, we can proceed with our drawing process. One thing that we will constantly need to do in each individual step is to check if we are within the boundaries of the grid.</p>
+<p>Remember that there is one more very important detail! We constantly need to check if we are within the boundaries of the grid, in each individual step we take.</p>
+<p>This is important, because we take a step that is out of the boundaries of our flow field, then, when we perform the lookup process, where we try to look at the angle that is stored in our current position, this process will likely fail with an “out of bounds” or an “out of range” error, indicating that we are trying to access an element that is out of the boundaries of our grid.</p>
 <p>For this specific task, we can create a function called <code>off_boundaries()</code>. This function returns <code>TRUE</code> if our current position is off the boundaries of the grid.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>off_boundaries <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">limit =</span> grid_width){</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">||</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">||</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">&gt;=</span> limit <span class="sc">||</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">&gt;=</span> limit</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>off_boundaries <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">limit =</span> grid_width){</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">||</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">||</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">&gt;=</span> limit <span class="sc">||</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    y <span class="sc">&gt;=</span> limit</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A for loop will be used to take each individual step across the grid. In this context, the number of steps is the number of iterations that this for loop will attempt to perform. The number of iterations might be lower than the number of steps, if we hit the the boundaries of the grid, in the middle of our walking. Because in this case, we want to stop walking right away, by using a <code>break</code> statement.</p>
+<p>A for loop will be used to take each individual step across the grid. In this context, the number of steps that we want to take is the number of iterations that this for loop will attempt to perform.</p>
+<p>Be aware that the number of iterations in this loop might be lower than the number of steps. Because if we hit the boundaries of the grid, in the middle of our walking process, then, we want to stop walking right away, by using a <code>break</code> statement.</p>
 <p>Inside the for loop, we will use <a href="01-transformations.html#eq-line-rotation1" class="quarto-xref">Equation&nbsp;<span>2.3</span></a> and <a href="01-transformations.html#eq-line-rotation2" class="quarto-xref">Equation&nbsp;<span>2.4</span></a> (that were presented at Chapter 2) to calculate the new x and y coordinates (<code>x_step</code> and <code>y_step</code> variables) after we taken the step in the direction of the current angle that we are using. Then, we effectively take this new step, by adding these new x and y coordinates that we calculated to our current x and y coordinates (<code>x</code> and <code>y</code> variables). The end result, is that we move our current position in the direction of the current angle.</p>
-<p>Now, after we take the step, and move ourselves into a new position, we need to understand where exactly in the grid we are. In other words, we need to map our current x and y coordinates in the Cartesian plane, with a specific position in the 50x50 grid. This specific position is identified by the column and row index in a 2D matrix.</p>
-<p>To do that, we can simply get our current x and y coordinates (<code>x</code> and <code>y</code> variables), and convert them into integers. For example, if our current position in the Cartesian plane is <span class="math inline">\((35.612, 20.981)\)</span>, we can use the built-in function <code>as.integer()</code> to map this position in the Cartesian plane to the coordinate <span class="math inline">\((35, 20)\)</span> in the grid of angles.</p>
+<p>After we take the step, and move ourselves into a new position, we need to understand where exactly in the grid we are now. In other words, we need to map our current x and y coordinates in the Cartesian plane, with a specific position in the 50x50 grid. This specific position is identified by the column and row index in a 2D matrix.</p>
+<p>To do that, we can simply get our current x and y coordinates (<code>x</code> and <code>y</code> variables), and convert them into integers. For example, if our current position in the Cartesian plane is <span class="math inline">\((35.612, 20.981)\)</span>, we can use the built-in function <code>as.integer()</code> to map this position in the Cartesian plane to the coordinate <span class="math inline">\((35, 20)\)</span> in the flow field (i.e.&nbsp;in the grid of angles).</p>
 <p>If you want to, you can use other techniques to map your current position in the Cartesian plane to a specific spot in the grid. For example, instead of using <code>as.integer()</code>, you might want to use <code>floor()</code>, or <code>ceiling()</code> to change how the coordinates are transformed into an integer that can be mapped to a position in the grid. But in this particular example, we will stick with <code>as.integer()</code>.</p>
-<p>After we map our current position in the Cartesian plane to a specific location in the 50x50 grid, we can look at the angle value in this specific location in the grid. This angle value is the new angle that we need to use in our next step that we take in the grid.</p>
+<p>After we map our current position in the Cartesian plane to a specific location in the 50x50 grid, we can look at the angle value in this specific location in the grid. This angle value is the new angle that we need to use in our next step that we take into the flow field.</p>
 <p>Having this workflow in mind, the for loop below resumes all steps that we described:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pre allocate space for the x and y</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># coordinates of the curve that we are drawing</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>x_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>y_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set our starting point</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Start walking</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_steps)) {</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  column_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(x)</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  row_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(y)</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">off_boundaries</span>(column_index, row_index)) {</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  angle <span class="ot">&lt;-</span> angles[row_index, column_index]</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  x_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">cos</span>(angle)</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  y_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">sin</span>(angle)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> x_step</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> y <span class="sc">+</span> y_step</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  x_coords[i] <span class="ot">&lt;-</span> x</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>  y_coords[i] <span class="ot">&lt;-</span> y</span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pre allocate space for the x and y</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># coordinates of the curve that we are drawing</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>x_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>y_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set our starting point</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Start walking</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_steps)) {</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  column_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(x)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  row_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(y)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">off_boundaries</span>(column_index, row_index)) {</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  angle <span class="ot">&lt;-</span> angles[row_index, column_index]</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  x_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">cos</span>(angle)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  y_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">sin</span>(angle)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> x_step</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> y <span class="sc">+</span> y_step</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  x_coords[i] <span class="ot">&lt;-</span> x</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  y_coords[i] <span class="ot">&lt;-</span> y</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>When this for loop ends, it means that we have finished walking trough the grid. Now, the <code>x_coords</code> and <code>y_coords</code> vectors contains the x and y coordinates of all the points in the Cartesian plane that we passed through, during our walk.</p>
 <p>These points together, form the curve that we want to visualize. We can draw and visualize this curve by connecting these points together. In the example below, we are drawing the curve in red, over the flow field. You can see that the curve follows the angles in the flow field, like it was a fluid or a winter that is passing through.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>curve <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> x_coords,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> y_coords</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n) <span class="sc">+</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y),</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> curve,</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>curve <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> x_coords,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> y_coords</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">build_grid_df</span>(angles, n)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> curve,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -579,41 +608,41 @@ window.Quarto = {
 <p>Is a good idea to encapsulate all of this process into a nice R function that we can reuse later. This will help you to organize your code, specially if you are planning to draw multiple lines into this flow field.</p>
 <p>As a result, we got the <code>draw_curve()</code> function below. The argument <code>angles</code> corresponds to the 2D matrix of angle values, and the argument <code>start_position</code> corresponds to a vector of 2 elements, with the x and y coordinates of the start position in the grid.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>draw_curve <span class="ot">&lt;-</span> <span class="cf">function</span>(start_position,</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                       angles,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                       n_steps,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                       step_length) {</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  x_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  y_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> start_position[<span class="dv">1</span>]</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> start_position[<span class="dv">2</span>]</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_steps)) {</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    column_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(x)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    row_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(y)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">off_boundaries</span>(column_index, row_index)) {</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    angle <span class="ot">&lt;-</span> angles[row_index, column_index]</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    x_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">cos</span>(angle)</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    y_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">sin</span>(angle)</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">+</span> x_step</span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> y <span class="sc">+</span> y_step</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    x_coords[i] <span class="ot">&lt;-</span> x</span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    y_coords[i] <span class="ot">&lt;-</span> y</span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This eliminates potential empty values</span></span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if the for loop ends before the number</span></span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># of steps</span></span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>  x_coords <span class="ot">&lt;-</span> x_coords[<span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>)]</span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>  y_coords <span class="ot">&lt;-</span> y_coords[<span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>)]</span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">tibble</span>(<span class="at">x =</span> x_coords, <span class="at">y =</span> y_coords))</span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>draw_curve <span class="ot">&lt;-</span> <span class="cf">function</span>(start_position,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                       angles,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                       n_steps,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                       step_length) {</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  x_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  y_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> start_position[<span class="dv">1</span>]</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> start_position[<span class="dv">2</span>]</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_steps)) {</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    column_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(x)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    row_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(y)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">off_boundaries</span>(column_index, row_index)) {</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    angle <span class="ot">&lt;-</span> angles[row_index, column_index]</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    x_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">cos</span>(angle)</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    y_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">sin</span>(angle)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">+</span> x_step</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> y <span class="sc">+</span> y_step</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    x_coords[i] <span class="ot">&lt;-</span> x</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    y_coords[i] <span class="ot">&lt;-</span> y</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This eliminates potential empty values</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if the for loop ends before reaching the number</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># of steps that we want to take</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  x_coords <span class="ot">&lt;-</span> x_coords[<span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>  y_coords <span class="ot">&lt;-</span> y_coords[<span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">tibble</span>(<span class="at">x =</span> x_coords, <span class="at">y =</span> y_coords))</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -623,12 +652,12 @@ window.Quarto = {
 <p>In this situation, we want to use functional programming in our favor, to help us expand our drawing process to multiple locations in the image at once. The family of <code>map_*()</code> functions from the <code>purrr</code> package are excellent for this task.</p>
 <p>In the code below, we are using <code>runif()</code> to generate random starting points for 300 different lines.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">421</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_width)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>ys <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_height)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>starts <span class="ot">&lt;-</span> <span class="fu">map2</span>(xs, ys, \(x, y) <span class="fu">c</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">421</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_width)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>ys <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_height)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>starts <span class="ot">&lt;-</span> <span class="fu">map2</span>(xs, ys, \(x, y) <span class="fu">c</span>(x, y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now that we have the starting points for each curve, we can start to calculate the x and y coordinates of these curves, by calling the <code>draw_curve()</code> function for each starting point. This function will output a different <code>tibble</code> object for each starting point.</p>
 <p>But it would be much better, if we combined all these 300 outputs into a single <code>tibble</code> object. There are different strategies to do this in R.</p>
@@ -636,16 +665,16 @@ window.Quarto = {
 <p>But there is another alternative, which is to use the <code>map_dfr()</code> function<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> from <code>purrr</code>. This function is a better alternative, because it will automatically collect and merge all of these 300 outputs for you.</p>
 <p>In this function, we use the <code>.id</code> argument to create an index column in the output <code>tibble</code>. This new column (called <code>line_id</code>) will contain an index that identifies the lines from each one of the 300 objects that were created and merged during the process of applying <code>draw_curve()</code> to each of the 300 starting points.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>curves <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> starts,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f=</span> draw_curve,</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">angles =</span> angles,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> n_steps,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_length =</span> step_length,</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"line_id"</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>curves</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>curves <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> starts,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f=</span> draw_curve,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">angles =</span> angles,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> n_steps,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_length =</span> step_length,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"line_id"</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>curves</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8,101 × 3
    line_id     x     y
@@ -665,15 +694,174 @@ window.Quarto = {
 </div>
 <p>Now that we have the data (x and y coordinates) for each one of the 300 curves, we can effectively draw them, by using <code>geom_path()</code>. Like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(curves) <span class="sc">+</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">group =</span> line_id)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(curves) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">group =</span> line_id)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="drawing-curves-in-both-directions" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="drawing-curves-in-both-directions"><span class="header-section-number">4.5</span> Drawing curves in both directions</h2>
+<p>In our previous examples, we were drawing curves by walking in one direction. That is, the <code>draw_curve()</code> function draw a curve by walking from left to right. But what if we walked in both directions (from left to right and right to left)? How can we do that?</p>
+<p>A big chunk of generative arts are born from pure curiosity. As we explore and perform new experiments, we find new interesting patterns and effects. So let’s try drawing a curve in both directions, and see what we got as result.</p>
+<p>So, the idea here is to begin with a starting point, and start walking in both directions from this starting point. <a href="#fig-curve-both-directions" class="quarto-xref">Figure&nbsp;<span>4.1</span></a> presents this idea visually.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-curve-both-directions" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-curve-both-directions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-flow-fields_files/figure-html/fig-curve-both-directions-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-curve-both-directions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: Drawing a curve in both directions
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="drawing-the-curve-in-the-opposite-direction" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="drawing-the-curve-in-the-opposite-direction"><span class="header-section-number">4.5.1</span> Drawing the curve in the opposite direction</h3>
+<p>We already know how to draw a curve from left to right. Now, we need to learn how to draw it from right to left. Surprisingly is very easy to do this.</p>
+<p>All we need to do is to invert the translation operation. In other words, instead of adding the new x and y coordinates of the step to our current x and y coordinates, we subtract.</p>
+<p>If the snippet below, we are redefining the <code>draw_curve()</code> function, to include this new functionality, of drawing in both directions. All we are doing is to include a new argument - <code>direction</code>.</p>
+<p>This argument specifies the direction of the curve. If <code>direction == "lr"</code>, then, the curve will be drawn from left to right, and from right to left otherwise. You might notice that the only difference between each direction is at the <code>x - x_step</code> and <code>y - y_step</code> lines.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>draw_curve <span class="ot">&lt;-</span> <span class="cf">function</span>(start_position,</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                       angles,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                       n_steps,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                       step_length,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">direction =</span> <span class="st">"lr"</span>) {</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  x_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  y_coords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> n_steps)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> start_position[<span class="dv">1</span>]</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> start_position[<span class="dv">2</span>]</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_steps)) {</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    column_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(x)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    row_index <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(y)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">off_boundaries</span>(column_index, row_index)) {</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    angle <span class="ot">&lt;-</span> angles[row_index, column_index]</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    x_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">cos</span>(angle)</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    y_step <span class="ot">&lt;-</span> step_length <span class="sc">*</span> <span class="fu">sin</span>(angle)</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (direction <span class="sc">==</span> <span class="st">"lr"</span>) {</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>      x <span class="ot">&lt;-</span> x <span class="sc">+</span> x_step</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>      y <span class="ot">&lt;-</span> y <span class="sc">+</span> y_step</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>      x <span class="ot">&lt;-</span> x <span class="sc">-</span> x_step</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>      y <span class="ot">&lt;-</span> y <span class="sc">-</span> y_step</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>    x_coords[i] <span class="ot">&lt;-</span> x</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>    y_coords[i] <span class="ot">&lt;-</span> y</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This eliminates potential empty values</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if the for loop ends before reaching the number</span></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># of steps that we want to take</span></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>  x_coords <span class="ot">&lt;-</span> x_coords[<span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>  y_coords <span class="ot">&lt;-</span> y_coords[<span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">tibble</span>(<span class="at">x =</span> x_coords, <span class="at">y =</span> y_coords))</span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, if we execute this function with the exact same configs we used at the first example that we drawn that red curve. If you look at the example below, you can see that this curve is clearly going into the opposite direction compared to the curve we drawn in the first example.</p>
+<p>In the snippet below, we are using the same starting position (<span class="math inline">\(x = 20\)</span> and <span class="math inline">\(y = 25\)</span>), the same flow field, the same number of steps, and same step length. If you compare this curve to the curve.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>curve <span class="ot">&lt;-</span> <span class="fu">draw_curve</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">25</span>),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  angles,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  n_steps,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  step_length,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">direction =</span> <span class="st">"rl"</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize_grid</span>(grid, n) <span class="sc">+</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y),</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> curve,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="merging-the-two-directions-together" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="merging-the-two-directions-together"><span class="header-section-number">4.5.2</span> Merging the two directions together</h3>
+<p>Now that we know how to draw a curve in the opposite direction, we can now merge these two directions together, to achieve the curve we want to achieve.</p>
+<p>The <code>both_directions()</code> function below merges these two directions together into a single result.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>both_directions <span class="ot">&lt;-</span> <span class="cf">function</span>(start_position,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                            angles,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                            n_steps,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                            step_length) {</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  lr <span class="ot">&lt;-</span> <span class="fu">draw_curve</span>(</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    start_position,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    angles,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    n_steps <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    step_length</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  lr<span class="sc">$</span>step_id <span class="ot">&lt;-</span> <span class="fu">seq_along</span>(lr<span class="sc">$</span>x)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  lr <span class="ot">&lt;-</span> lr <span class="sc">%&gt;%</span> </span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(step_id))</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  rl <span class="ot">&lt;-</span> <span class="fu">draw_curve</span>(</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    start_position,</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    angles,</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    n_steps <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    step_length,</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">direction =</span> <span class="st">"rl"</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  rl<span class="sc">$</span>step_id <span class="ot">&lt;-</span> <span class="fu">seq_along</span>(rl<span class="sc">$</span>x)</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">bind_rows</span>(lr, rl))</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now see the end result of this function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">421</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_width)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>ys <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_height)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>starts <span class="ot">&lt;-</span> <span class="fu">map2</span>(xs, ys, \(x, y) <span class="fu">c</span>(x, y))</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>curves <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> starts,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f=</span> both_directions,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">angles =</span> angles,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> n_steps,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_length =</span> step_length,</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"line_id"</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(curves) <span class="sc">+</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">group =</span> line_id)</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-flow-fields_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -685,6 +873,7 @@ window.Quarto = {
 Hobbs, Tyler. 2024. <span>“Flow Fields.”</span> <a href="https://tylerxhobbs.com/essays/2020/flow-fields">https://tylerxhobbs.com/essays/2020/flow-fields</a>.
 </div>
 </div>
+</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
