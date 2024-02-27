@@ -273,7 +273,7 @@ window.Quarto = {
   <li><a href="#a-first-example" id="toc-a-first-example" class="nav-link" data-scroll-target="#a-first-example"><span class="header-section-number">4.3.1</span> A first example</a></li>
   <li><a href="#encapsulating-this-process-into-a-function" id="toc-encapsulating-this-process-into-a-function" class="nav-link" data-scroll-target="#encapsulating-this-process-into-a-function"><span class="header-section-number">4.3.2</span> Encapsulating this process into a function</a></li>
   </ul></li>
-  <li><a href="#drawing-multiple-curves-in-the-flow-field" id="toc-drawing-multiple-curves-in-the-flow-field" class="nav-link" data-scroll-target="#drawing-multiple-curves-in-the-flow-field"><span class="header-section-number">4.4</span> Drawing multiple curves in the flow field</a></li>
+  <li><a href="#sec-draw-multiple-curves" id="toc-sec-draw-multiple-curves" class="nav-link" data-scroll-target="#sec-draw-multiple-curves"><span class="header-section-number">4.4</span> Drawing multiple curves in the flow field</a></li>
   <li><a href="#drawing-curves-in-both-directions" id="toc-drawing-curves-in-both-directions" class="nav-link" data-scroll-target="#drawing-curves-in-both-directions"><span class="header-section-number">4.5</span> Drawing curves in both directions</a>
   <ul class="collapse">
   <li><a href="#drawing-the-curve-in-the-opposite-direction" id="toc-drawing-the-curve-in-the-opposite-direction" class="nav-link" data-scroll-target="#drawing-the-curve-in-the-opposite-direction"><span class="header-section-number">4.5.1</span> Drawing the curve in the opposite direction</a></li>
@@ -646,8 +646,8 @@ window.Quarto = {
 </div>
 </section>
 </section>
-<section id="drawing-multiple-curves-in-the-flow-field" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="drawing-multiple-curves-in-the-flow-field"><span class="header-section-number">4.4</span> Drawing multiple curves in the flow field</h2>
+<section id="sec-draw-multiple-curves" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-draw-multiple-curves"><span class="header-section-number">4.4</span> Drawing multiple curves in the flow field</h2>
 <p>In the previous section, we drawn a single curve in the field. We definitely can draw multiple curves at once in the field.</p>
 <p>In this situation, we want to use functional programming in our favor, to help us expand our drawing process to multiple locations in the image at once. The family of <code>map_*()</code> functions from the <code>purrr</code> package are excellent for this task.</p>
 <p>In the code below, we are using <code>runif()</code> to generate random starting points for 300 different lines.</p>
@@ -776,8 +776,8 @@ Figure&nbsp;4.1: Drawing a curve in both directions
 <span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">tibble</span>(<span class="at">x =</span> x_coords, <span class="at">y =</span> y_coords))</span>
 <span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now, if we execute this function with the exact same configs we used at the first example that we drawn that red curve. If you look at the example below, you can see that this curve is clearly going into the opposite direction compared to the curve we drawn in the first example.</p>
-<p>In the snippet below, we are using the same starting position (<span class="math inline">\(x = 20\)</span> and <span class="math inline">\(y = 25\)</span>), the same flow field, the same number of steps, and same step length. If you compare this curve to the curve.</p>
+<p>As an example, in the snippet below, we are executing this function using the exact same configs we used at the first example that we drawn that red curve. The same starting position (<span class="math inline">\(x = 20\)</span> and <span class="math inline">\(y = 25\)</span>), the same flow field, the same number of steps, and same step length.</p>
+<p>If you pay attention to the result below, and compare it with the result in the first example, you will see that the curve drawn in the result below is clearly going into the opposite direction compared to the curve from the first example.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>curve <span class="ot">&lt;-</span> <span class="fu">draw_curve</span>(</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">25</span>),</span>
@@ -805,8 +805,10 @@ Figure&nbsp;4.1: Drawing a curve in both directions
 </section>
 <section id="merging-the-two-directions-together" class="level3" data-number="4.5.2">
 <h3 data-number="4.5.2" class="anchored" data-anchor-id="merging-the-two-directions-together"><span class="header-section-number">4.5.2</span> Merging the two directions together</h3>
-<p>Now that we know how to draw a curve in the opposite direction, we can now merge these two directions together, to achieve the curve we want to achieve.</p>
-<p>The <code>both_directions()</code> function below merges these two directions together into a single result.</p>
+<p>Now that we know how to draw a curve in the opposite direction, we can now think about how to merge these two directions together, to draw a curve that grows in both directions at the same time in the flow field. There are different ways of doing this.</p>
+<p>You could in theory, draw this curve as two separate curves (one for each direction), or two separate sections of the curve. Then, you plot these curves as separate curves. To ggplot2, they will be separate curves, but in the result image, you will see that they behave pretty much as a single curve, because they grow from the same starting point.</p>
+<p>But, for now, in this section, I am satisfied with calculating two separate curves, one for each direction, and then, merging these two curves together, to make a single <code>tibble</code> object. In this method, I am plotting the curve as a single curve.</p>
+<p>The <code>both_directions()</code> function below summarize this method, where we merge these two directions together into a single result.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>both_directions <span class="ot">&lt;-</span> <span class="cf">function</span>(start_position,</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                            angles,</span>
@@ -834,30 +836,24 @@ Figure&nbsp;4.1: Drawing a curve in both directions
 <span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">bind_rows</span>(lr, rl))</span>
 <span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can now see the end result of this function</p>
+<p>If you pick the same starting points, the same step length, same number of steps, etc., from the example we exposed at <a href="#sec-draw-multiple-curves" class="quarto-xref"><span>Section 4.4</span></a>, where we drawn multiple curves at the same time in the flow field, we can in theory see how this different way of drawing the curve affects the overall aspect of the result image.</p>
+<p>In the snippet below we are doing exactly this. We are using the same <code>starts</code> object that contains the same starting points from the example at <a href="#sec-draw-multiple-curves" class="quarto-xref"><span>Section 4.4</span></a>. The same flow field, step length and number of steps are also applied here.</p>
+<p>You can see below that, the result image (with curves drawn in both directions), looks a bit more full compared to the image we produced at <a href="#sec-draw-multiple-curves" class="quarto-xref"><span>Section 4.4</span></a>. These curves appear to be a bit less scattered across the image.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">421</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_width)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>ys <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">runif</span>(<span class="dv">300</span>) <span class="sc">*</span> grid_height)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>starts <span class="ot">&lt;-</span> <span class="fu">map2</span>(xs, ys, \(x, y) <span class="fu">c</span>(x, y))</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>curves <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> starts,</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f=</span> both_directions,</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">angles =</span> angles,</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> n_steps,</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_length =</span> step_length,</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"line_id"</span></span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(curves) <span class="sc">+</span></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">group =</span> line_id)</span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>curves <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">.x =</span> starts,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f=</span> both_directions,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">angles =</span> angles,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_steps =</span> n_steps,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">step_length =</span> step_length,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"line_id"</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(curves) <span class="sc">+</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(x, y, <span class="at">group =</span> line_id)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
