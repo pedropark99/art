@@ -1,6 +1,5 @@
-- A chapter about randomness (the different types of random functions in R), compare them.
 - Reproduce the image from Navarro as an exercise https://storage.googleapis.com/djnavarro-art/series-dreamlike/3000/pollen_09_1202.jpg
-- Talk about moving a point around to form a path, using the examples from Nature of Code. 
+- Talk about moving a point around to form a path, using the examples from Nature of Code.
 - Study all classes from Navarro at https://art-from-code.netlify.app/
 - Add a section to talk about Euclidean space.
 - Chapter about fractal systems
@@ -8,4 +7,3 @@
 - Watch https://www.youtube.com/watch?v=ZI1dmHv3MeM&ab_channel=TheCodingTrain
 - Talk about Curl Noise vs Perlin Noise
 - Talk about Circle packing
-- Talk about the expand = FALSE in coord_cartesian.

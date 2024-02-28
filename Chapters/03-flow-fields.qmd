@@ -31,6 +31,9 @@ If your art involves these types of elements, a flow
 field might be the perfect technique for you.
 
 
+
+
+
 ## Building a grid of angles
 
 Let's start with "how to create a grid of angles?". Since we are talking
@@ -283,7 +286,28 @@ visualize_grid(grid, n)
 ```
 
 
-## Drawing curves in the flow field
+### Getting a stronger field by multiplying it
+
+You can multiply your current field by a factor, in order to get a stronger flow field.
+That is, you can get a flow field where the angles changes more rapidly across the grid,
+by multiplying the entire field by a constant factor.
+
+To some degree, by multiplying these values, you are essentially changing
+their scale. Just like we did in the previous section where we multiplied
+the entire field by $2\pi$.
+
+If you take the exact same flow field as the previous example, where
+we used the Perlin Noise algorithm, but you multiply it by $10\pi$,
+instead of just $2\pi$, you a get a completely different result.
+
+```{r}
+set.seed(50)
+stronger <- noise_perlin(c(n, n)) * 10 * pi
+stronger <- build_grid_df(stronger, n)
+visualize_grid(stronger, n)
+```
+
+## Drawing curves into the flow field
 
 Now that we have a functional flow field, we want to use it
 to actually draw things in the screen, specially curves.
@@ -294,8 +318,8 @@ we start to walk in the grid by following the direction of
 the angles we encounter in the grid. As we walk trough the grid,
 we record the x and y coordinates of our positions.
 When we finish walking, we can
-draw a curve by "connecting
-the dots", i.e. connecting the points (x and y coordinates) that we passed through.
+draw a curve by "connecting the dots",
+i.e. connecting the points (x and y coordinates) that we passed through.
 
 So, in essence, the steps for drawing a curve in a flow field are:
 
@@ -356,15 +380,17 @@ will be longer.
 
 In contrast, the step length generally affects how "sharp" the curve looks. You could also say that,
 the step length affects how much your curve will look like an actual curve.
+You should always set this step length as a specific proportion of your grid size.
 
-If this step length is very large relative to the grid size,
+If this step length is too large,
 your curve will probably not look like a curve,
 and more like scattered points that are connected
 to each other by straight lines.
 
-In the other hand, if the step length is too small, then, you might not get a nice and long curve.
-Because this will also affect the length of the line. If the step length is too small,
-you will probably get a curve that is too much small in length, even if the number of steps you are taking is
+In the other hand, if the step length is too small, then, you might end up with a very short curve.
+Because if the length of each step is too small, then, even if you take many steps, you will
+probably walk a very short distance, and, as a consequence, you will
+get a very short curve as a result, even if the number of steps you are taking is
 very high.
 
 So you need to balance these two variables together (specially the step length) to achieve a nice
@@ -383,9 +409,16 @@ step_length <- 0.01 * grid_width
 ```
 
 
-Now that we have taken these decisions, we can proceed with our drawing process.
-One thing that we will constantly need to do in each individual step is to check
-if we are within the boundaries of the grid.
+Remember that there is one more very important detail!
+We constantly need to check if we are within the boundaries of the grid,
+in each individual step we take.
+
+This is important, because we take a step that is out of the boundaries of
+our flow field, then, when we perform the lookup process, where we try to
+look at the angle that is stored in our current position,
+this process will likely fail with an "out of bounds" or an "out of range"
+error, indicating that we are trying to access an element that is
+out of the boundaries of our grid.
 
 For this specific task, we can create a function called `off_boundaries()`.
 This function returns `TRUE` if our current position is off the boundaries
@@ -402,20 +435,25 @@ off_boundaries <- function(x, y, limit = grid_width){
 
 
 A for loop will be used to take each individual step across the grid.
-In this context, the number of steps is the number of iterations that this for loop will
-attempt to perform. The number of iterations might be lower than the number
-of steps, if we hit the the boundaries of the grid, in the middle of
-our walking. Because in this case, we want to stop walking right away,
+In this context, the number of steps that we want to take
+is the number of iterations that this for loop will
+attempt to perform.
+
+Be aware that the number of iterations in this loop might be lower than the number
+of steps. Because if we hit the boundaries of the grid, in the middle of
+our walking process, then, we want to stop walking right away,
 by using a `break` statement.
 
-Inside the for loop, we will use @eq-line-rotation1 and @eq-line-rotation2 (that were presented at Chapter 2) to
-calculate the new x and y coordinates (`x_step` and `y_step` variables) after we taken the step in the direction
+Inside the for loop, we will use @eq-line-rotation1 and @eq-line-rotation2
+(that were presented at Chapter 2) to calculate the new x and y coordinates
+(`x_step` and `y_step` variables) after we taken the step in the direction
 of the current angle that we are using. Then, we effectively take this new step,
-by adding these new x and y coordinates that we calculated to our current x and y coordinates (`x` and `y` variables).
+by adding these new x and y coordinates that we calculated to our current
+x and y coordinates (`x` and `y` variables).
 The end result, is that we move our current position in the direction of the current angle.
 
-Now, after we take the step, and move ourselves into a new position, we need
-to understand where exactly in the grid we are. In other words,
+After we take the step, and move ourselves into a new position, we need
+to understand where exactly in the grid we are now. In other words,
 we need to map our current x and y coordinates in the Cartesian plane,
 with a specific position in the 50x50 grid. This specific position
 is identified by the column and row index in a 2D matrix.
@@ -424,7 +462,8 @@ To do that, we can
 simply get our current x and y coordinates (`x` and `y` variables), and convert them
 into integers. For example, if our current position in the Cartesian plane
 is $(35.612, 20.981)$, we can use the built-in function `as.integer()` to
-map this position in the Cartesian plane to the coordinate $(35, 20)$ in the grid of angles.
+map this position in the Cartesian plane to the coordinate $(35, 20)$
+in the flow field (i.e. in the grid of angles).
 
 If you want to, you can use other techniques to map your current
 position in the Cartesian plane to a specific spot in the grid.
@@ -437,7 +476,7 @@ After we map our current position in the Cartesian plane to
 a specific location in the 50x50 grid, we can look at the angle
 value in this specific location in the grid. This angle
 value is the new angle that we need to use in our next step
-that we take in the grid.
+that we take into the flow field.
 
 Having this workflow in mind, the for loop
 below resumes all steps that we described:
@@ -451,8 +490,8 @@ x_coords <- vector("double", length = n_steps)
 y_coords <- vector("double", length = n_steps)
 
 # Set our starting point
-x <- 5
-y <- 10
+x <- 20
+y <- 25
 
 # Start walking
 for (i in seq_len(n_steps)) {
@@ -544,8 +583,8 @@ draw_curve <- function(start_position,
   }
   
   # This eliminates potential empty values
-  # if the for loop ends before the number
-  # of steps
+  # if the for loop ends before reaching the number
+  # of steps that we want to take
   x_coords <- x_coords[seq_len(i - 1)]
   y_coords <- y_coords[seq_len(i - 1)]
   return(tibble(x = x_coords, y = y_coords))
@@ -554,7 +593,7 @@ draw_curve <- function(start_position,
 
 
 
-## Drawing multiple curves in the flow field
+## Drawing multiple curves in the flow field {#sec-draw-multiple-curves}
 
 In the previous section, we drawn a single curve in the field.
 We definitely can draw multiple curves at once in the field.
@@ -626,6 +665,267 @@ ggplot(curves) +
   ) +
   theme_void()
 ```
+
+
+## Drawing curves in both directions
+
+In our previous examples, we were drawing curves by walking in
+one direction. That is, the `draw_curve()` function draw a curve
+by walking from left to right. But what if we walked in
+both directions (from left to right and right to left)?
+How can we do that?
+
+A big chunk of generative arts are born from pure curiosity.
+As we explore and perform new experiments, we find new
+interesting patterns and effects. So let's
+try drawing a curve in both directions,
+and see what we got as result.
+
+So, the idea here is to begin with a starting
+point, and start walking in both directions
+from this starting point. @fig-curve-both-directions
+presents this idea visually.
+
+```{r}
+#| echo: false
+#| label: fig-curve-both-directions
+#| fig-cap: "Drawing a curve in both directions"
+df <- tibble(
+  x = seq(1, 1.5, by = 0.05) |> cos(),
+  y = seq(1, 1.5, by = 0.05) |> sin()
+)
+
+c <- tibble(
+  x = c(0.29, 0.36),
+  y = c(0.97, 0.945),
+  xend = c(0.1, 0.5),
+  yend = c(1.005, 0.88),
+  curve_id = c(1L, 2L)
+)
+
+
+df |>
+  ggplot() +
+  geom_point(aes(x, y, color = "Normal step")) +
+  geom_line(aes(x, y)) +
+  geom_point(
+    aes(x = cos(1.25), y = sin(1.25), color = "Starting point"),
+    size = 3
+  ) +
+  geom_curve(
+    aes(x = x, y = y, xend = xend, yend = yend),
+    data = c |> filter(curve_id == 1L),
+    linewidth = 2,
+    curvature = 0.15,
+    arrow = arrow()
+  ) +
+  geom_curve(
+    aes(x = x, y = y, xend = xend, yend = yend),
+    data = c |> filter(curve_id == 2L),
+    linewidth = 2,
+    curvature = -0.15,
+    arrow = arrow()
+  ) +
+  scale_color_manual(values = c("black", "red")) +
+  guides(colour = guide_legend(title = "Legend: ")) +
+  theme_void() +
+  theme(
+    legend.text = element_text(family = "Inconsolata", size = 14),
+    legend.title = element_text(face = "bold", family = "Inconsolata", size = 20),
+    legend.position = "top"
+  )
+```
+
+
+### Drawing the curve in the opposite direction
+
+We already know how to draw a curve from left to right.
+Now, we need to learn how to draw it from
+right to left. Surprisingly is very easy
+to do this.
+
+All we need to do is to invert the translation
+operation. In other words, instead of adding the
+new x and y coordinates of the step to our
+current x and y coordinates, we subtract.
+
+If the snippet below, we are redefining the
+`draw_curve()` function, to include this new functionality,
+of drawing in both directions. All we are doing is to include
+a new argument - `direction`.
+
+This argument specifies the direction of the curve.
+If `direction == "lr"`, then, the curve
+will be drawn from left to right,
+and from right to left otherwise.
+You might notice that the only difference
+between each direction
+is at the `x - x_step` and `y - y_step` lines.
+
+```{r}
+draw_curve <- function(start_position,
+                       angles,
+                       n_steps,
+                       step_length,
+                       direction = "lr") {
+  
+  x_coords <- vector("double", length = n_steps)
+  y_coords <- vector("double", length = n_steps)
+  
+  x <- start_position[1]
+  y <- start_position[2]
+  for (i in seq_len(n_steps)) {
+    column_index <- as.integer(x)
+    row_index <- as.integer(y)
+    
+    if (off_boundaries(column_index, row_index)) {
+      break
+    }
+    
+    angle <- angles[row_index, column_index]
+    x_step <- step_length * cos(angle)
+    y_step <- step_length * sin(angle)
+    if (direction == "lr") {
+      x <- x + x_step
+      y <- y + y_step
+    } else {
+      x <- x - x_step
+      y <- y - y_step
+    }
+    
+    x_coords[i] <- x
+    y_coords[i] <- y
+  }
+  
+  # This eliminates potential empty values
+  # if the for loop ends before reaching the number
+  # of steps that we want to take
+  x_coords <- x_coords[seq_len(i - 1)]
+  y_coords <- y_coords[seq_len(i - 1)]
+  return(tibble(x = x_coords, y = y_coords))
+}
+
+```
+
+
+As an example, in the snippet below, we are executing this function using
+the exact same configs we used at
+the first example that we drawn that red curve.
+The same starting position
+($x = 20$ and $y = 25$), the same flow field, the same
+number of steps, and same step length.
+
+If you pay attention to the result below, and compare
+it with the result in the first example, you will see
+that the curve drawn in the result below
+is clearly going into the opposite direction compared to 
+the curve from the first example.
+
+```{r}
+curve <- draw_curve(
+  c(20, 25),
+  angles,
+  n_steps,
+  step_length,
+  direction = "rl"
+)
+
+visualize_grid(grid, n) +
+  geom_path(
+    aes(x, y),
+    data = curve,
+    color = "red",
+    linewidth = 1
+  )
+```
+
+
+### Merging the two directions together
+
+Now that we know how to draw a curve in the opposite direction, we can now
+think about how to merge these two directions together, to draw
+a curve that grows in both directions at the same time in the flow field.
+There are different ways of doing this.
+
+You could in theory, draw this curve
+as two separate curves (one for each direction),
+or two separate sections of the curve.
+Then, you plot these curves as separate curves. To ggplot2,
+they will be separate curves, but in the result image, you
+will see that they behave pretty much as a single curve,
+because they grow from the same starting point.
+
+But, for now, in this section, I am satisfied with calculating two separate curves,
+one for each direction, and then, merging these two curves together, to make a single
+`tibble` object. In this method, I am plotting the curve as a single curve.
+
+
+The `both_directions()` function below summarize this method, where
+we merge these two directions together into a single result.
+
+```{r}
+both_directions <- function(start_position,
+                            angles,
+                            n_steps,
+                            step_length) {
+  lr <- draw_curve(
+    start_position,
+    angles,
+    n_steps / 2,
+    step_length
+  )
+  lr$step_id <- seq_along(lr$x)
+  lr <- lr %>% 
+    arrange(desc(step_id))
+  
+  rl <- draw_curve(
+    start_position,
+    angles,
+    n_steps / 2,
+    step_length,
+    direction = "rl"
+  )
+  rl$step_id <- seq_along(rl$x)
+  
+  return(bind_rows(lr, rl))
+}
+```
+
+If you pick the same starting points, the same step length,
+same number of steps, etc., from the example we exposed at
+@sec-draw-multiple-curves, where we drawn multiple curves at the same
+time in the flow field, we can in theory see how this
+different way of drawing the curve affects the overall aspect
+of the result image.
+
+In the snippet below we are doing exactly this. We are using
+the same `starts` object that contains the same starting points
+from the example at @sec-draw-multiple-curves.
+The same flow field, step length and number of steps are also
+applied here.
+
+You can see below that, the result image (with curves drawn in both directions),
+looks a bit more full compared to the image we produced at @sec-draw-multiple-curves.
+These curves appear to be a bit less scattered across the image.
+
+```{r}
+curves <- map_dfr(
+  .x = starts,
+  .f= both_directions,
+  angles = angles,
+  n_steps = n_steps,
+  step_length = step_length,
+  .id = "line_id"
+)
+
+ggplot(curves) +
+  geom_path(
+    aes(x, y, group = line_id)
+  ) +
+  theme_void()
+```
+
+
 
 
 

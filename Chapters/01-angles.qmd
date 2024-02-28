@@ -315,6 +315,40 @@ In contrast, when you limit the Cartesian plane, then, you perform a
 you were looking at a specific region of your plot under a magnifying
 glass.
 
+### Disabling expansion when limiting the Cartesian plane
+
+By default, ggplot2 always adds some little extra space to the
+limits of the Cartesian plane. It does that, because the plot doesn't
+feel (or look) too much tight with this little extra space.
+
+If you pay close attention to the x and y axis over the previous examples,
+that we used `coord_cartesian()` to limit the Cartesian plane,
+you will probably notice that these axis are, in fact, using the range 9 to 11.25,
+instead of using the range 9.15 to 11.15.
+
+This is the little extra space that ggplot2 added to all sides of the
+plot. But sometimes, we want to avoid that. We need to define the limits
+of our image precisely, and we want to avoid any type of automatic "padding"
+that ggplot2 might add to it.
+
+In order to do that, we need to set the `expand` argument of 
+`coord_cartesian()` to `FALSE`. By doing this, you can see in the example
+below that no extra space is added, and the Cartesian plane is
+precisely limited to the range 9.15 to 11.15, as we wanted to.
+
+```{r}
+ggplot(df) +
+  geom_line(aes(x, y, group = id)) +
+  coord_cartesian(
+    xlim = c(9.15, 11.15),
+    ylim = c(9.15, 11.15),
+    expand = FALSE
+  )
+```
+
+
+
+
 ### Other coordinate systems
 
 I will not talk at length about the other coordinate systems, because
