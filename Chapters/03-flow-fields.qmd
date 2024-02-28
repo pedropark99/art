@@ -288,7 +288,7 @@ visualize_grid(grid, n)
 Now that we have a functional flow field, we want to use it
 to actually draw things in the screen, specially curves.
 
-In order to do do that, we need to walk across the grid.
+In order to do that, we need to walk across the grid.
 First, we choose a point in the grid as our starting point, and then,
 we start to walk in the grid by following the direction of
 the angles we encounter in the grid. As we walk trough the grid,
