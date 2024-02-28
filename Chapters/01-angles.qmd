@@ -318,8 +318,8 @@ glass.
 ### Disabling expansion when limiting the Cartesian plane
 
 By default, ggplot2 always adds some little extra space to the
-limits of the Cartesian plane. It does that, because the plot doesn't
-feel (or look) too much tight with this little extra space.
+limits of the Cartesian plane. It adds this little extra space,
+so that the plot doesn't feel (or look) too much tight.
 
 If you pay close attention to the x and y axis over the previous examples,
 that we used `coord_cartesian()` to limit the Cartesian plane,

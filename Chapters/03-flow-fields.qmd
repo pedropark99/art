@@ -925,7 +925,45 @@ ggplot(curves) +
   theme_void()
 ```
 
+Now, you can start trowing some colors into this plot,
+to start building something pretty to look at. Take
+the code below as an example:
 
+```{r}
+p <- c(
+  "#e63946", "#f1faee",
+  "#457b9d",
+  "#1d3557"
+)
+
+set.seed(43)
+colors <- tibble(
+  line_id = unique(curves$line_id),
+  color = sample(p, size = length(line_id), TRUE)
+)
+
+curves <- curves %>% 
+  left_join(colors, by = "line_id")
+
+ggplot(curves) +
+  geom_path(
+    aes(x, y,
+        group = line_id,
+        color = color),
+    linewidth = 0.8
+  ) +
+  theme_void() +
+  theme(plot.background = element_rect(
+      fill = "#a8dadc", color = "#a8dadc"
+    )
+  ) +
+  coord_cartesian(
+    xlim = c(0, n),
+    ylim = c(0, n),
+    expand = FALSE
+  ) +
+  scale_color_identity()
+```
 
 
 

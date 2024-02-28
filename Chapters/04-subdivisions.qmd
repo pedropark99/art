@@ -1,2 +1,16 @@
 
 # Introducing Recursive Subdivisions {#sec-subdivisions}
+
+You might get surprise by how much of generative art
+comes from taking an initial shape, and subdividing it
+in multiple parts. Creating like a sequence of 
+shape segments.
+
+Examples of this are the [series *Fidenza* by Tyle Hobbs](https://tylerxhobbs.com/fidenza)[^t1],
+or [*Subdivision* by Danielle Navarro](https://art.djnavarro.net/gallery/subdivision/)[^dna1],
+or [the collection *Archetype* by by Kjetil Golid](https://www.artblocks.io/collections/curated/projects/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/23)[^hje1].
+
+[^hje1]: <https://www.artblocks.io/collections/curated/projects/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/23>.
+[^dna1]: <https://art.djnavarro.net/gallery/subdivision/>.
+[^t1]: <https://tylerxhobbs.com/fidenza>
+
