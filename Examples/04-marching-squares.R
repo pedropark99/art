@@ -13,6 +13,15 @@ set.seed(50)
 values <- noise_simplex(c(n, n))
 binary_grid <- values > 0
 
+build_grid_df <- function(angles, n) {
+  tibble(
+    x = rep(seq_len(n), each = n),
+    y = rep(seq_len(n), times = n),
+    value = angles |> as.vector()
+  )
+}
+grid_as_df <- build_grid_df(values, n)
+
 get_square <- function(x, y) {
   if ( (x + 1) > n || (y + 1) > n ) {
     return()
@@ -88,15 +97,23 @@ grid_values <- tibble(ls) %>%
   unnest_wider(c(ls)) %>% 
   unnest_longer(c(x, y)) %>% 
   mutate(
-    x = x + x_rect,
-    y = y + y_rect
+    x = x_rect - x,
+    y = y_rect - y
+  ) %>% 
+  left_join(
+    grid_as_df,
+    by = join_by(x_rect == x, y_rect == y)
   )
 
 grid_values %>% 
   ggplot() +
+  geom_point(
+    aes(x = x_rect, y = y_rect, color = as.factor(value > 0))
+  ) +
   geom_line(
     aes(x, y, group = rect_id)
   ) +
+  theme_void() +
   coord_equal()
 
 
