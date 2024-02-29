@@ -11,17 +11,7 @@ cartesian <- coord_cartesian(
 )
 set.seed(50)
 values <- noise_simplex(c(n, n))
-
-build_grid_df <- function(values, n) {
-  tibble(
-    x = rep(seq_len(n), each = n),
-    y = rep(seq_len(n), times = n),
-    value = values |> as.vector()
-  )
-}
-
-grid_scaled_values <- (values + 1) / max(values + 1)
-binary_grid <- grid_scaled_values > 0.5
+binary_grid <- values > 0
 
 get_square <- function(x, y) {
   if ( (x + 1) > n || (y + 1) > n ) {
@@ -39,9 +29,36 @@ b <- c(0.5, 0)
 c <- c(1, 0.5)
 d <- c(0.5, 1)
 
-rectangles <- vector("list", (n / 2) ^ 2)
-for (x in nrow(binary_grid)) {
-  for (y in ncol(binary_grid)) {
+lines <- function(case) {
+  cases <- list(
+    list(x = 0, y = 0),
+    list(x = c(a[1], d[1]), y = c(a[2], d[2])),
+    list(x = c(a[1], b[1]), y = c(a[2], b[2])),
+    list(x = c(d[1], b[1]), y = c(d[2], b[2])),
+    list(x = c(d[1], c[1]), y = c(d[2], c[2])),
+    list(x = c(a[1], c[1]), y = c(a[2], c[2])),
+    list(x = 0, y = 0),
+    list(x = c(b[1], c[1]), y = c(b[2], c[2])),
+    list(x = c(b[1], c[1]), y = c(b[2], c[2])),
+    list(x = c(b[1], c[1]), y = c(b[2], c[2])),
+    list(x = c(a[1], c[1]), y = c(a[2], c[2])),
+    list(x = c(d[1], c[1]), y = c(d[2], c[2])),
+    list(x = c(b[1], d[1]), y = c(b[2], d[2])),
+    list(x = c(c[1], d[1]), y = c(c[2], d[2])),
+    list(x = c(c[1], b[1]), y = c(c[2], b[2])),
+    list(x = 0, y = 0)
+  )
+  
+  return(cases[[case + 1L]])
+}
+
+
+
+
+ls <- vector("list", n)
+r_index <- 1L
+for (x in seq_len(nrow(binary_grid))) {
+  for (y in seq_len(ncol(binary_grid))) {
     s <- get_square(x, y)
     if (is.null(s)) {
       next
@@ -54,23 +71,35 @@ for (x in nrow(binary_grid)) {
     index <- as.vector(s)
     # Use binary counting to get the case:
     case <- c(1, 2, 4, 8)[index] |> sum()
-    # fill <- switch (case,
-    #   0 = NULL,
-    #   351 = NULL,
-    #   20 = list(x = c(a[1], d[1]), y = c(a[2], d[2])),
-    #   12 = list(x = c(0, 0.5), y = c(0.5, 0)),
-    #   96 = list(x = c(0.5, 1), y = c(0, 0.5)),
-    #   223 = list(x = c(0.5, 1), y = c(1, 0.5)),
-    #   # 20 + something cases
-    #   32 = list(x = c(0.5, 0.5), y = c(0, 1)),
-    #   116 = list(x = c(0.5, 1), y = c(1, 0.5)),
-    #   128 = list(x = c(0.5, 1), y = c(1, 0.5)),
-    # )
+    ls[[r_index]] <- list(
+      rect_id = r_index,
+      x_rect = x,
+      y_rect = y,
+      ls = lines(case)
+    )
+    r_index <- r_index + 1L
   }
 }
 
 
-c(20, 12, 96, 223) |> sum()
 
-c(TRUE, FALSE) |> as.integer()
+grid_values <- tibble(ls) %>% 
+  unnest_wider(c(ls)) %>% 
+  unnest_wider(c(ls)) %>% 
+  unnest_longer(c(x, y)) %>% 
+  mutate(
+    x = x + x_rect,
+    y = y + y_rect
+  )
+
+grid_values %>% 
+  ggplot() +
+  geom_line(
+    aes(x, y, group = rect_id)
+  ) +
+  coord_equal()
+
+
+
+
 
