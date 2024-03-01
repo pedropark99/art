@@ -2,19 +2,19 @@ library(tidyverse)
 library(ambient)
 library(S7)
 
-n <- 100
+n <- 250
 grid_height <- n
 grid_width <- n
 set.seed(50)
 values <- noise_simplex(c(n, n))
-values <- values[55:65,50:60]
-n <- 11
+# values <- values[55:65,50:60]
+# n <- 11
 binary_grid <- values > 0
 
 build_grid_df <- function(angles, n) {
   tibble(
-    x = rep(seq_len(n), times = n),
-    y = rep(seq_len(n), each = n),
+    x = rep(seq_len(n), each = n),
+    y = rep(seq_len(n), times = n),
     value = angles |> as.vector()
   )
 }
@@ -24,7 +24,7 @@ get_cell <- function(x, y) {
   if ( (x + 1) > n || (y + 1) > n ) {
     return()
   }
-  return(binary_grid[c(x, x + 1), c(y, y + 1)])
+  return(binary_grid[c(y, y + 1), c(x, x + 1)])
 }
 
 S7_polygon <- new_class("S7_polygon",
@@ -122,9 +122,9 @@ result <- tibble(
   grid_x = grid_x[grid_x != 0L],
   grid_y = grid_y[grid_y != 0L]
 ) %>%
-  # mutate(
-  #   polygons = map(polygons, flip_vertically_polygon)
-  # ) %>%
+  mutate(
+    polygons = map(polygons, flip_vertically_polygon)
+  ) %>%
   mutate(
     case_index = map_int(polygons, \(p) p@case_index),
     p_x = map2(polygons, grid_x, \(p, grid_x) p@x + grid_x),
@@ -138,58 +138,13 @@ result %>%
 
 
 result %>% 
-  filter(case_index == 9) %>% 
   ggplot() +
   geom_polygon(
     aes(x = p_x, y = p_y, group = p_index),
     fill = "blue"
   ) + 
-  geom_point(
-    aes(x, y, color = value > 0),
-    data = grid_as_df,
-    size = 1
-  ) +
   theme_void()
 
 
-
-cases_df <- tibble(
-  case_index = seq_along(cases),
-  case = cases
-) %>% 
-  mutate(
-    p_x = map(case, \(p) p@x),
-    p_y = map(case, \(p) p@y)
-  ) %>% 
-  unnest_longer(c(p_x, p_y))
-
-
-cases_df %>% 
-  filter(case_index == 16) %>% 
-ggplot() +
-  geom_polygon(
-    aes(x = x, y = y),
-    fill = "black",
-    data = data.frame(x = c(0, 0, 1, 1), y = c(0, 1, 1, 0))
-  ) +
-  geom_polygon(
-    aes(
-      x = p_x, y = p_y,
-      fill = as.factor(case_index),
-      group = as.factor(case_index)
-    )
-  ) +
-  coord_cartesian(
-    ylim = c(-2, 2),
-    xlim = c(-2, 2)
-  ) +
-  theme(
-    legend.position = "bottom"
-  )
-  
-
-
-
-flip_vertically_polygon(result$polygons[[1]])
 
 
