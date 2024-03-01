@@ -120,12 +120,15 @@ result
 
 result %>% 
   ggplot() +
+  geom_point(
+    aes(x, y),
+    data = grid_as_df %>% filter(value > 0)
+  ) +
   geom_polygon(
     aes(x = p_x, y = p_y, group = p_index),
     fill = "blue"
   ) +
-  theme_void() +
-  coord_equal()
+  theme_void()
 
 
 
